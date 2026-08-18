@@ -1,8 +1,8 @@
 import java.util.Scanner;
 
-
 public class PeinBot {
-    static String HORIZONTAL_LINE = "_____________________________________________________________";
+    static String HORIZONTAL_LINE = "\t_____________________________________________________________";
+
 
     public static void main(String[] args) {
 
@@ -16,22 +16,36 @@ public class PeinBot {
         System.out.println(HORIZONTAL_LINE);
         System.out.println(banner);
         System.out.println("Hello! I'm PeinBot :)");
-
-        String userInput = readInput();
-        processInput(userInput);
-
-        System.out.println("Bye. See you soon :(");
         System.out.println(HORIZONTAL_LINE);
+
+
+        System.out.println("\tWhat can I do for you? ");
+
+        boolean isExit;
+        do {
+            String userInput = readInput();
+            isExit = processInput(userInput);
+        } while(!isExit);
+
     }
 
-    public static void processInput(String message) {
+    public static boolean processInput(String userInput) {
+        System.out.println(HORIZONTAL_LINE);
+        switch (userInput) {
+            case "bye":
+                System.out.println("\tBye. Hope to see you soon :(");
+                System.out.println(HORIZONTAL_LINE);
+                return true;
 
+            default:
+                System.out.println("\t" + userInput);
+                System.out.println(HORIZONTAL_LINE);
+                return false;
+        }
     }
 
     public static String readInput() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("What can I do for you? ");
-        System.out.println(HORIZONTAL_LINE);
         return scanner.nextLine();
     }
 }
