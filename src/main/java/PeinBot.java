@@ -1,8 +1,10 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+
 
 public class PeinBot {
-    static String HORIZONTAL_LINE = "\t_____________________________________________________________";
-
+    private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
+    private static ArrayList<String> taskList = new ArrayList<String>();
 
     public static void main(String[] args) {
 
@@ -13,10 +15,10 @@ public class PeinBot {
                 + " |____|    \\___  >__|___|  /___  /\\____/|__|  \n"
                 + "               \\/        \\/    \\/             \n";
 
-        System.out.println(HORIZONTAL_LINE);
+        System.out.println(PeinBot.HORIZONTAL_LINE);
         System.out.println(banner);
         System.out.println("Hello! I'm PeinBot :)");
-        System.out.println(HORIZONTAL_LINE);
+        System.out.println(PeinBot.HORIZONTAL_LINE);
 
 
         System.out.println("\tWhat can I do for you? ");
@@ -30,16 +32,17 @@ public class PeinBot {
     }
 
     public static boolean processInput(String userInput) {
-        System.out.println(HORIZONTAL_LINE);
+        System.out.println(PeinBot.HORIZONTAL_LINE);
         switch (userInput) {
             case "bye":
                 System.out.println("\tBye. Hope to see you soon :(");
-                System.out.println(HORIZONTAL_LINE);
+                System.out.println(PeinBot.HORIZONTAL_LINE);
                 return true;
 
             default:
-                System.out.println("\t" + userInput);
-                System.out.println(HORIZONTAL_LINE);
+                System.out.println("\t" + String.format("added: %s to your list of tasks",userInput));
+                PeinBot.taskList.add(userInput);
+                System.out.println(PeinBot.HORIZONTAL_LINE);
                 return false;
         }
     }
