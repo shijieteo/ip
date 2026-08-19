@@ -74,6 +74,20 @@ public class PeinBot {
                     printOutput("\tPlease provide a number within the list :(");
                 }
                 return false;
+            case "delete":
+                try {
+                    taskListIndex = Integer.parseInt(userInputArray[1]) - 1;
+                    Task deletedTask = deleteTask(taskListIndex);
+                    printOutput("\t" + String.format("The following task was deleted: %s \n\t" +
+                            "You now have %d tasks", deletedTask, PeinBot.taskList.size()));
+                }
+                catch (NumberFormatException numberFormatException) {
+                    printOutput("\tPlease provide a number next time... :(");
+                }
+                catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+                    printOutput("\tPlease provide a number within the list :(");
+                }
+                return false;
 
             default:
                 addTasks(userInput);
@@ -200,6 +214,9 @@ public class PeinBot {
         return (new Event(taskDescription, startDate, endDate));
     }
 
+    private static Task deleteTask(int index) {
+        return PeinBot.taskList.remove(index);
+    }
 
     private static Task createDeadlineTask(String[] taskSplit) throws IllegalArgumentException {
         String dueDate = "";
