@@ -38,21 +38,11 @@ public class PeinBot {
                 return true;
 
             case "list":
-                String accumulatedTaskString = "";
-                int endLoopIndex = PeinBot.taskList.size();
-                for (int index = 0; index < endLoopIndex; index++) {
-                    accumulatedTaskString += String.format("\t%d. %s", index + 1, PeinBot.taskList.get(index));
-                    if(index != endLoopIndex - 1) {
-                        accumulatedTaskString += "\n";
-                    }
-                }
-                printOutput(accumulatedTaskString);
+                listTasks();
                 return false;
 
             default:
-                Task newTask = new Task(userInput);
-                PeinBot.taskList.add(newTask);
-                printOutput("\t" + String.format("added: %s to your list of tasks",userInput));
+                addTasks(userInput);
                 return false;
         }
     }
@@ -65,5 +55,23 @@ public class PeinBot {
     public static void printOutput(String output) {
         System.out.println(output);
         System.out.println(PeinBot.HORIZONTAL_LINE);
+    }
+
+    private static void listTasks() {
+        String accumulatedTaskString = "";
+        int endLoopIndex = PeinBot.taskList.size();
+        for (int index = 0; index < endLoopIndex; index++) {
+            accumulatedTaskString += String.format("\t%d. %s", index + 1, PeinBot.taskList.get(index));
+            if(index != endLoopIndex - 1) {
+                accumulatedTaskString += "\n";
+            }
+        }
+        printOutput(accumulatedTaskString);
+    }
+
+    private static void addTasks(String userInput) {
+        Task newTask = new Task(userInput);
+        PeinBot.taskList.add(newTask);
+        printOutput("\t" + String.format("added: %s to your list of tasks",userInput));
     }
 }
