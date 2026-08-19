@@ -3,7 +3,7 @@ public class Task {
     private Boolean isDone;
 
     Task(String taskDescription) {
-        this.taskDescription = taskDescription;
+        this.taskDescription = taskDescription.trim();
         this.isDone = false;
     }
 

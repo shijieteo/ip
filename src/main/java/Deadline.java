@@ -3,7 +3,7 @@ public class Deadline extends Task {
 
     Deadline(String taskDescription, String dueDate) {
         super(taskDescription);
-        this.dueDate = dueDate;
+        this.dueDate = dueDate.trim();
     }
 
     @Override
