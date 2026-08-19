@@ -31,6 +31,7 @@ public class PeinBot {
     }
 
     public static boolean processInput(String userInput) {
+        int taskListIndex;
         System.out.println(PeinBot.HORIZONTAL_LINE);
         String[] userInputArray = userInput.split(" ");
         switch (userInputArray[0]) {
@@ -40,6 +41,20 @@ public class PeinBot {
 
             case "list":
                 listTasks();
+                return false;
+
+            case "mark":
+                taskListIndex = Integer.parseInt(userInputArray[1]) - 1;
+                markTasks(taskListIndex);
+                printOutput(String.format("\tCongrats on completing the following task:\n\t %s",
+                        PeinBot.taskList.get(taskListIndex)));
+                return false;
+
+            case "unmark":
+                taskListIndex = Integer.parseInt(userInputArray[1]) - 1;
+                unmarkTasks(taskListIndex);
+                printOutput(String.format("\tThe following task was marked as not done yet:\n\t %s",
+                        PeinBot.taskList.get(taskListIndex)));
                 return false;
 
             default:
@@ -68,6 +83,14 @@ public class PeinBot {
             }
         }
         printOutput(accumulatedTaskString);
+    }
+
+    private static void markTasks(int index) {
+        PeinBot.taskList.get(index).setIsDone(true);
+    }
+
+    private static void unmarkTasks(int index) {
+        PeinBot.taskList.get(index).setIsDone(false);
     }
 
     private static void addTasks(String userInput) {
