@@ -45,17 +45,34 @@ public class PeinBot {
                 return false;
 
             case "mark":
-                taskListIndex = Integer.parseInt(userInputArray[1]) - 1;
-                markTasks(taskListIndex);
-                printOutput(String.format("\tCongrats on completing the following task:\n\t %s",
-                        PeinBot.taskList.get(taskListIndex)));
+                try {
+                    taskListIndex = Integer.parseInt(userInputArray[1]) - 1;
+                    markTasks(taskListIndex);
+                    printOutput(String.format("\tCongrats on completing the following task:\n\t %s",
+                            PeinBot.taskList.get(taskListIndex)));
+                }
+                catch (NumberFormatException numberFormatException) {
+                    printOutput("\tPlease provide a number next time... :(");
+                }
+                catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+                    printOutput("\tPlease provide a number within the list :(");
+                }
+
                 return false;
 
             case "unmark":
-                taskListIndex = Integer.parseInt(userInputArray[1]) - 1;
-                unmarkTasks(taskListIndex);
-                printOutput(String.format("\tThe following task was marked as not done yet:\n\t %s",
-                        PeinBot.taskList.get(taskListIndex)));
+                try {
+                    taskListIndex = Integer.parseInt(userInputArray[1]) - 1;
+                    unmarkTasks(taskListIndex);
+                    printOutput(String.format("\tThe following task was marked as not done yet:\n\t %s",
+                            PeinBot.taskList.get(taskListIndex)));
+                }
+                catch (NumberFormatException numberFormatException) {
+                    printOutput("\tPlease provide a number next time... :(");
+                }
+                catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+                    printOutput("\tPlease provide a number within the list :(");
+                }
                 return false;
 
             default:
