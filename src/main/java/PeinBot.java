@@ -34,14 +34,24 @@ public class PeinBot {
         System.out.println(PeinBot.HORIZONTAL_LINE);
         switch (userInput) {
             case "bye":
-                System.out.println("\tBye. Hope to see you soon :(");
-                System.out.println(PeinBot.HORIZONTAL_LINE);
+                printOutput("\tBye. Hope to see you soon :(");
                 return true;
 
+            case "list":
+                String accumulatedTaskString = "";
+                int endLoopIndex = PeinBot.taskList.size();
+                for (int index = 0; index < endLoopIndex; index++) {
+                    accumulatedTaskString += String.format("\t%d. %s", index + 1, PeinBot.taskList.get(index));
+                    if(index != endLoopIndex - 1) {
+                        accumulatedTaskString += "\n";
+                    }
+                }
+                printOutput(accumulatedTaskString);
+                return false;
+
             default:
-                System.out.println("\t" + String.format("added: %s to your list of tasks",userInput));
                 PeinBot.taskList.add(userInput);
-                System.out.println(PeinBot.HORIZONTAL_LINE);
+                printOutput("\t" + String.format("added: %s to your list of tasks",userInput));
                 return false;
         }
     }
