@@ -32,7 +32,8 @@ public class PeinBot {
 
     public static boolean processInput(String userInput) {
         System.out.println(PeinBot.HORIZONTAL_LINE);
-        switch (userInput) {
+        String[] userInputArray = userInput.split(" ");
+        switch (userInputArray[0]) {
             case "bye":
                 printOutput("\tBye. Hope to see you soon :(");
                 return true;
