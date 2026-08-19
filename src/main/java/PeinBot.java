@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 public class PeinBot {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
@@ -94,8 +95,105 @@ public class PeinBot {
     }
 
     private static void addTasks(String userInput) {
-        Task newTask = new Task(userInput);
-        PeinBot.taskList.add(newTask);
-        printOutput("\t" + String.format("added: %s to your list of tasks",userInput));
+        String[] taskSplit = userInput.split(" ");
+        String taskType = taskSplit[0];
+        String taskDescription = "";
+        int index;
+        String taskString = "";
+
+        switch(taskType) {
+            case "todo":
+                Task toDoTask = createToDoTask(taskSplit);
+                PeinBot.taskList.add(toDoTask);
+                taskString = toDoTask.toString();
+                break;
+
+            case "deadline":
+                Task deadlineTask = createDeadlineTask(taskSplit);
+                PeinBot.taskList.add(deadlineTask);
+                taskString = deadlineTask.toString();
+                break;
+
+            case "event":
+                Task eventTask = createEventTask(taskSplit);
+                PeinBot.taskList.add(eventTask);
+                taskString = eventTask.toString();
+                break;
+            default:
+                printOutput("\tInvalid task type....\n\tPlease try again");
+                return;
+        }
+        printOutput("\t" + String.format("added: %s to your list of tasks\n\t" +
+                "You now have %d tasks", taskString, PeinBot.taskList.size()));
+
+    }
+
+    private static Task createToDoTask(String[] taskSplit) {
+        String taskDescription = IntStream.range(1, taskSplit.length).boxed()
+                .map(x -> taskSplit[x]).reduce("", (x,y) -> x + " " + y);
+        return new ToDo(taskDescription);
+    }
+
+    private static Task createEventTask(String[] taskSplit) {
+        boolean isEndDate = false;
+        boolean isStartDate = false;
+        String startdate = "";
+        String endDate = "";
+        int index = 1;
+        String taskDescription = "";
+
+        while(index < taskSplit.length) {
+            if(taskSplit[index].equals("/from")) {
+                isStartDate = true;
+                isEndDate = false;
+                index++;
+                continue;
+            } else if (taskSplit[index].equals("/to")) {
+                isEndDate = true;
+                isStartDate = false;
+                index++;
+                continue;
+            }
+
+            if(isEndDate) {
+                endDate += taskSplit[index];
+                endDate += " ";
+            } else if (isStartDate) {
+                startdate += taskSplit[index];
+                startdate += " ";
+            } else {
+                taskDescription += taskSplit[index];
+                taskDescription += " ";
+            }
+            index++;
+        }
+        return (new Event(taskDescription, startdate, endDate));
+    }
+
+
+    private static Task createDeadlineTask(String[] taskSplit) {
+        String dueDate = "";
+        String taskDescription = "";
+        boolean isDueDate = false;
+        int index = 1;
+        while(index < taskSplit.length) {
+            if(taskSplit[index].equals("/by")) {
+                isDueDate = true;
+                index++;
+                continue;
+            }
+
+            if(isDueDate) {
+                dueDate += taskSplit[index];
+                dueDate += " ";
+            }
+            else {
+                taskDescription += taskSplit[index];
+                taskDescription += " ";
+            }
+            index++;
+        }
+        return new Deadline(taskDescription, dueDate);
     }
 }
+
