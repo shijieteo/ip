@@ -100,44 +100,50 @@ public class PeinBot {
         String taskDescription = "";
         int index;
         String taskString = "";
+        try {
+            switch (taskType) {
+                case "todo":
+                    Task toDoTask = createToDoTask(taskSplit);
+                    PeinBot.taskList.add(toDoTask);
+                    taskString = toDoTask.toString();
+                    break;
 
-        switch(taskType) {
-            case "todo":
-                Task toDoTask = createToDoTask(taskSplit);
-                PeinBot.taskList.add(toDoTask);
-                taskString = toDoTask.toString();
-                break;
+                case "deadline":
+                    Task deadlineTask = createDeadlineTask(taskSplit);
+                    PeinBot.taskList.add(deadlineTask);
+                    taskString = deadlineTask.toString();
+                    break;
 
-            case "deadline":
-                Task deadlineTask = createDeadlineTask(taskSplit);
-                PeinBot.taskList.add(deadlineTask);
-                taskString = deadlineTask.toString();
-                break;
-
-            case "event":
-                Task eventTask = createEventTask(taskSplit);
-                PeinBot.taskList.add(eventTask);
-                taskString = eventTask.toString();
-                break;
-            default:
-                printOutput("\tInvalid task type....\n\tPlease try again");
-                return;
+                case "event":
+                    Task eventTask = createEventTask(taskSplit);
+                    PeinBot.taskList.add(eventTask);
+                    taskString = eventTask.toString();
+                    break;
+                default:
+                    printOutput("\tInvalid task type....\n\tPlease try again");
+                    return;
+            }
+            printOutput("\t" + String.format("added: %s to your list of tasks\n\t" +
+                    "You now have %d tasks", taskString, PeinBot.taskList.size()));
         }
-        printOutput("\t" + String.format("added: %s to your list of tasks\n\t" +
-                "You now have %d tasks", taskString, PeinBot.taskList.size()));
-
+        catch (IllegalArgumentException illegalArgumentException) {
+            printOutput("\t" + illegalArgumentException.getMessage());
+        }
     }
 
-    private static Task createToDoTask(String[] taskSplit) {
+    private static Task createToDoTask(String[] taskSplit) throws IllegalArgumentException {
         String taskDescription = IntStream.range(1, taskSplit.length).boxed()
                 .map(x -> taskSplit[x]).reduce("", (x,y) -> x + " " + y);
+        if (taskDescription.isEmpty()){
+            throw new IllegalArgumentException("Task Description for task is empty :(");
+        }
         return new ToDo(taskDescription);
     }
 
-    private static Task createEventTask(String[] taskSplit) {
+    private static Task createEventTask(String[] taskSplit) throws IllegalArgumentException {
         boolean isEndDate = false;
         boolean isStartDate = false;
-        String startdate = "";
+        String startDate = "";
         String endDate = "";
         int index = 1;
         String taskDescription = "";
@@ -159,19 +165,26 @@ public class PeinBot {
                 endDate += taskSplit[index];
                 endDate += " ";
             } else if (isStartDate) {
-                startdate += taskSplit[index];
-                startdate += " ";
+                startDate += taskSplit[index];
+                startDate += " ";
             } else {
                 taskDescription += taskSplit[index];
                 taskDescription += " ";
             }
             index++;
         }
-        return (new Event(taskDescription, startdate, endDate));
+        if (taskDescription.isEmpty()){
+            throw new IllegalArgumentException("Task Description for task is empty :(");
+        } else if (startDate.isEmpty()) {
+            throw new IllegalArgumentException("Start Date for task is empty :(");
+        } else if (endDate.isEmpty()) {
+            throw new IllegalArgumentException("End Date for task is empty :(");
+        }
+        return (new Event(taskDescription, startDate, endDate));
     }
 
 
-    private static Task createDeadlineTask(String[] taskSplit) {
+    private static Task createDeadlineTask(String[] taskSplit) throws IllegalArgumentException {
         String dueDate = "";
         String taskDescription = "";
         boolean isDueDate = false;
@@ -192,6 +205,11 @@ public class PeinBot {
                 taskDescription += " ";
             }
             index++;
+        }
+        if (taskDescription.isEmpty()){
+            throw new IllegalArgumentException("Task Description for task is empty :(");
+        } else if (dueDate.isEmpty()) {
+            throw new IllegalArgumentException("Due Date for task is empty :(");
         }
         return new Deadline(taskDescription, dueDate);
     }
