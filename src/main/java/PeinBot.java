@@ -1,7 +1,6 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 
-
 public class PeinBot {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
     private static ArrayList<String> taskList = new ArrayList<String>();
@@ -50,5 +49,10 @@ public class PeinBot {
     public static String readInput() {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
+    }
+
+    public static void printOutput(String output) {
+        System.out.println(output);
+        System.out.println(PeinBot.HORIZONTAL_LINE);
     }
 }
