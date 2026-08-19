@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class PeinBot {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
-    private static ArrayList<String> taskList = new ArrayList<String>();
+    private static ArrayList<Task> taskList = new ArrayList<Task>();
 
     public static void main(String[] args) {
 
@@ -50,7 +50,8 @@ public class PeinBot {
                 return false;
 
             default:
-                PeinBot.taskList.add(userInput);
+                Task newTask = new Task(userInput);
+                PeinBot.taskList.add(newTask);
                 printOutput("\t" + String.format("added: %s to your list of tasks",userInput));
                 return false;
         }
