@@ -23,7 +23,7 @@ public class PeinStorage {
     }
 
     public void writeData(Task task) throws IOException {
-        try (FileOutputStream fileOutputStream = new FileOutputStream(FILE_LOCATION);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(FILE_LOCATION, true);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
             objectOutputStream.writeObject(task);
 
@@ -55,6 +55,8 @@ public class PeinStorage {
                 Task task = (Task) objectInputStream.readObject();
                 taskList.add(task);
             } catch (EOFException eofException) {
+                break;
+            } catch (Exception e) {
                 break;
             }
         }
