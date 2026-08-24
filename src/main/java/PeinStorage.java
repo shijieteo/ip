@@ -3,7 +3,8 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class PeinStorage {
-    private static final String FILE_LOCATION = "Tasks.ser";
+    private static final String FILE_LOCATION = "data/Tasks.ser";
+    private static final String DIRECTORY_NAME = "data";
 
     PeinStorage() {}
 
@@ -15,6 +16,8 @@ public class PeinStorage {
 
         } catch(FileNotFoundException fileNotFoundException){
             createDataFile();
+        } catch(EOFException exception) {
+            return loadedTasks;
         }
         return loadedTasks;
     }
@@ -32,8 +35,13 @@ public class PeinStorage {
 
     private void createDataFile()  {
         File dataFile = new File(FILE_LOCATION);
+        File directory = new File(DIRECTORY_NAME);
+        if(!directory.exists()) {
+            boolean isDirectoryCreated = directory.mkdirs();
+        }
+
         try {
-            boolean isCreated = dataFile.createNewFile();
+            boolean isFileCreated = dataFile.createNewFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
