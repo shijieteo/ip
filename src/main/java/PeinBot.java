@@ -1,10 +1,14 @@
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 public class PeinBot {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
+    private PeinStorage peinStorage;
+
     private static ArrayList<Task> taskList = new ArrayList<Task>();
+
 
     public static void main(String[] args) {
 
@@ -22,6 +26,21 @@ public class PeinBot {
 
 
         System.out.println("\tWhat can I do for you? ");
+
+        PeinStorage storage = new PeinStorage();
+
+        try {
+            PeinBot.taskList = storage.loadData();
+        } catch (ClassNotFoundException | IOException e) {
+            String userAnswer = "";
+            do {
+                System.out.print("Could not load tasks from data file... continue? [Y/N]: ");
+                userAnswer = readInput();
+                if (userAnswer == "N") {
+                    return;
+                }
+            } while(!userAnswer.equals("Y") && !userAnswer.equals("N"));
+        }
 
         boolean isExit;
         do {
@@ -157,6 +176,8 @@ public class PeinBot {
             printOutput("\t" + String.format("added: %s to your list of tasks\n\t" +
                     "You now have %d tasks", taskString, PeinBot.taskList.size()));
         }
+
+
         catch (IllegalArgumentException illegalArgumentException) {
             printOutput("\t" + illegalArgumentException.getMessage());
         }

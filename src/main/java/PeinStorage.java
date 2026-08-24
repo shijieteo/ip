@@ -3,7 +3,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class PeinStorage {
-    private static final String FILE_LOCATION = "./data/Task.ser";
+    private static final String FILE_LOCATION = "Tasks.ser";
 
     PeinStorage() {}
 
