@@ -1,13 +1,16 @@
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 public class PeinBot {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
+
     private static ArrayList<Task> taskList = new ArrayList<Task>();
 
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
+        boolean isExit = false;
         String banner = "__________       .__      ___.           __   \n"
                 + "\\______   \\ ____ |__| ____\\_ |__   _____/  |_ \n"
                 + " |     ___// __ \\|  |/    \\| __ \\ /  _ \\   __\\\n"
@@ -23,11 +26,25 @@ public class PeinBot {
 
         System.out.println("\tWhat can I do for you? ");
 
-        boolean isExit;
-        do {
+        PeinStorage storage = new PeinStorage();
+
+        try {
+            PeinBot.taskList = storage.loadData();
+        } catch (ClassNotFoundException | IOException e) {
+            String userAnswer = "";
+            do {
+                System.out.print("Could not load tasks from data file... continue? [Y/N]: ");
+                userAnswer = readInput();
+                if (userAnswer == "N") {
+                    isExit = true;
+                }
+            } while(!userAnswer.equals("Y") && !userAnswer.equals("N"));
+        }
+
+        while(!isExit){
             String userInput = readInput();
             isExit = processInput(userInput);
-        } while(!isExit);
+        }
 
     }
 
@@ -126,6 +143,7 @@ public class PeinBot {
     }
 
     private static void addTasks(String userInput) {
+        PeinStorage storage = new PeinStorage();
         String[] taskSplit = userInput.split(" ");
         String taskType = taskSplit[0];
         String taskDescription = "";
@@ -135,18 +153,33 @@ public class PeinBot {
             switch (taskType) {
                 case "todo":
                     Task toDoTask = createToDoTask(taskSplit);
+                    try {
+                        storage.writeData(toDoTask);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     PeinBot.taskList.add(toDoTask);
                     taskString = toDoTask.toString();
                     break;
 
                 case "deadline":
                     Task deadlineTask = createDeadlineTask(taskSplit);
+                    try {
+                        storage.writeData(deadlineTask);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     PeinBot.taskList.add(deadlineTask);
                     taskString = deadlineTask.toString();
                     break;
 
                 case "event":
                     Task eventTask = createEventTask(taskSplit);
+                    try {
+                        storage.writeData(eventTask);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     PeinBot.taskList.add(eventTask);
                     taskString = eventTask.toString();
                     break;
@@ -157,6 +190,8 @@ public class PeinBot {
             printOutput("\t" + String.format("added: %s to your list of tasks\n\t" +
                     "You now have %d tasks", taskString, PeinBot.taskList.size()));
         }
+
+
         catch (IllegalArgumentException illegalArgumentException) {
             printOutput("\t" + illegalArgumentException.getMessage());
         }
