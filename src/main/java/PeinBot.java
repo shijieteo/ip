@@ -6,11 +6,11 @@ import java.util.stream.IntStream;
 public class PeinBot {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
     //private static ArrayList<Task> taskList = new ArrayList<Task>();
-    private PeinStorage storage;
+    private Storage storage;
     private ArrayList<Task> taskList;
 
     PeinBot(){
-        this.storage = new PeinStorage();
+        this.storage = new Storage();
         this.taskList = new ArrayList<Task>();
     }
 
@@ -150,7 +150,7 @@ public class PeinBot {
     }
 
     private void addTasks(String userInput) {
-        PeinStorage storage = new PeinStorage();
+        Storage storage = new Storage();
         String[] taskSplit = userInput.split(" ");
         String taskType = taskSplit[0];
         String taskDescription = "";

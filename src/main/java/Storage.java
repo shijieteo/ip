@@ -2,11 +2,11 @@ import java.io.*;
 
 import java.util.ArrayList;
 
-public class PeinStorage {
+public class Storage {
     private static final String FILE_LOCATION = "data/Tasks.ser";
     private static final String DIRECTORY_NAME = "data";
 
-    PeinStorage() {}
+    Storage() {}
 
     public ArrayList<Task> loadData() throws ClassNotFoundException, IOException {
         ArrayList<Task> loadedTasks = new ArrayList<Task>();
