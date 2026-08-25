@@ -15,6 +15,7 @@ public class Parser {
         this.commandMap.put("unmark", x -> new UnmarkCommand(x));
         this.commandMap.put("bye", x -> new ExitCommand());
         this.commandMap.put("list", x -> new ListCommand());
+        this.commandMap.put("find", x -> new FindCommand(x));
     }
 
     public Command processInput(String userInput) {
