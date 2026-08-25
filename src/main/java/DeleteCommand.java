@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class DeleteCommand extends Command {
     private int index;
 
@@ -7,7 +5,7 @@ public class DeleteCommand extends Command {
         parseParams(userInput);
     }
 
-    public void execute(ArrayList<Task> taskList, Ui ui, Storage storage) {
+    public void execute(TaskList taskList, Ui ui, Storage storage) {
         try{
             taskList.remove(this.index);
         } catch (IndexOutOfBoundsException e) {

@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class UnmarkCommand extends Command {
     private int index;
 
@@ -7,7 +5,7 @@ public class UnmarkCommand extends Command {
         parseParams(userInput);
     }
 
-    public void execute(ArrayList<Task> taskList, Ui ui, Storage storage) {
+    public void execute(TaskList taskList, Ui ui, Storage storage) {
         try{
             Task task = taskList.get(this.index);
             task.setIsDone(false);

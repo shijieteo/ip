@@ -1,19 +1,10 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Ui {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
 
-    public void listTasks(ArrayList<Task> taskList) {
-        String accumulatedTaskString = "";
-        int endLoopIndex = taskList.size();
-        for (int index = 0; index < endLoopIndex; index++) {
-            accumulatedTaskString += String.format("\t%d. %s", index + 1, taskList.get(index));
-            if(index != endLoopIndex - 1) {
-                accumulatedTaskString += "\n";
-            }
-        }
-        printMessage(accumulatedTaskString);
+    public void listTasks(TaskList taskList) {
+        printMessage(taskList.toString());
     }
 
     public void printBanner() {

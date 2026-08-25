@@ -1,20 +1,18 @@
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 public class PeinBot {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
-    //private static ArrayList<Task> taskList = new ArrayList<Task>();
     private Storage storage;
-    private ArrayList<Task> taskList;
+    private TaskList taskList;
     private Ui ui;
     private Parser parser;
 
     PeinBot() {
         this.storage = new Storage();
-        this.taskList = new ArrayList<Task>();
+        this.taskList = new TaskList();
         this.ui = new Ui();
         this.parser = new Parser();
     }
