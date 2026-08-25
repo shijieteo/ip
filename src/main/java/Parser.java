@@ -1,8 +1,6 @@
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.IntStream;
 
 public class Parser {
     private final HashMap<String, Function<String[], Command>> commandMap = new HashMap<>();

@@ -1,4 +1,3 @@
-import java.time.LocalDate;
 import java.time.temporal.Temporal;
 
 public class Event extends Task {
