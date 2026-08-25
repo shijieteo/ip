@@ -20,6 +20,12 @@ public class Storage {
         return loadedTasks;
     }
 
+    public void resetData() {
+        File dataFile = new File(FILE_LOCATION);
+        dataFile.delete();
+        createDataFile();
+    }
+
     public void writeData(TaskList taskList) throws IOException {
         try (FileOutputStream fileOutputStream = new FileOutputStream(FILE_LOCATION);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {

@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.io.InvalidClassException;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.stream.IntStream;
@@ -21,11 +23,20 @@ public class PeinBot {
     public void run() {
         this.ui.printBanner();
         boolean isExit = false;
-        try {
-            this.taskList = storage.loadData();
-        } catch (ClassNotFoundException | IOException e) {
-            isExit = storageIssueHandler();
+        while(true) {
+            try {
+                this.taskList = storage.loadData();
+                break;
+            } catch(InvalidClassException invalidClassException){
+                storage.resetData();
+                continue;
+            } catch (ClassNotFoundException | IOException e) {
+                isExit = storageIssueHandler();
+                break;
+            }
         }
+
+
         while (!isExit) {
             String userInput = ui.readInput();
             try {
@@ -34,6 +45,8 @@ public class PeinBot {
                 userCommand.execute(this.taskList, this.ui, this.storage);
             } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
                 ui.printMessage("\tPlease enter a valid index....");
+            } catch (DateTimeParseException dateTimeParseException) {
+                ui.printMessage("\tPlease enter a valid date....");
             } catch (IllegalArgumentException illegalArgumentException) {
                 ui.printMessage("\t" + illegalArgumentException.getMessage());
             } catch (RuntimeException runtimeException) {
@@ -58,6 +71,10 @@ public class PeinBot {
             }
         } while (!userAnswer.equals("Y") && !userAnswer.equals("N"));
         return false;
+    }
+
+    private void loadData() throws ClassNotFoundException, IOException{
+        this.taskList = storage.loadData();
     }
 }
 
