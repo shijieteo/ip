@@ -1,4 +1,13 @@
-import java.io.*;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.IOException;
+
+
 
 public class Storage {
     private static final String FILE_LOCATION = "data/Tasks.ser";
@@ -9,12 +18,12 @@ public class Storage {
     public TaskList loadData() throws ClassNotFoundException, IOException {
         TaskList loadedTasks = new TaskList();
         try (FileInputStream fileInputStream = new FileInputStream(FILE_LOCATION);
-             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)){
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
             loadedTasks = readFile(objectInputStream);
 
-        } catch(FileNotFoundException fileNotFoundException){
+        } catch (FileNotFoundException fileNotFoundException) {
             createDataFile();
-        } catch(EOFException exception) {
+        } catch (EOFException exception) {
             return loadedTasks;
         }
         return loadedTasks;
@@ -40,7 +49,7 @@ public class Storage {
     private void createDataFile()  {
         File dataFile = new File(FILE_LOCATION);
         File directory = new File(DIRECTORY_NAME);
-        if(!directory.exists()) {
+        if (!directory.exists()) {
             boolean isDirectoryCreated = directory.mkdirs();
         }
 

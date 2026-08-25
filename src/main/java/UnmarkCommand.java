@@ -6,8 +6,8 @@ public class UnmarkCommand extends Command {
     }
 
     public void execute(TaskList taskList, Ui ui, Storage storage) {
-        try{
-            Task task = taskList.get(this.index);
+        try {
+            Task task = taskList.get(index);
             task.setIsDone(false);
             ui.printMessage(String.format("\tThe following task was marked as not done:\n\t %s", task));
 
@@ -23,7 +23,7 @@ public class UnmarkCommand extends Command {
 
     private void parseParams(String[] userInputArray) {
         try {
-            this.index = Integer.parseInt(userInputArray[1]) - 1;
+            index = Integer.parseInt(userInputArray[1]) - 1;
         } catch (NumberFormatException e) {
             throw new NumberFormatException("Please enter a valid index :(");
         }
