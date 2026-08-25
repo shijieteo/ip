@@ -1,5 +1,8 @@
+import java.time.temporal.Temporal;
+import java.util.Optional;
+
 public class AddDeadlineCommand extends Command {
-    private String dueDate;
+    private Temporal dueDate;
     private String taskDescription;
 
 
@@ -46,7 +49,18 @@ public class AddDeadlineCommand extends Command {
         if(dueDate.isEmpty() || taskDescription.isEmpty()){
             throw new IllegalArgumentException("Please provide the correct arguments for Deadline!");
         }
-        this.dueDate = dueDate;
+
+        dueDate = dueDate.trim();
+
+        DateParser dateParser = new DateParser();
+        Optional<Temporal> startDateOptional = dateParser.parseDate(dueDate);
+        Optional<Temporal> startDateTimeOptional = dateParser.parseDateTime(dueDate);
+        Temporal startTemporal = startDateOptional.or(() -> startDateTimeOptional)
+                .orElseThrow(() -> new IllegalArgumentException("Please enter a due date/datetime!"));
+
+        this.dueDate = startTemporal;
         this.taskDescription = taskDescription;
+
+
     }
 }

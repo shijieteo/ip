@@ -1,7 +1,12 @@
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.Temporal;
+import java.util.Optional;
+
 public class AddEventCommand extends Command {
-    private String startDate;
+    private Temporal startDate;
     private String taskDescription;
-    private String endDate;
+    private Temporal endDate;
 
     AddEventCommand(String[] userInput){
         parseParams(userInput);
@@ -55,8 +60,24 @@ public class AddEventCommand extends Command {
         if(startDate.isEmpty() || taskDescription.isEmpty() || endDate.isEmpty()){
             throw new IllegalArgumentException("Please provide the correct arguments for Event!");
         }
-        this.startDate = startDate;
-        this.endDate = endDate;
+
+        startDate = startDate.trim();
+        endDate = endDate.trim();
+
+        DateParser dateParser = new DateParser();
+        Optional<Temporal> startDateOptional = dateParser.parseDate(startDate);
+        Optional<Temporal> startDateTimeOptional = dateParser.parseDateTime(startDate);
+        Temporal startTemporal = startDateOptional.or(() -> startDateTimeOptional)
+                .orElseThrow(() -> new IllegalArgumentException("Please enter a start valid date/datetime!"));
+
+        Optional<Temporal> endDateOptional = dateParser.parseDate(endDate);
+        Optional<Temporal> endDateTimeOptional = dateParser.parseDateTime(endDate);
+        Temporal endTemporal = endDateOptional.or(() -> endDateTimeOptional)
+                .orElseThrow(() -> new IllegalArgumentException("Please enter a end valid date/datetime!"));
+
+        this.startDate = startTemporal;
+        this.endDate = endTemporal;
         this.taskDescription = taskDescription;
+
     }
 }

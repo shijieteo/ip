@@ -1,9 +1,11 @@
-public class Deadline extends Task {
-    private String dueDate;
+import java.time.temporal.Temporal;
 
-    Deadline(String taskDescription, String dueDate) {
+public class Deadline extends Task {
+    private Temporal dueDate;
+
+    Deadline(String taskDescription, Temporal dueDate) {
         super(taskDescription);
-        this.dueDate = dueDate.trim();
+        this.dueDate = dueDate;
     }
 
     @Override

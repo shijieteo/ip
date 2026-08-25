@@ -1,11 +1,14 @@
-public class Event extends Task {
-    private String startDate;
-    private String endDate;
+import java.time.LocalDate;
+import java.time.temporal.Temporal;
 
-    Event(String taskDescription, String startDate, String endDate) {
+public class Event extends Task {
+    private Temporal startDate;
+    private Temporal endDate;
+
+    Event(String taskDescription, Temporal startDate, Temporal endDate) {
         super(taskDescription);
-        this.startDate = startDate.trim();
-        this.endDate = endDate.trim();
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     @Override
