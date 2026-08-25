@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Ui {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
@@ -12,7 +13,7 @@ public class Ui {
                 accumulatedTaskString += "\n";
             }
         }
-        printOutput(accumulatedTaskString);
+        printMessage(accumulatedTaskString);
     }
 
     public void printBanner() {
@@ -30,8 +31,14 @@ public class Ui {
         System.out.println("\tWhat can I do for you? ");
     }
 
-    public void printOutput(String output) {
+    public void printMessage(String output) {
+        System.out.println(Ui.HORIZONTAL_LINE);
         System.out.println(output);
         System.out.println(Ui.HORIZONTAL_LINE);
+    }
+
+    public String readInput() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine();
     }
 }
