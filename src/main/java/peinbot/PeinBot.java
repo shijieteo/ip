@@ -2,6 +2,8 @@ import java.io.InvalidClassException;
 import java.io.IOException;
 import java.time.format.DateTimeParseException;
 
+import peinbot.command.Command;
+
 public class PeinBot {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
     private Storage storage;
