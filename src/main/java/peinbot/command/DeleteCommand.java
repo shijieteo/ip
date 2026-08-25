@@ -1,5 +1,10 @@
 package peinbot.command;
 
+import peinbot.storage.Storage;
+import peinbot.task.TaskList;
+import peinbot.task.Task;
+import peinbot.ui.Ui;
+
 public class DeleteCommand extends Command {
     private int index;
 
@@ -9,7 +14,9 @@ public class DeleteCommand extends Command {
 
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         try {
-            taskList.remove(index);
+            Task removedTask = taskList.remove(index);
+            ui.printMessage(String.format("\tThe following task was removed:\n\t %s", removedTask));
+
         } catch (IndexOutOfBoundsException e) {
             throw new RuntimeException(e);
         }

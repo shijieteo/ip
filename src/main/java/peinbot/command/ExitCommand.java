@@ -1,5 +1,9 @@
 package peinbot.command;
 
+import peinbot.storage.Storage;
+import peinbot.task.TaskList;
+import peinbot.ui.Ui;
+
 public class ExitCommand extends Command {
 
     @Override

@@ -12,7 +12,7 @@ public class Task implements Serializable {
     }
 
     public void setIsDone(Boolean isDone) {
-        isDone = isDone;
+        this.isDone = isDone;
     }
 
     @Override

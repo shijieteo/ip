@@ -2,6 +2,11 @@ package peinbot.command;
 
 import java.util.stream.IntStream;
 
+import peinbot.storage.Storage;
+import peinbot.task.TaskList;
+import peinbot.task.ToDo;
+import peinbot.ui.Ui;
+
 public class AddToDoCommand extends Command {
     private String taskDescription;
 

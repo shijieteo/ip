@@ -1,5 +1,10 @@
 package peinbot.command;
 
+import peinbot.storage.Storage;
+import peinbot.task.Task;
+import peinbot.task.TaskList;
+import peinbot.ui.Ui;
+
 public class MarkCommand extends Command {
     private int index;
 
@@ -9,9 +14,9 @@ public class MarkCommand extends Command {
 
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         try {
-            Task task = taskList.get(index);
-            task.setIsDone(true);
-            ui.printMessage(String.format("\tCongrats on completing the following task:\n\t %s", task));
+            Task markedTask = taskList.get(index);
+            markedTask.setIsDone(true);
+            ui.printMessage(String.format("\tCongrats on completing the following task:\n\t %s", markedTask));
         } catch (IndexOutOfBoundsException e) {
             throw new RuntimeException(e);
         }

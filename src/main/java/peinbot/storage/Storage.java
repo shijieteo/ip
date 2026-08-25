@@ -10,13 +10,15 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import peinbot.task.TaskList;
+
 
 
 public class Storage {
     private static final String FILE_LOCATION = "data/Tasks.ser";
     private static final String DIRECTORY_NAME = "data";
 
-    Storage() {}
+    public Storage() {}
 
     public TaskList loadData() throws ClassNotFoundException, IOException {
         TaskList loadedTasks = new TaskList();

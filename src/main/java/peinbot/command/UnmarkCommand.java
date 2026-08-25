@@ -1,5 +1,10 @@
 package peinbot.command;
 
+import peinbot.storage.Storage;
+import peinbot.task.Task;
+import peinbot.task.TaskList;
+import peinbot.ui.Ui;
+
 public class UnmarkCommand extends Command {
     private int index;
 
@@ -9,9 +14,10 @@ public class UnmarkCommand extends Command {
 
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         try {
-            Task task = taskList.get(index);
-            task.setIsDone(false);
-            ui.printMessage(String.format("\tThe following task was marked as not done:\n\t %s", task));
+            Task unmarkedTask = taskList.get(index);
+            unmarkedTask.setIsDone(false);
+
+            ui.printMessage(String.format("\tThe following task was marked as not done:\n\t %s", unmarkedTask));
 
         } catch (IndexOutOfBoundsException e) {
             throw new RuntimeException(e);
