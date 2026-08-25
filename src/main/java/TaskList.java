@@ -1,7 +1,16 @@
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.stream.IntStream;
 
 public class TaskList extends ArrayList<Task> {
+
+    TaskList() {
+        super();
+    }
+
+    TaskList(Collection<Task> collection) {
+        super(collection);
+    }
 
     @Override
     public String toString(){
