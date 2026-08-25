@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
@@ -8,44 +9,37 @@ public class PeinBot {
     //private static ArrayList<Task> taskList = new ArrayList<Task>();
     private Storage storage;
     private ArrayList<Task> taskList;
+    private Ui ui;
+    private Parser parser;
 
     PeinBot(){
         this.storage = new Storage();
         this.taskList = new ArrayList<Task>();
+        this.ui = new Ui();
+        this.parser = new Parser();
     }
 
 
     public void run() {
+        this.ui.printBanner();
         boolean isExit = false;
-        String banner = "__________       .__      ___.           __   \n"
-                + "\\______   \\ ____ |__| ____\\_ |__   _____/  |_ \n"
-                + " |     ___// __ \\|  |/    \\| __ \\ /  _ \\   __\\\n"
-                + " |    |   \\  ___/|  |   |  \\ \\_\\ (  <_> )  |  \n"
-                + " |____|    \\___  >__|___|  /___  /\\____/|__|  \n"
-                + "               \\/        \\/    \\/             \n";
-
-        System.out.println(PeinBot.HORIZONTAL_LINE);
-        System.out.println(banner);
-        System.out.println("Hello! I'm PeinBot :)");
-        System.out.println(PeinBot.HORIZONTAL_LINE);
-        System.out.println("\tWhat can I do for you? ");
-
         try {
             this.taskList = storage.loadData();
         } catch (ClassNotFoundException | IOException e) {
             String userAnswer = "";
             do {
-                System.out.print("Could not load tasks from data file... continue? [Y/N]: ");
+                this.ui.printMessage("Could not load tasks from data file... continue? [Y/N]: ");
                 userAnswer = readInput();
                 if (userAnswer.equals("N")) {
                     isExit = true;
                 }
             } while(!userAnswer.equals("Y") && !userAnswer.equals("N"));
         }
-
         while(!isExit){
-            String userInput = readInput();
-            isExit = processInput(userInput);
+            String userInput = ui.readInput();
+            Command userCommand = this.parser.processInput(userInput);
+            isExit = userCommand.isExit();
+            userCommand.execute(this.taskList, this.ui, this.storage);
         }
     }
 
