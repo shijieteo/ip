@@ -22,14 +22,14 @@ public class Storage {
         return loadedTasks;
     }
 
-    public void writeData(Task task) throws IOException {
-        try (FileOutputStream fileOutputStream = new FileOutputStream(FILE_LOCATION, true);
+    public void writeData(ArrayList<Task> taskList) throws IOException {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(FILE_LOCATION);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
-            objectOutputStream.writeObject(task);
+            objectOutputStream.writeObject(taskList);
 
         } catch (FileNotFoundException fileNotFoundException) {
             createDataFile();
-            writeData(task);
+            writeData(taskList);
         }
     }
 
@@ -49,17 +49,7 @@ public class Storage {
 
     private ArrayList<Task> readFile (ObjectInputStream objectInputStream)
             throws ClassNotFoundException, IOException {
-        ArrayList<Task> taskList = new ArrayList<Task>();
-        while(true) {
-            try {
-                Task task = (Task) objectInputStream.readObject();
-                taskList.add(task);
-            } catch (EOFException eofException) {
-                break;
-            } catch (Exception e) {
-                break;
-            }
-        }
+        ArrayList<Task> taskList = (ArrayList<Task>) objectInputStream.readObject();
         return taskList;
     }
 

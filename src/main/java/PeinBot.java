@@ -154,39 +154,31 @@ public class PeinBot {
             switch (taskType) {
                 case "todo":
                     Task toDoTask = createToDoTask(taskSplit);
-                    try {
-                        storage.writeData(toDoTask);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
                     this.taskList.add(toDoTask);
                     taskString = toDoTask.toString();
                     break;
 
                 case "deadline":
                     Task deadlineTask = createDeadlineTask(taskSplit);
-                    try {
-                        storage.writeData(deadlineTask);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+
                     this.taskList.add(deadlineTask);
                     taskString = deadlineTask.toString();
                     break;
 
                 case "event":
                     Task eventTask = createEventTask(taskSplit);
-                    try {
-                        storage.writeData(eventTask);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
                     this.taskList.add(eventTask);
                     taskString = eventTask.toString();
                     break;
                 default:
                     printOutput("\tInvalid task type....\n\tPlease try again");
                     return;
+            }
+
+            try {
+                storage.writeData(this.taskList);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
             printOutput("\t" + String.format("added: %s to your list of tasks\n\t" +
                     "You now have %d tasks", taskString, this.taskList.size()));
