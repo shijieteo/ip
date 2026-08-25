@@ -1,3 +1,5 @@
+package peinbot.command;
+
 import java.time.temporal.Temporal;
 import java.util.Optional;
 
@@ -6,7 +8,7 @@ public class AddEventCommand extends Command {
     private String taskDescription;
     private Temporal endDate;
 
-    AddEventCommand(String[] userInput) {
+    public AddEventCommand(String[] userInput) {
         parseParams(userInput);
     }
 

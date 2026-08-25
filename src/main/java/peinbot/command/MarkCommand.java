@@ -1,7 +1,9 @@
+package peinbot.command;
+
 public class MarkCommand extends Command {
     private int index;
 
-    MarkCommand(String[] userInput) {
+    public MarkCommand(String[] userInput) {
         parseParams(userInput);
     }
 

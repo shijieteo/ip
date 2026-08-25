@@ -1,3 +1,5 @@
+package peinbot.command;
+
 import java.util.stream.IntStream;
 
 public class AddToDoCommand extends Command {

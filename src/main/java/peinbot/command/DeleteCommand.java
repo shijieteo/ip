@@ -1,7 +1,9 @@
+package peinbot.command;
+
 public class DeleteCommand extends Command {
     private int index;
 
-    DeleteCommand(String[] userInput) {
+    public DeleteCommand(String[] userInput) {
         parseParams(userInput);
     }
 

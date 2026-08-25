@@ -1,3 +1,5 @@
+package peinbot.command;
+
 import java.time.temporal.Temporal;
 import java.util.Optional;
 
@@ -5,7 +7,7 @@ public class AddDeadlineCommand extends Command {
     private Temporal dueDate;
     private String taskDescription;
 
-    AddDeadlineCommand(String[] userInput) {
+    public AddDeadlineCommand(String[] userInput) {
         parseParams(userInput);
     }
 

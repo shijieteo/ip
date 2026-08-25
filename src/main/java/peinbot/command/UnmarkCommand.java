@@ -1,7 +1,9 @@
+package peinbot.command;
+
 public class UnmarkCommand extends Command {
     private int index;
 
-    UnmarkCommand(String[] userInput) {
+    public UnmarkCommand(String[] userInput) {
         parseParams(userInput);
     }
 

@@ -1,3 +1,5 @@
+package peinbot.command;
+
 public class ExitCommand extends Command {
 
     @Override
