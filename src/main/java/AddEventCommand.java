@@ -6,12 +6,12 @@ public class AddEventCommand extends Command {
     private String taskDescription;
     private Temporal endDate;
 
-    AddEventCommand(String[] userInput){
+    AddEventCommand(String[] userInput) {
         parseParams(userInput);
     }
 
     public void execute(TaskList taskList, Ui ui, Storage storage) {
-        Event eventTask = new Event(this.taskDescription, this.startDate, this.endDate);
+        Event eventTask = new Event(taskDescription, startDate, endDate);
         taskList.add(eventTask);
         try {
             storage.writeData(taskList);
@@ -22,7 +22,6 @@ public class AddEventCommand extends Command {
                 "You now have %d tasks", eventTask, taskList.size()));
     }
 
-
     private void parseParams(String[] userInputArray) {
         boolean isEndDate = false;
         boolean isStartDate = false;
@@ -31,8 +30,8 @@ public class AddEventCommand extends Command {
         int index = 1;
         String taskDescription = "";
 
-        while(index < userInputArray.length) {
-            if(userInputArray[index].equals("/from")) {
+        while (index < userInputArray.length) {
+            if (userInputArray[index].equals("/from")) {
                 isStartDate = true;
                 isEndDate = false;
                 index++;
@@ -43,7 +42,7 @@ public class AddEventCommand extends Command {
                 index++;
                 continue;
             }
-            if(isEndDate) {
+            if (isEndDate) {
                 endDate += userInputArray[index];
                 endDate += " ";
             } else if (isStartDate) {
@@ -55,7 +54,7 @@ public class AddEventCommand extends Command {
             }
             index++;
         }
-        if(startDate.isEmpty() || taskDescription.isEmpty() || endDate.isEmpty()){
+        if (startDate.isEmpty() || taskDescription.isEmpty() || endDate.isEmpty()) {
             throw new IllegalArgumentException("Please provide the correct arguments for Event!");
         }
 
@@ -76,6 +75,5 @@ public class AddEventCommand extends Command {
         this.startDate = startTemporal;
         this.endDate = endTemporal;
         this.taskDescription = taskDescription;
-
     }
 }

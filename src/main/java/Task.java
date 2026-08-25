@@ -6,15 +6,15 @@ public class Task implements Serializable {
 
     Task(String taskDescription) {
         this.taskDescription = taskDescription.trim();
-        this.isDone = false;
+        isDone = false;
     }
 
     public void setIsDone(Boolean isDone) {
-        this.isDone = isDone;
+        isDone = isDone;
     }
 
     @Override
     public String toString() {
-        return String.format("[%s] %s", this.isDone ? "X" : " ", this.taskDescription);
+        return String.format("[%s] %s", isDone ? "X" : " ", taskDescription);
     }
 }

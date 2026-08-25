@@ -6,8 +6,8 @@ public class MarkCommand extends Command {
     }
 
     public void execute(TaskList taskList, Ui ui, Storage storage) {
-        try{
-            Task task = taskList.get(this.index);
+        try {
+            Task task = taskList.get(index);
             task.setIsDone(true);
             ui.printMessage(String.format("\tCongrats on completing the following task:\n\t %s", task));
         } catch (IndexOutOfBoundsException e) {
@@ -22,7 +22,7 @@ public class MarkCommand extends Command {
 
     private void parseParams(String[] userInputArray) {
         try {
-            this.index = Integer.parseInt(userInputArray[1]) - 1;
+            index = Integer.parseInt(userInputArray[1]) - 1;
         } catch (NumberFormatException e) {
             throw new NumberFormatException("Please insert a valid index :(");
         }

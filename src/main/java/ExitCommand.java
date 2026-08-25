@@ -5,8 +5,6 @@ public class ExitCommand extends Command {
         ui.printMessage("\tBye. Hope to see you soon :(");
     }
 
-
-
     @Override
     public boolean isExit() {
         return true;

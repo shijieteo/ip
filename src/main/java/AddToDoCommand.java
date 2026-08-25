@@ -9,7 +9,7 @@ public class AddToDoCommand extends Command {
 
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) {
-        ToDo toDoTask = new ToDo(this.taskDescription);
+        ToDo toDoTask = new ToDo(taskDescription);
         taskList.add(toDoTask);
         try {
             storage.writeData(taskList);
@@ -20,14 +20,12 @@ public class AddToDoCommand extends Command {
                 "You now have %d tasks", toDoTask, taskList.size()));
     }
 
-
-    private void parseDescription(String[] userInputArray){
-        this.taskDescription = IntStream.range(1, userInputArray.length).boxed()
+    private void parseDescription(String[] userInputArray) {
+        taskDescription = IntStream.range(1, userInputArray.length).boxed()
                 .map(x -> userInputArray[x]).reduce("", (x,y) -> x + " " + y);
 
-        if(taskDescription.isEmpty()){
+        if (taskDescription.isEmpty()) {
             throw new IllegalArgumentException("Please provide the correct arguments for ToDo!");
         }
-
     }
 }

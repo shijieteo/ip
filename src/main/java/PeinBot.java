@@ -1,5 +1,5 @@
-import java.io.IOException;
 import java.io.InvalidClassException;
+import java.io.IOException;
 import java.time.format.DateTimeParseException;
 
 public class PeinBot {
@@ -10,21 +10,20 @@ public class PeinBot {
     private Parser parser;
 
     PeinBot() {
-        this.storage = new Storage();
-        this.taskList = new TaskList();
-        this.ui = new Ui();
-        this.parser = new Parser();
+        storage = new Storage();
+        taskList = new TaskList();
+        ui = new Ui();
+        parser = new Parser();
     }
 
-
     public void run() {
-        this.ui.printBanner();
+        ui.printBanner();
         boolean isExit = false;
-        while(true) {
+        while (true) {
             try {
-                this.taskList = storage.loadData();
+                taskList = storage.loadData();
                 break;
-            } catch(InvalidClassException invalidClassException){
+            } catch (InvalidClassException invalidClassException) {
                 storage.resetData();
                 continue;
             } catch (ClassNotFoundException | IOException e) {
@@ -33,13 +32,12 @@ public class PeinBot {
             }
         }
 
-
         while (!isExit) {
             String userInput = ui.readInput();
             try {
-                Command userCommand = this.parser.processInput(userInput);
+                Command userCommand = parser.processInput(userInput);
                 isExit = userCommand.isExit();
-                userCommand.execute(this.taskList, this.ui, this.storage);
+                userCommand.execute(taskList, ui, storage);
             } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
                 ui.printMessage("\tPlease enter a valid index....");
             } catch (DateTimeParseException dateTimeParseException) {
@@ -52,7 +50,6 @@ public class PeinBot {
         }
     }
 
-
     public static void main(String[] args) {
         PeinBot peinBot = new PeinBot();
         peinBot.run();
@@ -61,7 +58,7 @@ public class PeinBot {
     private boolean storageIssueHandler() {
         String userAnswer = "";
         do {
-            this.ui.printMessage("\tThere was an issue with data storage... continue? [Y/N]: ");
+            ui.printMessage("\tThere was an issue with data storage... continue? [Y/N]: ");
             userAnswer = ui.readInput();
             if (userAnswer.equals("N")) {
                 return true;
@@ -70,8 +67,8 @@ public class PeinBot {
         return false;
     }
 
-    private void loadData() throws ClassNotFoundException, IOException{
-        this.taskList = storage.loadData();
+    private void loadData() throws ClassNotFoundException, IOException {
+        taskList = storage.loadData();
     }
 }
 
