@@ -11,7 +11,15 @@ public class AddDeadlineCommand extends Command {
 
     @Override
     public void execute(ArrayList<Task> taskList, Ui ui, Storage storage) {
-
+        Deadline deadlineTask = new Deadline(this.taskDescription, this.dueDate);
+        taskList.add(deadlineTask);
+        try {
+            storage.writeData(taskList);
+        } catch (java.io.IOException e) {
+            throw new RuntimeException(e);
+        }
+        ui.printMessage(String.format("\tadded: %s to your list of tasks\n\t" +
+                "You now have %d tasks", deadlineTask, taskList.size()));
     }
 
 

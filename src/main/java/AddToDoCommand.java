@@ -14,15 +14,15 @@ public class AddToDoCommand extends Command {
 
     @Override
     public void execute(ArrayList<Task> taskList, Ui ui, Storage storage) {
-        Task task = new ToDo(this.taskDescription);
-        taskList.add(task);
+        ToDo toDoTask = new ToDo(this.taskDescription);
+        taskList.add(toDoTask);
         try {
-            storage.writeData(task);
+            storage.writeData(taskList);
         } catch (java.io.IOException e) {
             throw new RuntimeException(e);
         }
         ui.printMessage(String.format("\tadded: %s to your list of tasks\n\t" +
-                "You now have %d tasks", task, taskList.size()));
+                "You now have %d tasks", toDoTask, taskList.size()));
     }
 
 

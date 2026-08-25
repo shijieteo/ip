@@ -10,7 +10,15 @@ public class AddEventCommand extends Command {
     }
 
     public void execute(ArrayList<Task> taskList, Ui ui, Storage storage) {
-
+        Event eventTask = new Event(this.taskDescription, this.startDate, this.endDate);
+        taskList.add(eventTask);
+        try {
+            storage.writeData(taskList);
+        } catch (java.io.IOException e) {
+            throw new RuntimeException(e);
+        }
+        ui.printMessage(String.format("\tadded: %s to your list of tasks\n\t" +
+                "You now have %d tasks", eventTask, taskList.size()));
     }
 
 

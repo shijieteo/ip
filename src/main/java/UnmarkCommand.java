@@ -9,8 +9,16 @@ public class UnmarkCommand extends Command {
 
     public void execute(ArrayList<Task> taskList, Ui ui, Storage storage) {
         try{
-            taskList.get(this.index).setIsDone(false);
+            Task task = taskList.get(this.index);
+            task.setIsDone(false);
+            ui.printMessage(String.format("\tThe following task was marked as not done:\n\t %s", task));
+
         } catch (IndexOutOfBoundsException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            storage.writeData(taskList);
+        } catch (java.io.IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -19,7 +27,7 @@ public class UnmarkCommand extends Command {
         try {
             this.index = Integer.parseInt(userInputArray[1]) - 1;
         } catch (NumberFormatException e) {
-            throw new RuntimeException(e);
+            throw new NumberFormatException("Please enter a valid index :(");
         }
     }
 }
