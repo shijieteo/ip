@@ -1,16 +1,22 @@
-public class UnmarkCommand extends Command {
+package peinbot.command;
+
+import peinbot.storage.Storage;
+import peinbot.task.Task;
+import peinbot.task.TaskList;
+import peinbot.ui.Ui;
+
+public class MarkCommand extends Command {
     private int index;
 
-    UnmarkCommand(String[] userInput) {
+    public MarkCommand(String[] userInput) {
         parseParams(userInput);
     }
 
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         try {
-            Task task = taskList.get(index);
-            task.setIsDone(false);
-            ui.printMessage(String.format("\tThe following task was marked as not done:\n\t %s", task));
-
+            Task markedTask = taskList.get(index);
+            markedTask.setIsDone(true);
+            ui.printMessage(String.format("\tCongrats on completing the following task:\n\t %s", markedTask));
         } catch (IndexOutOfBoundsException e) {
             throw new RuntimeException(e);
         }
@@ -25,7 +31,7 @@ public class UnmarkCommand extends Command {
         try {
             index = Integer.parseInt(userInputArray[1]) - 1;
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("Please enter a valid index :(");
+            throw new NumberFormatException("Please insert a valid index :(");
         }
     }
 }

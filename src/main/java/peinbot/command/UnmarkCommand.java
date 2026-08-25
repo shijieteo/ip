@@ -1,13 +1,24 @@
-public class DeleteCommand extends Command {
+package peinbot.command;
+
+import peinbot.storage.Storage;
+import peinbot.task.Task;
+import peinbot.task.TaskList;
+import peinbot.ui.Ui;
+
+public class UnmarkCommand extends Command {
     private int index;
 
-    DeleteCommand(String[] userInput) {
+    public UnmarkCommand(String[] userInput) {
         parseParams(userInput);
     }
 
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         try {
-            taskList.remove(index);
+            Task unmarkedTask = taskList.get(index);
+            unmarkedTask.setIsDone(false);
+
+            ui.printMessage(String.format("\tThe following task was marked as not done:\n\t %s", unmarkedTask));
+
         } catch (IndexOutOfBoundsException e) {
             throw new RuntimeException(e);
         }
@@ -22,7 +33,7 @@ public class DeleteCommand extends Command {
         try {
             index = Integer.parseInt(userInputArray[1]) - 1;
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("Please enter a valid index :( ");
+            throw new NumberFormatException("Please enter a valid index :(");
         }
     }
 }

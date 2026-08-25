@@ -1,15 +1,22 @@
-public class MarkCommand extends Command {
+package peinbot.command;
+
+import peinbot.storage.Storage;
+import peinbot.task.TaskList;
+import peinbot.task.Task;
+import peinbot.ui.Ui;
+
+public class DeleteCommand extends Command {
     private int index;
 
-    MarkCommand(String[] userInput) {
+    public DeleteCommand(String[] userInput) {
         parseParams(userInput);
     }
 
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         try {
-            Task task = taskList.get(index);
-            task.setIsDone(true);
-            ui.printMessage(String.format("\tCongrats on completing the following task:\n\t %s", task));
+            Task removedTask = taskList.remove(index);
+            ui.printMessage(String.format("\tThe following task was removed:\n\t %s", removedTask));
+
         } catch (IndexOutOfBoundsException e) {
             throw new RuntimeException(e);
         }
@@ -24,7 +31,7 @@ public class MarkCommand extends Command {
         try {
             index = Integer.parseInt(userInputArray[1]) - 1;
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("Please insert a valid index :(");
+            throw new NumberFormatException("Please enter a valid index :( ");
         }
     }
 }

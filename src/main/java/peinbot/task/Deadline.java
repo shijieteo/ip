@@ -1,9 +1,11 @@
+package peinbot.task;
+
 import java.time.temporal.Temporal;
 
 public class Deadline extends Task {
     private Temporal dueDate;
 
-    Deadline(String taskDescription, Temporal dueDate) {
+    public Deadline(String taskDescription, Temporal dueDate) {
         super(taskDescription);
         this.dueDate = dueDate;
     }

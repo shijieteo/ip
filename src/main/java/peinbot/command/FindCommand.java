@@ -1,9 +1,15 @@
+package peinbot.command;
+
 import java.util.stream.IntStream;
+
+import peinbot.storage.Storage;
+import peinbot.task.TaskList;
+import peinbot.ui.Ui;
 
 public class FindCommand extends Command {
     private String searchPattern;
 
-    FindCommand(String[] userInput) {
+    public FindCommand(String[] userInput) {
         parseParams(userInput);
     }
 

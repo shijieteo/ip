@@ -1,14 +1,16 @@
+package peinbot.task;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.IntStream;
 
 public class TaskList extends ArrayList<Task> {
 
-    TaskList() {
+    public TaskList() {
         super();
     }
 
-    TaskList(Collection<Task> collection) {
+    public TaskList(Collection<Task> collection) {
         super(collection);
     }
 
