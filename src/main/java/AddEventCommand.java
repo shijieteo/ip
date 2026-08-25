@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class AddEventCommand extends Command {
     private String startDate;
     private String taskDescription;
@@ -9,7 +7,7 @@ public class AddEventCommand extends Command {
         parseParams(userInput);
     }
 
-    public void execute(ArrayList<Task> taskList, Ui ui, Storage storage) {
+    public void execute(TaskList taskList, Ui ui, Storage storage) {
         Event eventTask = new Event(this.taskDescription, this.startDate, this.endDate);
         taskList.add(eventTask);
         try {
@@ -54,5 +52,11 @@ public class AddEventCommand extends Command {
             }
             index++;
         }
+        if(startDate.isEmpty() || taskDescription.isEmpty() || endDate.isEmpty()){
+            throw new IllegalArgumentException("Please provide the correct arguments for Event!");
+        }
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.taskDescription = taskDescription;
     }
 }

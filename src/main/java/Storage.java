@@ -1,15 +1,13 @@
 import java.io.*;
 
-import java.util.ArrayList;
-
 public class Storage {
     private static final String FILE_LOCATION = "data/Tasks.ser";
     private static final String DIRECTORY_NAME = "data";
 
     Storage() {}
 
-    public ArrayList<Task> loadData() throws ClassNotFoundException, IOException {
-        ArrayList<Task> loadedTasks = new ArrayList<Task>();
+    public TaskList loadData() throws ClassNotFoundException, IOException {
+        TaskList loadedTasks = new TaskList();
         try (FileInputStream fileInputStream = new FileInputStream(FILE_LOCATION);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)){
             loadedTasks = readFile(objectInputStream);
@@ -22,7 +20,7 @@ public class Storage {
         return loadedTasks;
     }
 
-    public void writeData(ArrayList<Task> taskList) throws IOException {
+    public void writeData(TaskList taskList) throws IOException {
         try (FileOutputStream fileOutputStream = new FileOutputStream(FILE_LOCATION);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
             objectOutputStream.writeObject(taskList);
@@ -47,9 +45,9 @@ public class Storage {
         }
     }
 
-    private ArrayList<Task> readFile (ObjectInputStream objectInputStream)
+    private TaskList readFile (ObjectInputStream objectInputStream)
             throws ClassNotFoundException, IOException {
-        ArrayList<Task> taskList = (ArrayList<Task>) objectInputStream.readObject();
+        TaskList taskList = (TaskList) objectInputStream.readObject();
         return taskList;
     }
 

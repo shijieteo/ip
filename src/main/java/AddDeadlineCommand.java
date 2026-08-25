@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class AddDeadlineCommand extends Command {
     private String dueDate;
     private String taskDescription;
@@ -10,7 +8,7 @@ public class AddDeadlineCommand extends Command {
     }
 
     @Override
-    public void execute(ArrayList<Task> taskList, Ui ui, Storage storage) {
+    public void execute(TaskList taskList, Ui ui, Storage storage) {
         Deadline deadlineTask = new Deadline(this.taskDescription, this.dueDate);
         taskList.add(deadlineTask);
         try {

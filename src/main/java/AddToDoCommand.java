@@ -1,10 +1,5 @@
-import java.util.ArrayList;
 import java.util.stream.IntStream;
 
-/**
- * Example of a stateful command: it holds the data parsed from the user input
- * (the task description), which the enum approach could not do cleanly.
- */
 public class AddToDoCommand extends Command {
     private String taskDescription;
 
@@ -13,7 +8,7 @@ public class AddToDoCommand extends Command {
     }
 
     @Override
-    public void execute(ArrayList<Task> taskList, Ui ui, Storage storage) {
+    public void execute(TaskList taskList, Ui ui, Storage storage) {
         ToDo toDoTask = new ToDo(this.taskDescription);
         taskList.add(toDoTask);
         try {
