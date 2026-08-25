@@ -66,7 +66,7 @@ public class AddEventCommand extends Command {
 
         DateParser dateParser = new DateParser();
         Optional<Temporal> startDateOptional = dateParser.parseDate(startDate);
-        Optional<Temporal> startDateTimeOptional = dateParser.parseDateTime(endDate);
+        Optional<Temporal> startDateTimeOptional = dateParser.parseDateTime(startDate);
         Temporal startTemporal = startDateOptional.or(() -> startDateTimeOptional)
                 .orElseThrow(() -> new IllegalArgumentException("Please enter a start valid date/datetime!"));
 
