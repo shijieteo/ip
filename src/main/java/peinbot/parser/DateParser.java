@@ -1,5 +1,6 @@
-import java.time.LocalDate;
+package peinbot.parser;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -11,7 +12,7 @@ public class DateParser {
     private List<String> dateFormatList;
     private List<String> dateTimeFormatList;
 
-    DateParser() {
+    public DateParser() {
         dateFormatList = List.<String>of("dd-MM-yyyy", "dd/MM/yyyy", "yyyy-MM-dd", "yyyy/MM/dd");
         dateTimeFormatList = List.<String>of("dd-MM-yyyy HH:mm:ss", "dd/MM/yyyy HH:mm:ss",
                 "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss");
