@@ -27,8 +27,8 @@ public class AddDeadlineCommand extends Command {
         } catch (java.io.IOException e) {
             throw new RuntimeException(e);
         }
-        ui.printMessage(String.format("\tadded: %s to your list of tasks\n\t" +
-                "You now have %d tasks", deadlineTask, taskList.size()));
+        ui.printMessage(String.format("\tadded: %s to your list of tasks\n\t"
+                + "You now have %d tasks", deadlineTask, taskList.size()));
     }
 
     private void parseParams(String[] userInputArray) {
@@ -46,8 +46,7 @@ public class AddDeadlineCommand extends Command {
             if (isDueDate) {
                 dueDate += userInputArray[index];
                 dueDate += " ";
-            }
-            else {
+            } else {
                 taskDescription += userInputArray[index];
                 taskDescription += " ";
             }

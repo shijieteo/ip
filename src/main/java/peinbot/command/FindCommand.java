@@ -21,6 +21,6 @@ public class FindCommand extends Command {
 
     private void parseParams(String[] userInputArray) {
         this.searchPattern = IntStream.range(1, userInputArray.length).boxed()
-                .map(x -> userInputArray[x]).reduce("", (x,y) -> x + y + " ").trim();
+                .map(x -> userInputArray[x]).reduce("", (x, y) -> x + y + " ").trim();
     }
 }

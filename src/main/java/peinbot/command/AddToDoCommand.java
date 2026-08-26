@@ -23,13 +23,13 @@ public class AddToDoCommand extends Command {
         } catch (java.io.IOException e) {
             throw new RuntimeException(e);
         }
-        ui.printMessage(String.format("\tadded: %s to your list of tasks\n\t" +
-                "You now have %d tasks", toDoTask, taskList.size()));
+        ui.printMessage(String.format("\tadded: %s to your list of tasks\n\t"
+                + "You now have %d tasks", toDoTask, taskList.size()));
     }
 
     private void parseDescription(String[] userInputArray) {
         taskDescription = IntStream.range(1, userInputArray.length).boxed()
-                .map(x -> userInputArray[x]).reduce("", (x,y) -> x + " " + y);
+                .map(x -> userInputArray[x]).reduce("", (x, y) -> x + " " + y);
 
         if (taskDescription.isEmpty()) {
             throw new IllegalArgumentException("Please provide the correct arguments for ToDo!");
