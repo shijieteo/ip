@@ -1,8 +1,8 @@
 package peinbot.command;
 
 import peinbot.storage.Storage;
-import peinbot.task.TaskList;
 import peinbot.task.Task;
+import peinbot.task.TaskList;
 import peinbot.ui.Ui;
 
 public class DeleteCommand extends Command {
