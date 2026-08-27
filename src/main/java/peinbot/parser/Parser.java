@@ -15,9 +15,16 @@ import peinbot.command.ListCommand;
 import peinbot.command.MarkCommand;
 import peinbot.command.UnmarkCommand;
 
+/**
+ * Parses user input strings to identify the command the user would like to execute
+ */
 public class Parser {
     private final HashMap<String, Function<String[], Command>> commandMap = new HashMap<>();
 
+    /**
+     * Constructs a Parser object
+     * Initializes <code>commandMap</code> to contain the various mappings of user input to command
+     */
     public Parser() {
         commandMap.put("todo", x -> new AddToDoCommand(x));
         commandMap.put("deadline", x -> new AddDeadlineCommand(x));
@@ -30,6 +37,12 @@ public class Parser {
         commandMap.put("delete", x -> new DeleteCommand(x));
     }
 
+    /**
+     * Returns {@link Command} representing the user input
+     *
+     * @param userInput string representing command to execute and parameters if any
+     * @throws IllegalArgumentException if user specifies an unsupported command
+     */
     public Command processInput(String userInput) {
         String[] userInputArray = userInput.split(" ");
         String commandString = userInputArray[0];

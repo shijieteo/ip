@@ -11,14 +11,27 @@ import java.io.ObjectOutputStream;
 
 import peinbot.task.TaskList;
 
-
-
+/**
+ * Handles all read-write operations for persistency in changes made
+ * Uses <code>data/Tasks.ser</code> as system file for read-write operations
+ */
 public class Storage {
     private static final String FILE_LOCATION = "data/Tasks.ser";
     private static final String DIRECTORY_NAME = "data";
 
+    /**
+     * Constructs a storage object
+     */
     public Storage() {}
 
+    /**
+     * Creates FileInputStream and ObjectInputStream objects required to read from data file
+     *
+     * @return List of task objects from data file on the system
+     * @throws ClassNotFoundException if {@link peinbot.task.Task} subclasses or {@link peinbot.task.TaskList}
+     *                  could not be found on the classpath
+     * @throws IOException if an I/O error was encountered while opening the data file
+     */
     public TaskList loadData() throws ClassNotFoundException, IOException {
         TaskList loadedTasks = new TaskList();
         try (FileInputStream fileInputStream = new FileInputStream(FILE_LOCATION);
@@ -32,12 +45,21 @@ public class Storage {
         return loadedTasks;
     }
 
+    /**
+     * Deletes the data file and creates a new data file
+     */
     public void resetData() {
         File dataFile = new File(FILE_LOCATION);
         dataFile.delete();
         createDataFile();
     }
 
+    /**
+     * Creates FileOutputStream and ObjectOutputStream objects required to write to data file
+     *
+     * @param taskList TaskList object to be written to the data file
+     * @throws IOException if an I/O error was encountered while writing to the data file
+     */
     public void writeData(TaskList taskList) throws IOException {
         try (FileOutputStream fileOutputStream = new FileOutputStream(FILE_LOCATION);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
@@ -49,6 +71,10 @@ public class Storage {
         }
     }
 
+    /**
+     * Creates data file at {@link #FILE_LOCATION}
+     * Creates data directory if it does not already exist
+     */
     private void createDataFile() {
         File dataFile = new File(FILE_LOCATION);
         File directory = new File(DIRECTORY_NAME);
