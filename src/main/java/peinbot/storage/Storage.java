@@ -23,8 +23,7 @@ public class Storage {
         TaskList loadedTasks = new TaskList();
         try (FileInputStream fileInputStream = new FileInputStream(FILE_LOCATION);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-            loadedTasks = readFile(objectInputStream);
-
+            loadedTasks = (TaskList) objectInputStream.readObject();
         } catch (FileNotFoundException fileNotFoundException) {
             createDataFile();
         } catch (EOFException exception) {
@@ -63,11 +62,4 @@ public class Storage {
             throw new RuntimeException(e);
         }
     }
-
-    private TaskList readFile(ObjectInputStream objectInputStream)
-            throws ClassNotFoundException, IOException {
-        TaskList taskList = (TaskList) objectInputStream.readObject();
-        return taskList;
-    }
-
 }
