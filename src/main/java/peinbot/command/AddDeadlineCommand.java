@@ -10,14 +10,32 @@ import peinbot.task.TaskList;
 import peinbot.ui.Ui;
 
 
+
+/**
+ * Represents the deadline command within <code>PeinBot</code>.
+ * Contains the values required to create a <code>Deadline</code> task
+ */
 public class AddDeadlineCommand extends Command {
     private Temporal dueDate;
     private String taskDescription;
 
+
+    /**
+     * Constructs a new AddDeadlineCommand using inputs provided by a user
+      * @param userInput array containing user inputs required to create a <code>Deadline</code> object
+     */
     public AddDeadlineCommand(String[] userInput) {
         parseParams(userInput);
     }
 
+    /**
+     * Creates a <code>Deadline</code> object based off user-provided
+     * values and adds to an existing <code>TaskList</code>
+     * Updates user on current state of tasklist
+     * @param taskList tasklist containing currently active tasks created by user
+     * @param ui interface used to inform user of current state of <code>TaskList</code>
+     * @param storage interface to write newly-created <code>Deadline</code> object to storage
+     */
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         Deadline deadlineTask = new Deadline(taskDescription, dueDate);
@@ -31,6 +49,10 @@ public class AddDeadlineCommand extends Command {
                 + "You now have %d tasks", deadlineTask, taskList.size()));
     }
 
+    /**
+     * Extracts <code>taskDescription</code> and <code>dueDate</code> from the array of user inputs
+     * @param userInputArray array containing user inputs required to create a <code>Deadline</code> object
+     */
     private void parseParams(String[] userInputArray) {
         String dueDate = "";
         String taskDescription = "";
