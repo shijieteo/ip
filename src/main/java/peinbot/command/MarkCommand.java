@@ -1,15 +1,22 @@
+package peinbot.command;
+
+import peinbot.storage.Storage;
+import peinbot.task.Task;
+import peinbot.task.TaskList;
+import peinbot.ui.Ui;
+
 public class MarkCommand extends Command {
     private int index;
 
-    MarkCommand(String[] userInput) {
+    public MarkCommand(String[] userInput) {
         parseParams(userInput);
     }
 
     public void execute(TaskList taskList, Ui ui, Storage storage) {
-        try{
-            Task task = taskList.get(this.index);
-            task.setIsDone(true);
-            ui.printMessage(String.format("\tCongrats on completing the following task:\n\t %s", task));
+        try {
+            Task markedTask = taskList.get(index);
+            markedTask.setIsDone(true);
+            ui.printMessage(String.format("\tCongrats on completing the following task:\n\t %s", markedTask));
         } catch (IndexOutOfBoundsException e) {
             throw new RuntimeException(e);
         }
@@ -22,7 +29,7 @@ public class MarkCommand extends Command {
 
     private void parseParams(String[] userInputArray) {
         try {
-            this.index = Integer.parseInt(userInputArray[1]) - 1;
+            index = Integer.parseInt(userInputArray[1]) - 1;
         } catch (NumberFormatException e) {
             throw new NumberFormatException("Please insert a valid index :(");
         }

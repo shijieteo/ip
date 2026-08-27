@@ -1,7 +1,13 @@
+package peinbot.ui;
+
 import java.util.Scanner;
+
+import peinbot.task.TaskList;
 
 public class Ui {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
+
+    public Ui() {}
 
     public void listTasks(TaskList taskList) {
         printMessage(taskList.toString());

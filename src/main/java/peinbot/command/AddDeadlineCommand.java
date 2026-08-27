@@ -1,52 +1,58 @@
+package peinbot.command;
+
 import java.time.temporal.Temporal;
 import java.util.Optional;
+
+import peinbot.parser.DateParser;
+import peinbot.storage.Storage;
+import peinbot.task.Deadline;
+import peinbot.task.TaskList;
+import peinbot.ui.Ui;
+
 
 public class AddDeadlineCommand extends Command {
     private Temporal dueDate;
     private String taskDescription;
 
-
-    AddDeadlineCommand(String[] userInput) {
+    public AddDeadlineCommand(String[] userInput) {
         parseParams(userInput);
     }
 
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) {
-        Deadline deadlineTask = new Deadline(this.taskDescription, this.dueDate);
+        Deadline deadlineTask = new Deadline(taskDescription, dueDate);
         taskList.add(deadlineTask);
         try {
             storage.writeData(taskList);
         } catch (java.io.IOException e) {
             throw new RuntimeException(e);
         }
-        ui.printMessage(String.format("\tadded: %s to your list of tasks\n\t" +
-                "You now have %d tasks", deadlineTask, taskList.size()));
+        ui.printMessage(String.format("\tadded: %s to your list of tasks\n\t"
+                + "You now have %d tasks", deadlineTask, taskList.size()));
     }
-
 
     private void parseParams(String[] userInputArray) {
         String dueDate = "";
         String taskDescription = "";
         boolean isDueDate = false;
         int index = 1;
-        while(index < userInputArray.length) {
-            if(userInputArray[index].equals("/by")) {
+        while (index < userInputArray.length) {
+            if (userInputArray[index].equals("/by")) {
                 isDueDate = true;
                 index++;
                 continue;
             }
 
-            if(isDueDate) {
+            if (isDueDate) {
                 dueDate += userInputArray[index];
                 dueDate += " ";
-            }
-            else {
+            } else {
                 taskDescription += userInputArray[index];
                 taskDescription += " ";
             }
             index++;
         }
-        if(dueDate.isEmpty() || taskDescription.isEmpty()){
+        if (dueDate.isEmpty() || taskDescription.isEmpty()) {
             throw new IllegalArgumentException("Please provide the correct arguments for Deadline!");
         }
 
@@ -60,7 +66,5 @@ public class AddDeadlineCommand extends Command {
 
         this.dueDate = startTemporal;
         this.taskDescription = taskDescription;
-
-
     }
 }

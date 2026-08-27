@@ -1,6 +1,6 @@
-import javax.swing.text.html.Option;
-import java.time.LocalDate;
+package peinbot.parser;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -12,16 +12,16 @@ public class DateParser {
     private List<String> dateFormatList;
     private List<String> dateTimeFormatList;
 
-    DateParser() {
-        this.dateFormatList = List.<String>of("dd-MM-yyyy", "dd/MM/yyyy", "yyyy-MM-dd", "yyyy/MM/dd");
-        this.dateTimeFormatList = List.<String>of("dd-MM-yyyy HH:mm:ss", "dd/MM/yyyy HH:mm:ss",
+    public DateParser() {
+        dateFormatList = List.<String>of("dd-MM-yyyy", "dd/MM/yyyy", "yyyy-MM-dd", "yyyy/MM/dd");
+        dateTimeFormatList = List.<String>of("dd-MM-yyyy HH:mm:ss", "dd/MM/yyyy HH:mm:ss",
                 "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss");
     }
 
     public Optional<Temporal> parseDate(String userInput) {
-        for(String format : dateFormatList){
+        for (String format : dateFormatList) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-            try{
+            try {
                 LocalDate date = LocalDate.parse(userInput, formatter);
                 return Optional.of(date);
             } catch (DateTimeParseException e) {
@@ -32,9 +32,9 @@ public class DateParser {
     }
 
     public Optional<Temporal> parseDateTime(String userInput) {
-        for(String format : dateTimeFormatList){
+        for (String format : dateTimeFormatList) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-            try{
+            try {
                 LocalDateTime date = LocalDateTime.parse(userInput, formatter);
                 return Optional.<Temporal>of(date);
             } catch (DateTimeParseException e) {

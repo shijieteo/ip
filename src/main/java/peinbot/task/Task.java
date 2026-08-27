@@ -1,12 +1,14 @@
+package peinbot.task;
+
 import java.io.Serializable;
 
 public class Task implements Serializable {
     private String taskDescription;
     private Boolean isDone;
 
-    Task(String taskDescription) {
+    public Task(String taskDescription) {
         this.taskDescription = taskDescription.trim();
-        this.isDone = false;
+        isDone = false;
     }
 
     public void setIsDone(Boolean isDone) {
@@ -15,6 +17,6 @@ public class Task implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("[%s] %s", this.isDone ? "X" : " ", this.taskDescription);
+        return String.format("[%s] %s", isDone ? "X" : " ", taskDescription);
     }
 }
