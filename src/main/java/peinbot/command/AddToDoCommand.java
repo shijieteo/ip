@@ -7,13 +7,32 @@ import peinbot.task.TaskList;
 import peinbot.task.ToDo;
 import peinbot.ui.Ui;
 
+/**
+ * Represents the todo command within <code>PeinBot</code>
+ * Contains the values required to create a ToDo object
+ */
 public class AddToDoCommand extends Command {
     private String taskDescription;
 
+    /**
+     * Constructs a new AddToDoCommand using inputs provided by a user
+     *
+     * @param userInput array containing user inputs required to create a ToDo object
+     */
     public AddToDoCommand(String[] userInput) {
         parseDescription(userInput);
     }
 
+    /**
+     * Creates a ToDo object based off user-provided
+     * values and adds to an existing task list
+     * Updates user on current state of the task list
+     *
+     * @param taskList list containing tasks created previously by the user
+     * @param ui interface used to display output to the user
+     * @param storage storage handler used to persist changes made by the command
+     * @throws RuntimeException if an issue was encountered while attempting to write to storage
+     */
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         ToDo toDoTask = new ToDo(taskDescription);
@@ -27,6 +46,12 @@ public class AddToDoCommand extends Command {
                 + "You now have %d tasks", toDoTask, taskList.size()));
     }
 
+    /**
+     * Reassembles user input that was previously split to form task description for ToDo object
+     *
+     * @param userInputArray array containing user inputs required to create a ToDo object
+     * @throws IllegalArgumentException if taskDescription is empty
+     */
     private void parseDescription(String[] userInputArray) {
         taskDescription = IntStream.range(1, userInputArray.length).boxed()
                 .map(x -> userInputArray[x]).reduce("", (x, y) -> x + " " + y);

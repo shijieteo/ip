@@ -9,11 +9,9 @@ import peinbot.task.Deadline;
 import peinbot.task.TaskList;
 import peinbot.ui.Ui;
 
-
-
 /**
- * Represents the deadline command within <code>PeinBot</code>.
- * Contains the values required to create a <code>Deadline</code> task
+ * Represents the deadline command within <code>PeinBot</code>
+ * Contains the values required to create a Deadline object
  */
 public class AddDeadlineCommand extends Command {
     private Temporal dueDate;
@@ -22,19 +20,22 @@ public class AddDeadlineCommand extends Command {
 
     /**
      * Constructs a new AddDeadlineCommand using inputs provided by a user
-      * @param userInput array containing user inputs required to create a <code>Deadline</code> object
+     *
+     * @param userInput array containing user inputs required to create a Deadline object
      */
     public AddDeadlineCommand(String[] userInput) {
         parseParams(userInput);
     }
 
     /**
-     * Creates a <code>Deadline</code> object based off user-provided
-     * values and adds to an existing <code>TaskList</code>
-     * Updates user on current state of tasklist
-     * @param taskList tasklist containing currently active tasks created by user
-     * @param ui interface used to inform user of current state of <code>TaskList</code>
-     * @param storage interface to write newly-created <code>Deadline</code> object to storage
+     * Creates a Deadline object based off user-provided
+     * values and adds to an existing task list
+     * Updates user on current state of task list
+     *
+     * @param taskList list containing tasks created previously by the user
+     * @param ui interface used to display output to the user
+     * @param storage storage handler used to persist changes made by the command
+     * @throws RuntimeException if an issue was encountered while attempting to write to storage
      */
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) {
@@ -51,7 +52,10 @@ public class AddDeadlineCommand extends Command {
 
     /**
      * Extracts <code>taskDescription</code> and <code>dueDate</code> from the array of user inputs
-     * @param userInputArray array containing user inputs required to create a <code>Deadline</code> object
+     *
+     * @param userInputArray array containing user inputs required to create a Deadline object
+     * @throws IllegalArgumentException if dueDate or taskDescription is empty,
+     *              or if dueDate is not in a valid format
      */
     private void parseParams(String[] userInputArray) {
         String dueDate = "";
