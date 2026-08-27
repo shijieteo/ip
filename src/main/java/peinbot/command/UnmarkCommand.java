@@ -13,15 +13,10 @@ public class UnmarkCommand extends Command {
     }
 
     public void execute(TaskList taskList, Ui ui, Storage storage) {
-        try {
-            Task unmarkedTask = taskList.get(index);
-            unmarkedTask.setIsDone(false);
+        Task unmarkedTask = taskList.get(index);
+        unmarkedTask.setIsDone(false);
+        ui.printMessage(String.format("\tThe following task was marked as not done:\n\t %s", unmarkedTask));
 
-            ui.printMessage(String.format("\tThe following task was marked as not done:\n\t %s", unmarkedTask));
-
-        } catch (IndexOutOfBoundsException e) {
-            throw new RuntimeException(e);
-        }
         try {
             storage.writeData(taskList);
         } catch (java.io.IOException e) {
