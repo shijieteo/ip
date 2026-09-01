@@ -10,6 +10,14 @@ import javafx.scene.layout.VBox;
 import peinbot.PeinBot;
 import peinbot.ui.view.DialogBox;
 
+/**
+ * Controls user interactions within PeinBot's GUI
+ *
+ * <p>
+ *     Accepts user input, sending them to PeinBot for processing.<br>
+ *     Displays both user input and PeinBot's response
+ * </p>
+ */
 public class GuiMainWindow extends AnchorPane {
     @FXML
     private ScrollPane scrollPane;
@@ -44,6 +52,9 @@ public class GuiMainWindow extends AnchorPane {
         userInput.clear();
     }
 
+    /**
+     * Retrieves PeinBot's welcome message and displays message in a {@link DialogBox}
+     */
     public void printWelcomeMessage() {
         dialogContainer.getChildren().addAll(
                 DialogBox.getPeinBotDialog(peinBot.getWelcomeMessage(), peinImage)

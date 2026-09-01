@@ -10,7 +10,13 @@ import peinbot.storage.Storage;
 import peinbot.task.TaskList;
 import peinbot.ui.Ui;
 
-
+/**
+ * Coordinates command parsing, task management, storage, and user interaction
+ * for PeinBot.
+ *
+ * <p>Supports commands such as {@code todo}, {@code deadline}, {@code event},
+ * {@code list}, {@code find}, {@code mark}, {@code unmark}, and {@code delete}.
+ */
 public class PeinBot {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
     private Storage storage;
@@ -18,6 +24,11 @@ public class PeinBot {
     private Ui ui;
     private Parser parser;
 
+    /**
+     * Constructs a new instance of PeinBot
+     * @param isGuiPeinBot {@code true} if creating a GUI-based PeinBot;
+     *                     {@code false} otherwise.
+     */
     public PeinBot(boolean isGuiPeinBot) {
         storage = new Storage();
         taskList = new TaskList();
@@ -25,6 +36,12 @@ public class PeinBot {
         parser = new Parser();
     }
 
+    /**
+     * Starts an instance of {@code PeinBot}.<br>
+     * Intended for use with PeinBot running in CLI-mode.<br>
+     * PeinBot will attempt to load previously stored tasks, then start reading user commands. <br>
+     * Will continue running till user issues a <code>bye</code> command
+     */
     public void run() {
         ui.printBanner();
         boolean isExit = false;
@@ -84,6 +101,10 @@ public class PeinBot {
         return this.ui.getGuiWelcomeMessage();
     }
 
+    /**
+     * Loads tasks previously created by user into tasklist.
+     * Intended for use with PeinBot running in GUI mode
+     */
     public void initializeStorage() {
         while (true) {
             try {
@@ -98,6 +119,12 @@ public class PeinBot {
         }
     }
 
+    /**
+     * Runs the command entered by user, retrieves corresponding output
+     * Intended for use with PeinBot running in GUI mode
+     * @param userInput user input containing command to run and relevant parameters
+     * @return output corresponding to user's command
+     */
     public String getResponse(String userInput) {
         Command command = parser.processInput(userInput);
         command.execute(taskList, ui, storage);
