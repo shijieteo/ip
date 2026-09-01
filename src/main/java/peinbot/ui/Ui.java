@@ -60,4 +60,8 @@ public class Ui {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
     }
+
+    public String getGuiWelcomeMessage() {
+        return ("Hello! I'm PeinBot :) \n What can I do for you?");
+    }
 }
