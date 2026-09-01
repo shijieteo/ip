@@ -126,8 +126,18 @@ public class SquirtleBot {
      * @return output corresponding to user's command
      */
     public String getResponse(String userInput) {
-        Command command = parser.processInput(userInput);
-        command.execute(taskList, ui, storage);
+        try {
+            Command userCommand = parser.processInput(userInput);
+            userCommand.execute(taskList, ui, storage);
+        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+            ui.printMessage("\tPlease enter a valid index....");
+        } catch (DateTimeParseException dateTimeParseException) {
+            ui.printMessage("\tPlease enter a valid date....");
+        } catch (IllegalArgumentException illegalArgumentException) {
+            ui.printMessage("\t" + illegalArgumentException.getMessage());
+        } catch (RuntimeException runtimeException) {
+            ui.printMessage("There was an issue with storage..... :(");
+        }
         return ui.getSavedOutput();
     }
 }
