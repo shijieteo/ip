@@ -39,10 +39,15 @@ public class GuiMainWindow extends AnchorPane {
         String userInputText = userInput.getText();
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(userInputText, userImage),
-                DialogBox.getPeinBotDialog(peinBot.getResponse(userInputText), peinImage);
-        )
+                DialogBox.getPeinBotDialog(peinBot.getResponse(userInputText), peinImage)
+        );
         userInput.clear();
     }
 
+    public void printWelcomeMessage() {
+        dialogContainer.getChildren().addAll(
+                DialogBox.getPeinBotDialog(peinBot.getWelcomeMessage(), peinImage)
+        );
+    }
 
 }
