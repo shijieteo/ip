@@ -31,7 +31,7 @@ public class UnmarkCommand extends Command {
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         Task unmarkedTask = taskList.get(index);
         unmarkedTask.setIsDone(false);
-        ui.printMessage(String.format("\tThe following task was marked as not done:\n\t %s", unmarkedTask));
+        ui.setSavedMessage(String.format("\tThe following task was marked as not done:\n\t %s", unmarkedTask));
 
         try {
             storage.writeData(taskList);

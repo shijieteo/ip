@@ -65,14 +65,15 @@ public class SquirtleBot {
                 isExit = userCommand.isExit();
                 userCommand.execute(taskList, ui, storage);
             } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-                ui.printMessage("\tPlease enter a valid index....");
+                ui.setSavedMessage("\tPlease enter a valid index....");
             } catch (DateTimeParseException dateTimeParseException) {
-                ui.printMessage("\tPlease enter a valid date....");
+                ui.setSavedMessage("\tPlease enter a valid date....");
             } catch (IllegalArgumentException illegalArgumentException) {
-                ui.printMessage("\t" + illegalArgumentException.getMessage());
+                ui.setSavedMessage("\t" + illegalArgumentException.getMessage());
             } catch (RuntimeException runtimeException) {
                 isExit = storageIssueHandler();
             }
+            ui.printSavedMessage();
         }
     }
 
@@ -84,7 +85,7 @@ public class SquirtleBot {
     private boolean storageIssueHandler() {
         String userAnswer = "";
         do {
-            ui.printMessage("\tThere was an issue with data storage... continue? [Y/N]: ");
+            ui.setSavedMessage("\tThere was an issue with data storage... continue? [Y/N]: ");
             userAnswer = ui.readInput();
             if (userAnswer.equals("N")) {
                 return true;
@@ -130,15 +131,15 @@ public class SquirtleBot {
             Command userCommand = parser.processInput(userInput);
             userCommand.execute(taskList, ui, storage);
         } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-            ui.printMessage("\tPlease enter a valid index....");
+            ui.setSavedMessage("\tPlease enter a valid index....");
         } catch (DateTimeParseException dateTimeParseException) {
-            ui.printMessage("\tPlease enter a valid date....");
+            ui.setSavedMessage("\tPlease enter a valid date....");
         } catch (IllegalArgumentException illegalArgumentException) {
-            ui.printMessage("\t" + illegalArgumentException.getMessage());
+            ui.setSavedMessage("\t" + illegalArgumentException.getMessage());
         } catch (RuntimeException runtimeException) {
-            ui.printMessage("There was an issue with storage..... :(");
+            ui.setSavedMessage("There was an issue with storage..... :(");
         }
-        return ui.getSavedOutput();
+        return ui.getSavedMessage();
     }
 }
 

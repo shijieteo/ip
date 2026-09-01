@@ -42,7 +42,7 @@ public class AddToDoCommand extends Command {
         } catch (java.io.IOException e) {
             throw new RuntimeException(e);
         }
-        ui.printMessage(String.format("\tadded: %s to your list of tasks\n\t"
+        ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n\t"
                 + "You now have %d tasks", toDoTask, taskList.size()));
     }
 
