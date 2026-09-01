@@ -68,7 +68,7 @@ public class Ui {
     }
 
     public String getSavedOutput() {
-        return savedOutput;
+        return savedOutput.trim();
     }
 
     /**
@@ -81,6 +81,6 @@ public class Ui {
     }
 
     public String getGuiWelcomeMessage() {
-        return ("Hello! I'm SquirtleBot :) \n What can I do for you?");
+        return ("Hello! I'm SquirtleBot :) \nWhat can I do for you?");
     }
 }
