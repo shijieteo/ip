@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 import peinbot.PeinBot;
 import peinbot.ui.view.DialogBox;
 
-public class GuiWindow extends AnchorPane {
+public class GuiMainWindow extends AnchorPane {
     @FXML
     private ScrollPane scrollPane;
     @FXML
