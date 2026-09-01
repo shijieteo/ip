@@ -18,10 +18,10 @@ public class PeinBot {
     private Ui ui;
     private Parser parser;
 
-    PeinBot() {
+    public PeinBot(boolean isGuiPeinBot) {
         storage = new Storage();
         taskList = new TaskList();
-        ui = new Ui();
+        ui = isGuiPeinBot ? Ui.getGuiInstance() : Ui.getCliInstance();
         parser = new Parser();
     }
 
@@ -60,7 +60,7 @@ public class PeinBot {
     }
 
     public static void main(String[] args) {
-        PeinBot peinBot = new PeinBot();
+        PeinBot peinBot = new PeinBot(false);
         peinBot.run();
     }
 
@@ -78,6 +78,30 @@ public class PeinBot {
 
     private void loadData() throws ClassNotFoundException, IOException {
         taskList = storage.loadData();
+    }
+
+    public String getWelcomeMessage() {
+        return this.ui.getGuiWelcomeMessage();
+    }
+
+    public void initializeStorage() {
+        while (true) {
+            try {
+                taskList = storage.loadData();
+                break;
+            } catch (InvalidClassException invalidClassException) {
+                storage.resetData();
+                continue;
+            } catch (ClassNotFoundException | IOException e) {
+                break;
+            }
+        }
+    }
+
+    public String getResponse(String userInput) {
+        Command command = parser.processInput(userInput);
+        command.execute(taskList, ui, storage);
+        return ui.getSavedOutput();
     }
 }
 
