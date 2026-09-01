@@ -10,6 +10,10 @@ import javafx.stage.Stage;
 import peinbot.PeinBot;
 import peinbot.ui.controller.GuiMainWindow;
 
+/**
+ * Starts the GUI for PeinBot
+ * <p>Loads the GuiMainWindow layout, initializes PeinBot then sends instance of PeinBot to controller</p>
+ */
 public class GuiMain extends Application {
     private PeinBot peinBot = new PeinBot(true);
 

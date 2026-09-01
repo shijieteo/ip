@@ -4,6 +4,12 @@ import java.util.Scanner;
 
 import peinbot.task.TaskList;
 
+/**
+ * Handles user interaction such as reading input and printing messages when operating in {@code CLI} mode
+ * <p>
+ *     Helps to store messages to output when operating in {@code GUI} mode
+ * </p>
+ */
 public class Ui {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
     private boolean isGuiInstance;
@@ -26,6 +32,12 @@ public class Ui {
         printMessage(taskList.toString());
     }
 
+    /**
+     * Prints welcome banner for PeinBot
+     * <p>
+     *     Intended for use when operating in CLI-mode
+     * </p>
+     */
     public void printBanner() {
         String banner = "__________       .__      ___.           __   \n"
                 + "\\______   \\ ____ |__| ____\\_ |__   _____/  |_ \n"
@@ -41,6 +53,10 @@ public class Ui {
         System.out.println("\tWhat can I do for you? ");
     }
 
+    /**
+     * Prints output message between horizontal lines for formatting
+     * @param output message to display to user
+     */
     public void printMessage(String output) {
         if (!isGuiInstance) {
             System.out.println(Ui.HORIZONTAL_LINE);
@@ -55,6 +71,10 @@ public class Ui {
         return savedOutput;
     }
 
+    /**
+     * Creates a scanner and reads the next line of user input
+     * @return string containing user's input
+     */
     public String readInput() {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
