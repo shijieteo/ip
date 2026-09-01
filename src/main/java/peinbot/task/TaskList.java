@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.IntStream;
 
+/**
+ * Contains currently active tasks created by the user
+ */
 public class TaskList extends ArrayList<Task> {
 
     public TaskList() {
