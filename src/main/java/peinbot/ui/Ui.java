@@ -46,8 +46,7 @@ public class Ui {
             System.out.println(Ui.HORIZONTAL_LINE);
             System.out.println(output);
             System.out.println(Ui.HORIZONTAL_LINE);
-        }
-        else {
+        } else {
             savedOutput = output;
         }
     }
