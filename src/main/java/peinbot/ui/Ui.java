@@ -6,8 +6,21 @@ import peinbot.task.TaskList;
 
 public class Ui {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
+    private boolean isGuiInstance;
+    private String savedOutput;
 
-    public Ui() {}
+    private Ui(boolean isGuiInstance) {
+        this.isGuiInstance = isGuiInstance;
+        savedOutput = "";
+    }
+
+    public static Ui getGuiInstance() {
+        return new Ui(true);
+    }
+
+    public static Ui getCliInstance() {
+        return new Ui(false);
+    }
 
     public void listTasks(TaskList taskList) {
         printMessage(taskList.toString());
@@ -29,9 +42,18 @@ public class Ui {
     }
 
     public void printMessage(String output) {
-        System.out.println(Ui.HORIZONTAL_LINE);
-        System.out.println(output);
-        System.out.println(Ui.HORIZONTAL_LINE);
+        if (!isGuiInstance) {
+            System.out.println(Ui.HORIZONTAL_LINE);
+            System.out.println(output);
+            System.out.println(Ui.HORIZONTAL_LINE);
+        }
+        else {
+            savedOutput = output;
+        }
+    }
+
+    public String getSavedOutput() {
+        return savedOutput;
     }
 
     public String readInput() {
