@@ -44,7 +44,7 @@ public class SquirtleBot {
      */
     public void run() {
         ui.printBanner();
-        boolean isExit = false;
+        boolean shouldExit = false;
         while (true) {
             try {
                 taskList = storage.loadData();
@@ -53,26 +53,14 @@ public class SquirtleBot {
                 storage.resetData();
                 continue;
             } catch (ClassNotFoundException | IOException e) {
-                isExit = storageIssueHandler();
+                shouldExit = storageIssueHandler();
                 break;
             }
         }
 
-        while (!isExit) {
+        while (!shouldExit) {
             String userInput = ui.readInput();
-            try {
-                Command userCommand = parser.processInput(userInput);
-                isExit = userCommand.isExit();
-                userCommand.execute(taskList, ui, storage);
-            } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-                ui.setSavedMessage("\tPlease enter a valid index....");
-            } catch (DateTimeParseException dateTimeParseException) {
-                ui.setSavedMessage("\tPlease enter a valid date....");
-            } catch (IllegalArgumentException illegalArgumentException) {
-                ui.setSavedMessage("\t" + illegalArgumentException.getMessage());
-            } catch (RuntimeException runtimeException) {
-                isExit = storageIssueHandler();
-            }
+            shouldExit = runCommand(userInput);
             ui.printSavedMessage();
         }
     }
@@ -127,8 +115,12 @@ public class SquirtleBot {
      * @return output corresponding to user's command
      */
     public String getResponse(String userInput) {
+
+    private boolean runCommand(String userInput) {
+        boolean shouldExit = false;
         try {
             Command userCommand = parser.processInput(userInput);
+            shouldExit = userCommand.shouldExit();
             userCommand.execute(taskList, ui, storage);
         } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
             ui.setSavedMessage("\tPlease enter a valid index....");
@@ -139,7 +131,7 @@ public class SquirtleBot {
         } catch (RuntimeException runtimeException) {
             ui.setSavedMessage("There was an issue with storage..... :(");
         }
-        return ui.getSavedMessage();
+        return shouldExit;
     }
 }
 
