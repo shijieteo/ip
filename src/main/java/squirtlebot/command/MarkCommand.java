@@ -31,7 +31,7 @@ public class MarkCommand extends Command {
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         Task markedTask = taskList.get(index);
         markedTask.setIsDone(true);
-        ui.printMessage(String.format("\tCongrats on completing the following task:\n\t %s", markedTask));
+        ui.setSavedMessage(String.format("\tCongrats on completing the following task:\n\t %s", markedTask));
         try {
             storage.writeData(taskList);
         } catch (java.io.IOException e) {

@@ -27,7 +27,7 @@ public abstract class Command {
      *
      *  @return true if the issued command is to exit <code>SquirtleBot</code>; false otherwise
      */
-    public boolean isExit() {
+    public boolean shouldExit() {
         return false;
     }
 }

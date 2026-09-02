@@ -44,7 +44,7 @@ public class SquirtleBot {
      */
     public void run() {
         ui.printBanner();
-        boolean isExit = false;
+        boolean shouldExit = false;
         while (true) {
             try {
                 taskList = storage.loadData();
@@ -53,26 +53,15 @@ public class SquirtleBot {
                 storage.resetData();
                 continue;
             } catch (ClassNotFoundException | IOException e) {
-                isExit = storageIssueHandler();
+                shouldExit = storageIssueHandler();
                 break;
             }
         }
 
-        while (!isExit) {
+        while (!shouldExit) {
             String userInput = ui.readInput();
-            try {
-                Command userCommand = parser.processInput(userInput);
-                isExit = userCommand.isExit();
-                userCommand.execute(taskList, ui, storage);
-            } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-                ui.printMessage("\tPlease enter a valid index....");
-            } catch (DateTimeParseException dateTimeParseException) {
-                ui.printMessage("\tPlease enter a valid date....");
-            } catch (IllegalArgumentException illegalArgumentException) {
-                ui.printMessage("\t" + illegalArgumentException.getMessage());
-            } catch (RuntimeException runtimeException) {
-                isExit = storageIssueHandler();
-            }
+            shouldExit = runCommand(userInput);
+            ui.printSavedMessage();
         }
     }
 
@@ -84,7 +73,7 @@ public class SquirtleBot {
     private boolean storageIssueHandler() {
         String userAnswer = "";
         do {
-            ui.printMessage("\tThere was an issue with data storage... continue? [Y/N]: ");
+            ui.setSavedMessage("\tThere was an issue with data storage... continue? [Y/N]: ");
             userAnswer = ui.readInput();
             if (userAnswer.equals("N")) {
                 return true;
@@ -125,10 +114,27 @@ public class SquirtleBot {
      * @param userInput user input containing command to run and relevant parameters
      * @return output corresponding to user's command
      */
-    public String getResponse(String userInput) {
-        Command command = parser.processInput(userInput);
-        command.execute(taskList, ui, storage);
-        return ui.getSavedOutput();
+    public CommandResult getResponse(String userInput) {
+        boolean shouldExit = runCommand(userInput);
+        return new CommandResult(shouldExit, ui.getSavedMessage());
+    }
+
+    private boolean runCommand(String userInput) {
+        boolean shouldExit = false;
+        try {
+            Command userCommand = parser.processInput(userInput);
+            shouldExit = userCommand.shouldExit();
+            userCommand.execute(taskList, ui, storage);
+        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+            ui.setSavedMessage("\tPlease enter a valid index....");
+        } catch (DateTimeParseException dateTimeParseException) {
+            ui.setSavedMessage("\tPlease enter a valid date....");
+        } catch (IllegalArgumentException illegalArgumentException) {
+            ui.setSavedMessage("\t" + illegalArgumentException.getMessage());
+        } catch (RuntimeException runtimeException) {
+            ui.setSavedMessage("There was an issue with storage..... :(");
+        }
+        return shouldExit;
     }
 }
 

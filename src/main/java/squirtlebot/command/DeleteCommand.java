@@ -31,7 +31,7 @@ public class DeleteCommand extends Command {
      */
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         Task removedTask = taskList.remove(index);
-        ui.printMessage(String.format("\tThe following task was removed:\n\t %s", removedTask));
+        ui.setSavedMessage(String.format("\tThe following task was removed:\n\t %s", removedTask));
         try {
             storage.writeData(taskList);
         } catch (java.io.IOException e) {

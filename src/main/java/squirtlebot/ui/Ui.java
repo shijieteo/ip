@@ -13,11 +13,11 @@ import squirtlebot.task.TaskList;
 public class Ui {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
     private boolean isGuiInstance;
-    private String savedOutput;
+    private String savedMessage;
 
     private Ui(boolean isGuiInstance) {
         this.isGuiInstance = isGuiInstance;
-        savedOutput = "";
+        savedMessage = "";
     }
 
     public static Ui getGuiInstance() {
@@ -29,7 +29,7 @@ public class Ui {
     }
 
     public void listTasks(TaskList taskList) {
-        printMessage(taskList.toString());
+        setSavedMessage(taskList.toString());
     }
 
     /**
@@ -57,18 +57,18 @@ public class Ui {
      * Prints output message between horizontal lines for formatting
      * @param output message to display to user
      */
-    public void printMessage(String output) {
-        if (!isGuiInstance) {
-            System.out.println(Ui.HORIZONTAL_LINE);
-            System.out.println(output);
-            System.out.println(Ui.HORIZONTAL_LINE);
-        } else {
-            savedOutput = output;
-        }
+    public void setSavedMessage(String output) {
+        savedMessage = output;
     }
 
-    public String getSavedOutput() {
-        return savedOutput;
+    public void printSavedMessage() {
+        System.out.println(Ui.HORIZONTAL_LINE);
+        System.out.println(savedMessage);
+        System.out.println(Ui.HORIZONTAL_LINE);
+    }
+
+    public String getSavedMessage() {
+        return savedMessage.trim();
     }
 
     /**
@@ -81,6 +81,6 @@ public class Ui {
     }
 
     public String getGuiWelcomeMessage() {
-        return ("Hello! I'm SquirtleBot :) \n What can I do for you?");
+        return ("Hello! I'm SquirtleBot :) \nWhat can I do for you?");
     }
 }
