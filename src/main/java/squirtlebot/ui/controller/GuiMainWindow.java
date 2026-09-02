@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import squirtlebot.CommandResult;
 import squirtlebot.SquirtleBot;
 import squirtlebot.ui.view.DialogBox;
 
@@ -45,9 +46,13 @@ public class GuiMainWindow extends AnchorPane {
     @FXML
     private void handleUserInput() {
         String userInputText = userInput.getText();
+        CommandResult commandResult = squirtleBot.getResponse(userInputText);
+        if (commandResult.shouldExit()) {
+            System.exit(0);
+        }
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(userInputText, userImage),
-                DialogBox.getSquirtleBotDialog(squirtleBot.getResponse(userInputText), peinImage)
+                DialogBox.getSquirtleBotDialog(commandResult.message(), peinImage)
         );
         userInput.clear();
     }

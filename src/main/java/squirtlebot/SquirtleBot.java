@@ -114,7 +114,10 @@ public class SquirtleBot {
      * @param userInput user input containing command to run and relevant parameters
      * @return output corresponding to user's command
      */
-    public String getResponse(String userInput) {
+    public CommandResult getResponse(String userInput) {
+        boolean shouldExit = runCommand(userInput);
+        return new CommandResult(shouldExit, ui.getSavedMessage());
+    }
 
     private boolean runCommand(String userInput) {
         boolean shouldExit = false;
