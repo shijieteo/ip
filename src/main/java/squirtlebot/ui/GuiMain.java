@@ -29,7 +29,7 @@ public class GuiMain extends Application {
             stage.setScene(scene);
             stage.setTitle("SquirtleBot");
 
-            squirtleBot.initializeStorage();
+            squirtleBot.initializeTasks();
             GuiMainWindow controller = fxmlLoader.<GuiMainWindow>getController();
             controller.setSquirtleBot(squirtleBot);
             controller.printWelcomeMessage();
