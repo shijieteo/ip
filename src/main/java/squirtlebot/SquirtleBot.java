@@ -19,6 +19,7 @@ import squirtlebot.ui.Ui;
  */
 public class SquirtleBot {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
+    private static final int MAX_RESET_COUNT = 2;
     private Storage storage;
     private TaskList taskList;
     private Ui ui;
@@ -44,23 +45,19 @@ public class SquirtleBot {
      */
     public void run() {
         ui.printBanner();
-        boolean shouldExit = false;
-        while (true) {
-            try {
-                taskList = storage.loadData();
-                break;
-            } catch (InvalidClassException invalidClassException) {
-                storage.resetData();
-                continue;
-            } catch (ClassNotFoundException | IOException e) {
-                shouldExit = storageIssueHandler();
-                break;
-            }
+        boolean isLoaded = initializeTasks();
+        if (!isLoaded) {
+            handleStorageIssue();
         }
+        runInteraction();
+    }
+
+    private void runInteraction() {
+        boolean shouldExit = false;
 
         while (!shouldExit) {
             String userInput = ui.readInput();
-            shouldExit = runCommand(userInput);
+            shouldExit = executeCommand(userInput);
             ui.printSavedMessage();
         }
     }
@@ -70,10 +67,11 @@ public class SquirtleBot {
         squirtleBot.run();
     }
 
-    private boolean storageIssueHandler() {
+    private boolean handleStorageIssue() {
         String userAnswer = "";
         do {
             ui.setSavedMessage("\tThere was an issue with data storage... continue? [Y/N]: ");
+            ui.printSavedMessage();
             userAnswer = ui.readInput();
             if (userAnswer.equals("N")) {
                 return true;
@@ -91,19 +89,24 @@ public class SquirtleBot {
     }
 
     /**
-     * Loads tasks previously created by user into tasklist.
-     * Intended for use with SquirtleBot running in GUI mode
+     * Uses storage to initialize
+     * @return {@code true} if storage was loaded correctly <br>
+     *      {@code false} if storage was not loaded
      */
-    public void initializeStorage() {
+    public boolean initializeTasks() {
+        int resetCount = 0;
         while (true) {
             try {
                 taskList = storage.loadData();
-                break;
+                return true;
             } catch (InvalidClassException invalidClassException) {
+                if (resetCount > MAX_RESET_COUNT) {
+                    return false;
+                }
                 storage.resetData();
-                continue;
+                resetCount += 1;
             } catch (ClassNotFoundException | IOException e) {
-                break;
+                return false;
             }
         }
     }
@@ -115,11 +118,11 @@ public class SquirtleBot {
      * @return output corresponding to user's command
      */
     public CommandResult getResponse(String userInput) {
-        boolean shouldExit = runCommand(userInput);
+        boolean shouldExit = executeCommand(userInput);
         return new CommandResult(shouldExit, ui.getSavedMessage());
     }
 
-    private boolean runCommand(String userInput) {
+    private boolean executeCommand(String userInput) {
         boolean shouldExit = false;
         try {
             Command userCommand = parser.processInput(userInput);
@@ -135,6 +138,10 @@ public class SquirtleBot {
             ui.setSavedMessage("There was an issue with storage..... :(");
         }
         return shouldExit;
+    }
+
+    private void disableStorage() {
+        storage.setDisabled(true);
     }
 }
 
