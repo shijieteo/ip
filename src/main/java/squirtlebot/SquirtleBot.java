@@ -80,10 +80,6 @@ public class SquirtleBot {
         return false;
     }
 
-    private void loadData() throws ClassNotFoundException, IOException {
-        taskList = storage.loadData();
-    }
-
     public String getWelcomeMessage() {
         return this.ui.getGuiWelcomeMessage();
     }
