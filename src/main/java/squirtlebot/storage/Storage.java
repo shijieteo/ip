@@ -19,10 +19,14 @@ public class Storage {
     private static final String FILE_LOCATION = "data/Tasks.ser";
     private static final String DIRECTORY_NAME = "data";
 
+    private boolean isDisabled;
+
     /**
      * Constructs a storage object
      */
-    public Storage() {}
+    public Storage() {
+        isDisabled = false;
+    }
 
     /**
      * Creates FileInputStream and ObjectInputStream objects required to read from data file
@@ -55,12 +59,22 @@ public class Storage {
     }
 
     /**
+     * Sets the value of isDisabled to disable all storage-related operations
+     */
+    public void setDisabled(boolean isDisabled) {
+        this.isDisabled = isDisabled;
+    }
+
+    /**
      * Creates FileOutputStream and ObjectOutputStream objects required to write to data file
      *
      * @param taskList TaskList object to be written to the data file
      * @throws IOException if an I/O error was encountered while writing to the data file
      */
     public void writeData(TaskList taskList) throws IOException {
+        if (isDisabled) {
+            return;
+        }
         try (FileOutputStream fileOutputStream = new FileOutputStream(FILE_LOCATION);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
             objectOutputStream.writeObject(taskList);
@@ -76,6 +90,9 @@ public class Storage {
      * Creates data directory if it does not already exist
      */
     private void createDataFile() {
+        if (isDisabled) {
+            return;
+        }
         File dataFile = new File(FILE_LOCATION);
         File directory = new File(DIRECTORY_NAME);
         if (!directory.exists()) {
