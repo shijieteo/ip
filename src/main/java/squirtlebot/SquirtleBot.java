@@ -19,10 +19,10 @@ import squirtlebot.ui.Ui;
  */
 public class SquirtleBot {
     public static final String CONTINUE_WITHOUT_STORAGE_RESPONSE = "Continuing without storage :)";
-    public static final String STORAGE_ISSUE_PROMPT = "There was an issue with storage :(\n" +
-            "Do you want to continue without storage features? [Y/N]";
-    private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
+    public static final String STORAGE_ISSUE_PROMPT = "There was an issue with storage :(\n"
+            + "Do you want to continue without storage features? [Y/N]";
     private static final int MAX_RESET_COUNT = 2;
+
     private Storage storage;
     private TaskList taskList;
     private Ui ui;
@@ -36,7 +36,7 @@ public class SquirtleBot {
     public SquirtleBot(boolean isGuiSquirtleBot) {
         storage = new Storage();
         taskList = new TaskList();
-        ui = isGuiSquirtleBot ? Ui.getGuiInstance() : Ui.getCliInstance();
+        ui = new Ui();
         parser = new Parser();
     }
 
@@ -48,15 +48,18 @@ public class SquirtleBot {
      */
     public void run() {
         ui.printBanner();
+
         boolean isLoaded = initializeTasks();
         if (!isLoaded) {
             handleStorageIssue();
         }
+
         runInteraction();
     }
 
     private void runInteraction() {
         boolean shouldExit = false;
+
         while (!shouldExit) {
             String userInput = ui.readInput();
             shouldExit = executeCommand(userInput);
@@ -70,11 +73,12 @@ public class SquirtleBot {
     }
 
     private void handleStorageIssue() {
-        String userAnswer = "";
         while (true) {
             ui.setSavedMessage("\t" + STORAGE_ISSUE_PROMPT);
             ui.printSavedMessage();
-            userAnswer = ui.readInput();
+
+            String userAnswer = ui.readInput();
+
             if (userAnswer.equals("N")) {
                 System.exit(0);
             } else if (userAnswer.equals("Y")) {
@@ -125,7 +129,7 @@ public class SquirtleBot {
     private boolean executeCommand(String userInput) {
         boolean shouldExit = false;
         try {
-            Command userCommand = parser.processInput(userInput);
+            Command userCommand = parser.parseCommand(userInput);
             shouldExit = userCommand.shouldExit();
             userCommand.execute(taskList, ui, storage);
         } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
@@ -141,7 +145,7 @@ public class SquirtleBot {
     }
 
     public void disableStorage() {
-        storage.setDisabled(true);
+        storage.disable();
     }
 }
 

@@ -61,8 +61,8 @@ public class Storage {
     /**
      * Sets the value of isDisabled to disable all storage-related operations
      */
-    public void setDisabled(boolean isDisabled) {
-        this.isDisabled = isDisabled;
+    public void disable() {
+        this.isDisabled = true;
     }
 
     /**
@@ -75,14 +75,11 @@ public class Storage {
         if (isDisabled) {
             return;
         }
-        try (FileOutputStream fileOutputStream = new FileOutputStream(FILE_LOCATION);
-             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
-            objectOutputStream.writeObject(taskList);
+        createDataFile();
 
-        } catch (FileNotFoundException fileNotFoundException) {
-            createDataFile();
-            writeData(taskList);
-        }
+        FileOutputStream fileOutputStream = new FileOutputStream(FILE_LOCATION);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        objectOutputStream.writeObject(taskList);
     }
 
     /**
@@ -96,11 +93,11 @@ public class Storage {
         File dataFile = new File(FILE_LOCATION);
         File directory = new File(DIRECTORY_NAME);
         if (!directory.exists()) {
-            boolean isDirectoryCreated = directory.mkdirs();
+            directory.mkdirs();
         }
 
         try {
-            boolean isFileCreated = dataFile.createNewFile();
+            dataFile.createNewFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -12,20 +12,10 @@ import squirtlebot.task.TaskList;
  */
 public class Ui {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
-    private boolean isGuiInstance;
     private String savedMessage;
 
-    private Ui(boolean isGuiInstance) {
-        this.isGuiInstance = isGuiInstance;
+    public Ui() {
         savedMessage = "";
-    }
-
-    public static Ui getGuiInstance() {
-        return new Ui(true);
-    }
-
-    public static Ui getCliInstance() {
-        return new Ui(false);
     }
 
     public void listTasks(TaskList taskList) {
@@ -67,8 +57,6 @@ public class Ui {
                    066666660 79 0008   80  08888888338888888 4000         \s
                    186666660  0     73 00 333333333333333388  0           \s
                      080800  00000  33 00 000000000858000000              \s
-                
-                
                 """;
 
         System.out.println(Ui.HORIZONTAL_LINE);

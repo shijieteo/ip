@@ -31,12 +31,11 @@ public class MarkCommand extends Command {
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         Task markedTask = taskList.get(index);
         markedTask.setIsDone(true);
+
+        super.updateStorage(taskList, storage);
+        
         ui.setSavedMessage(String.format("\tCongrats on completing the following task:\n\t %s", markedTask));
-        try {
-            storage.writeData(taskList);
-        } catch (java.io.IOException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
     /**

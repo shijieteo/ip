@@ -30,10 +30,10 @@ public class GuiMainWindow extends AnchorPane {
     private Button sendButton;
 
     private SquirtleBot squirtleBot;
-    private boolean isStorageDecision = false;
+    private boolean isAwaitingStorageDecision = false;
 
-    private Image botImage = new Image(this.getClass().getResourceAsStream("/images/squirtle.jpg"));
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/user.png"));
+    private final Image botImage = new Image(this.getClass().getResourceAsStream("/images/squirtle.jpg"));
+    private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/user.png"));
 
     @FXML
     public void initialize() {
@@ -46,7 +46,7 @@ public class GuiMainWindow extends AnchorPane {
 
     @FXML
     private void handleUserInput() {
-        if (isStorageDecision) {
+        if (isAwaitingStorageDecision) {
             handleStorageDecision();
             return;
         }
@@ -63,17 +63,17 @@ public class GuiMainWindow extends AnchorPane {
 
     private void handleStorageDecision() {
         String storageDecision = userInput.getText();
-        if(storageDecision.equals("Y")) {
+        if (storageDecision.equals("Y")) {
             squirtleBot.disableStorage();
-            isStorageDecision = false;
+            isAwaitingStorageDecision = false;
 
             addUserMessageToDisplay(storageDecision);
             addBotMessageToDisplay(SquirtleBot.CONTINUE_WITHOUT_STORAGE_RESPONSE);
             userInput.clear();
-        } else if(storageDecision.equals("N")) {
+        } else if (storageDecision.equals("N")) {
             System.exit(0);
         } else {
-
+            promptOnStorageIssue();
         }
     }
 
@@ -85,7 +85,7 @@ public class GuiMainWindow extends AnchorPane {
     }
 
     public void promptOnStorageIssue() {
-        isStorageDecision = true;
+        isAwaitingStorageDecision = true;
         addBotMessageToDisplay(SquirtleBot.STORAGE_ISSUE_PROMPT);
     }
 

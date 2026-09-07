@@ -57,7 +57,7 @@ test {
 }
 
 application {
-    mainClass.set("Launcher")
+    mainClass.set("squirtlebot.Launcher")
 }
 
 jar {

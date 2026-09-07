@@ -1,3 +1,5 @@
+package squirtlebot;
+
 import javafx.application.Application;
 import squirtlebot.ui.GuiMain;
 

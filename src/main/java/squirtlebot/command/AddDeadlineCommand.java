@@ -1,9 +1,9 @@
 package squirtlebot.command;
 
 import java.time.temporal.Temporal;
-import java.util.Optional;
 
 import squirtlebot.parser.DateParser;
+import squirtlebot.parser.Parser;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.Deadline;
 import squirtlebot.task.TaskList;
@@ -24,7 +24,7 @@ public class AddDeadlineCommand extends Command {
      * @param userInput array containing user inputs required to create a Deadline object
      */
     public AddDeadlineCommand(String[] userInput) {
-        parseParams(userInput);
+        setAttributes(userInput);
     }
 
     /**
@@ -41,11 +41,9 @@ public class AddDeadlineCommand extends Command {
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         Deadline deadlineTask = new Deadline(taskDescription, dueDate);
         taskList.add(deadlineTask);
-        try {
-            storage.writeData(taskList);
-        } catch (java.io.IOException e) {
-            throw new RuntimeException(e);
-        }
+
+        super.updateStorage(taskList, storage);
+
         ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n\t"
                 + "You now have %d tasks", deadlineTask, taskList.size()));
     }
@@ -57,40 +55,21 @@ public class AddDeadlineCommand extends Command {
      * @throws IllegalArgumentException if dueDate or taskDescription is empty,
      *              or if dueDate is not in a valid format
      */
-    private void parseParams(String[] userInputArray) {
-        String dueDate = "";
-        String taskDescription = "";
-        boolean isDueDate = false;
-        int index = 1;
-        while (index < userInputArray.length) {
-            if (userInputArray[index].equals("/by")) {
-                isDueDate = true;
-                index++;
-                continue;
-            }
+    private void setAttributes(String[] userInputArray) {
+        Parser parser = new Parser();
 
-            if (isDueDate) {
-                dueDate += userInputArray[index];
-                dueDate += " ";
-            } else {
-                taskDescription += userInputArray[index];
-                taskDescription += " ";
-            }
-            index++;
-        }
+        String taskDescription = parser.parseDescription(userInputArray);
+        String dueDate = parser.parseTokens(userInputArray, "/by");
+
         if (dueDate.isEmpty() || taskDescription.isEmpty()) {
             throw new IllegalArgumentException("Please provide the correct arguments for Deadline!");
         }
 
-        dueDate = dueDate.trim();
-
         DateParser dateParser = new DateParser();
-        Optional<Temporal> startDateOptional = dateParser.parseDate(dueDate);
-        Optional<Temporal> startDateTimeOptional = dateParser.parseDateTime(dueDate);
-        Temporal startTemporal = startDateOptional.or(() -> startDateTimeOptional)
-                .orElseThrow(() -> new IllegalArgumentException("Please enter a due date/datetime!"));
 
-        this.dueDate = startTemporal;
         this.taskDescription = taskDescription;
+        this.dueDate = dateParser.parseTemporal(dueDate)
+                .orElseThrow(() -> new IllegalArgumentException("Please enter a valid due date/datetime!"));
+
     }
 }

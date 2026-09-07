@@ -1,9 +1,9 @@
 package squirtlebot.command;
 
 import java.time.temporal.Temporal;
-import java.util.Optional;
 
 import squirtlebot.parser.DateParser;
+import squirtlebot.parser.Parser;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.Event;
 import squirtlebot.task.TaskList;
@@ -14,6 +14,9 @@ import squirtlebot.ui.Ui;
  * Contains the values required to create an Event object
  */
 public class AddEventCommand extends Command {
+    private static final String START_DATE_TOKEN = "/from";
+    private static final String END_DATE_TOKEN = "/to";
+
     private Temporal startDate;
     private String taskDescription;
     private Temporal endDate;
@@ -24,7 +27,7 @@ public class AddEventCommand extends Command {
      * @param userInput array containing user inputs required to create an Event object
      */
     public AddEventCommand(String[] userInput) {
-        parseParams(userInput);
+        setAttributes(userInput);
     }
 
     /**
@@ -40,11 +43,9 @@ public class AddEventCommand extends Command {
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         Event eventTask = new Event(taskDescription, startDate, endDate);
         taskList.add(eventTask);
-        try {
-            storage.writeData(taskList);
-        } catch (java.io.IOException e) {
-            throw new RuntimeException(e);
-        }
+
+        super.updateStorage(taskList, storage);
+
         ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n\t"
                 + "You now have %d tasks", eventTask, taskList.size()));
     }
@@ -57,55 +58,23 @@ public class AddEventCommand extends Command {
      * @throws IllegalArgumentException if any of taskDescription, startDate or endDate is empty
      *                  or if any of startDate or endDate is not in a valid format
      */
-    private void parseParams(String[] userInputArray) {
-        boolean isEndDate = false;
-        boolean isStartDate = false;
-        String startDate = "";
-        String endDate = "";
-        int index = 1;
-        String taskDescription = "";
+    private void setAttributes(String[] userInputArray) {
+        Parser parser = new Parser();
 
-        while (index < userInputArray.length) {
-            if (userInputArray[index].equals("/from")) {
-                isStartDate = true;
-                isEndDate = false;
-                index++;
-                continue;
-            } else if (userInputArray[index].equals("/to")) {
-                isEndDate = true;
-                isStartDate = false;
-                index++;
-                continue;
-            }
-            if (isEndDate) {
-                endDate += userInputArray[index];
-                endDate += " ";
-            } else if (isStartDate) {
-                startDate += userInputArray[index];
-                startDate += " ";
-            } else {
-                taskDescription += userInputArray[index];
-                taskDescription += " ";
-            }
-            index++;
-        }
-        if (startDate.isEmpty() || taskDescription.isEmpty() || endDate.isEmpty()) {
+        String taskDescription = parser.parseDescription(userInputArray);
+        String startDate = parser.parseTokens(userInputArray, START_DATE_TOKEN);
+        String endDate = parser.parseTokens(userInputArray, END_DATE_TOKEN);
+
+        if(taskDescription.isEmpty() || startDate.isEmpty() || endDate.isEmpty()) {
             throw new IllegalArgumentException("Please provide the correct arguments for Event!");
         }
 
-        startDate = startDate.trim();
-        endDate = endDate.trim();
-
         DateParser dateParser = new DateParser();
-        Optional<Temporal> startDateOptional = dateParser.parseDate(startDate);
-        Optional<Temporal> startDateTimeOptional = dateParser.parseDateTime(startDate);
-        Temporal startTemporal = startDateOptional.or(() -> startDateTimeOptional)
-                .orElseThrow(() -> new IllegalArgumentException("Please enter a start valid date/datetime!"));
+        Temporal startTemporal = dateParser.parseTemporal(startDate)
+                .orElseThrow(() -> new IllegalArgumentException("Please enter a valid start date/datetime!"));
 
-        Optional<Temporal> endDateOptional = dateParser.parseDate(endDate);
-        Optional<Temporal> endDateTimeOptional = dateParser.parseDateTime(endDate);
-        Temporal endTemporal = endDateOptional.or(() -> endDateTimeOptional)
-                .orElseThrow(() -> new IllegalArgumentException("Please enter a end valid date/datetime!"));
+        Temporal endTemporal = dateParser.parseTemporal(endDate)
+                .orElseThrow(() -> new IllegalArgumentException("Please enter a valid end date/datetime!"));
 
         this.startDate = startTemporal;
         this.endDate = endTemporal;
