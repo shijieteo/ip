@@ -18,6 +18,9 @@ import squirtlebot.ui.Ui;
  * {@code list}, {@code find}, {@code mark}, {@code unmark}, and {@code delete}.
  */
 public class SquirtleBot {
+    public static final String CONTINUE_WITHOUT_STORAGE_RESPONSE = "Continuing without storage :)";
+    public static final String STORAGE_ISSUE_PROMPT = "There was an issue with storage :(\n" +
+            "Do you want to continue without storage features? [Y/N]";
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
     private static final int MAX_RESET_COUNT = 2;
     private Storage storage;
@@ -54,7 +57,6 @@ public class SquirtleBot {
 
     private void runInteraction() {
         boolean shouldExit = false;
-
         while (!shouldExit) {
             String userInput = ui.readInput();
             shouldExit = executeCommand(userInput);
@@ -67,17 +69,19 @@ public class SquirtleBot {
         squirtleBot.run();
     }
 
-    private boolean handleStorageIssue() {
+    private void handleStorageIssue() {
         String userAnswer = "";
-        do {
-            ui.setSavedMessage("\tThere was an issue with data storage... continue? [Y/N]: ");
+        while (true) {
+            ui.setSavedMessage("\t" + STORAGE_ISSUE_PROMPT);
             ui.printSavedMessage();
             userAnswer = ui.readInput();
             if (userAnswer.equals("N")) {
-                return true;
+                System.exit(0);
+            } else if (userAnswer.equals("Y")) {
+                this.disableStorage();
+                break;
             }
-        } while (!userAnswer.equals("Y") && !userAnswer.equals("N"));
-        return false;
+        }
     }
 
     public String getWelcomeMessage() {
@@ -136,7 +140,7 @@ public class SquirtleBot {
         return shouldExit;
     }
 
-    private void disableStorage() {
+    public void disableStorage() {
         storage.setDisabled(true);
     }
 }
