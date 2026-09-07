@@ -36,7 +36,7 @@ public class SquirtleBot {
     public SquirtleBot(boolean isGuiSquirtleBot) {
         storage = new Storage();
         taskList = new TaskList();
-        ui = isGuiSquirtleBot ? Ui.getGuiInstance() : Ui.getCliInstance();
+        ui = new Ui();
         parser = new Parser();
     }
 
