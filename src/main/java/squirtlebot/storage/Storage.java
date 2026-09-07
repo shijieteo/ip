@@ -75,14 +75,11 @@ public class Storage {
         if (isDisabled) {
             return;
         }
-        try (FileOutputStream fileOutputStream = new FileOutputStream(FILE_LOCATION);
-             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
-            objectOutputStream.writeObject(taskList);
+        createDataFile();
 
-        } catch (FileNotFoundException fileNotFoundException) {
-            createDataFile();
-            writeData(taskList);
-        }
+        FileOutputStream fileOutputStream = new FileOutputStream(FILE_LOCATION);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        objectOutputStream.writeObject(taskList);
     }
 
     /**
