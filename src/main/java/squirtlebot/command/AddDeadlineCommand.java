@@ -83,12 +83,9 @@ public class AddDeadlineCommand extends Command {
         dueDate = dueDate.trim();
 
         DateParser dateParser = new DateParser();
-        Optional<Temporal> startDateOptional = dateParser.parseDate(dueDate);
-        Optional<Temporal> startDateTimeOptional = dateParser.parseDateTime(dueDate);
-        Temporal startTemporal = startDateOptional.or(() -> startDateTimeOptional)
+        this.dueDate = dateParser.parseTemporal(dueDate)
                 .orElseThrow(() -> new IllegalArgumentException("Please enter a due date/datetime!"));
 
-        this.dueDate = startTemporal;
         this.taskDescription = taskDescription;
     }
 }

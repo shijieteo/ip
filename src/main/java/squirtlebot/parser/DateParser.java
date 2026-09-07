@@ -26,6 +26,13 @@ public class DateParser {
                 "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss");
     }
 
+    public Optional<Temporal> parseTemporal(String userInput) {
+        Optional<Temporal> optionalDate = parseDate(userInput);
+        Optional<Temporal> optionalDateTime = parseDateTime(userInput);
+
+        return optionalDate.or(() -> optionalDateTime);
+    }
+
     /**
      * Converts a user input string into a {@link LocalDate} object
      *
@@ -33,7 +40,7 @@ public class DateParser {
      * @return an {@link Optional} containing the date object represented by user input
      *                  or an empty {@link Optional} if the user input is of an unsupported format
      */
-    public Optional<Temporal> parseDate(String userInput) {
+    private Optional<Temporal> parseDate(String userInput) {
         for (String format : dateFormatList) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
             try {
@@ -53,7 +60,7 @@ public class DateParser {
      * @return an {@link Optional} containing the dateTime object represented by user input
      *                  or an empty {@link Optional} if the user input is of an unsupported format
      */
-    public Optional<Temporal> parseDateTime(String userInput) {
+    private Optional<Temporal> parseDateTime(String userInput) {
         for (String format : dateTimeFormatList) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
             try {
