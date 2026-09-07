@@ -145,7 +145,7 @@ public class SquirtleBot {
     }
 
     public void disableStorage() {
-        storage.setDisabled(true);
+        storage.disable();
     }
 }
 

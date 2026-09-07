@@ -61,8 +61,8 @@ public class Storage {
     /**
      * Sets the value of isDisabled to disable all storage-related operations
      */
-    public void setDisabled(boolean isDisabled) {
-        this.isDisabled = isDisabled;
+    public void disable() {
+        this.isDisabled = true;
     }
 
     /**
