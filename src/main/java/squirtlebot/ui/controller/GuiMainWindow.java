@@ -46,6 +46,10 @@ public class GuiMainWindow extends AnchorPane {
 
     @FXML
     private void handleUserInput() {
+        if (isStorageDecision) {
+            handleStorageDecision();
+            return;
+        }
         String userInputText = userInput.getText();
         CommandResult commandResult = squirtleBot.getResponse(userInputText);
         if (commandResult.shouldExit()) {
@@ -55,6 +59,22 @@ public class GuiMainWindow extends AnchorPane {
         addUserMessageToDisplay(userInputText);
         addBotMessageToDisplay(commandResult.message());
         userInput.clear();
+    }
+
+    private void handleStorageDecision() {
+        String storageDecision = userInput.getText();
+        if(storageDecision.equals("Y")) {
+            squirtleBot.disableStorage();
+            isStorageDecision = false;
+
+            addUserMessageToDisplay(storageDecision);
+            addBotMessageToDisplay(SquirtleBot.CONTINUE_WITHOUT_STORAGE_RESPONSE);
+            userInput.clear();
+        } else if(storageDecision.equals("N")) {
+            System.exit(0);
+        } else {
+
+        }
     }
 
     /**
