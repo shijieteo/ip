@@ -1,7 +1,6 @@
 package squirtlebot.command;
 
-import java.util.stream.IntStream;
-
+import squirtlebot.parser.Parser;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.TaskList;
 import squirtlebot.task.ToDo;
@@ -20,7 +19,7 @@ public class AddToDoCommand extends Command {
      * @param userInput array containing user inputs required to create a ToDo object
      */
     public AddToDoCommand(String[] userInput) {
-        parseDescription(userInput);
+        setAttributes(userInput);
     }
 
     /**
@@ -50,9 +49,10 @@ public class AddToDoCommand extends Command {
      * @param userInputArray array containing user inputs required to create a ToDo object
      * @throws IllegalArgumentException if taskDescription is empty
      */
-    private void parseDescription(String[] userInputArray) {
-        taskDescription = IntStream.range(1, userInputArray.length).boxed()
-                .map(x -> userInputArray[x]).reduce("", (x, y) -> x + " " + y);
+    private void setAttributes(String[] userInputArray) {
+        Parser parser = new Parser();
+
+        taskDescription = parser.parseDescription(userInputArray);
 
         if (taskDescription.isEmpty()) {
             throw new IllegalArgumentException("Please provide the correct arguments for ToDo!");

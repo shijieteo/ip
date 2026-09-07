@@ -1,9 +1,9 @@
 package squirtlebot.command;
 
 import java.time.temporal.Temporal;
-import java.util.Optional;
 
 import squirtlebot.parser.DateParser;
+import squirtlebot.parser.Parser;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.Event;
 import squirtlebot.task.TaskList;
@@ -14,6 +14,9 @@ import squirtlebot.ui.Ui;
  * Contains the values required to create an Event object
  */
 public class AddEventCommand extends Command {
+    private static final String START_DATE_TOKEN = "/from";
+    private static final String END_DATE_TOKEN = "/to";
+
     private Temporal startDate;
     private String taskDescription;
     private Temporal endDate;
@@ -24,7 +27,7 @@ public class AddEventCommand extends Command {
      * @param userInput array containing user inputs required to create an Event object
      */
     public AddEventCommand(String[] userInput) {
-        parseParams(userInput);
+        setAttributes(userInput);
     }
 
     /**
@@ -55,44 +58,16 @@ public class AddEventCommand extends Command {
      * @throws IllegalArgumentException if any of taskDescription, startDate or endDate is empty
      *                  or if any of startDate or endDate is not in a valid format
      */
-    private void parseParams(String[] userInputArray) {
-        boolean isEndDate = false;
-        boolean isStartDate = false;
-        String startDate = "";
-        String endDate = "";
-        int index = 1;
-        String taskDescription = "";
+    private void setAttributes(String[] userInputArray) {
+        Parser parser = new Parser();
 
-        while (index < userInputArray.length) {
-            if (userInputArray[index].equals("/from")) {
-                isStartDate = true;
-                isEndDate = false;
-                index++;
-                continue;
-            } else if (userInputArray[index].equals("/to")) {
-                isEndDate = true;
-                isStartDate = false;
-                index++;
-                continue;
-            }
-            if (isEndDate) {
-                endDate += userInputArray[index];
-                endDate += " ";
-            } else if (isStartDate) {
-                startDate += userInputArray[index];
-                startDate += " ";
-            } else {
-                taskDescription += userInputArray[index];
-                taskDescription += " ";
-            }
-            index++;
-        }
-        if (startDate.isEmpty() || taskDescription.isEmpty() || endDate.isEmpty()) {
+        String taskDescription = parser.parseDescription(userInputArray);
+        String startDate = parser.parseTokens(userInputArray, START_DATE_TOKEN);
+        String endDate = parser.parseTokens(userInputArray, END_DATE_TOKEN);
+
+        if(taskDescription.isEmpty() || startDate.isEmpty() || endDate.isEmpty()) {
             throw new IllegalArgumentException("Please provide the correct arguments for Event!");
         }
-
-        startDate = startDate.trim();
-        endDate = endDate.trim();
 
         DateParser dateParser = new DateParser();
         Temporal startTemporal = dateParser.parseTemporal(startDate)

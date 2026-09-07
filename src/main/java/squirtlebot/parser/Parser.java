@@ -1,6 +1,8 @@
 package squirtlebot.parser;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -43,11 +45,45 @@ public class Parser {
      * @param userInput string representing command to execute and parameters if any
      * @throws IllegalArgumentException if user specifies an unsupported command
      */
-    public Command processInput(String userInput) {
+    public Command parseCommand(String userInput) {
         String[] userInputArray = userInput.split(" ");
         String commandString = userInputArray[0];
         Function<String[], Command> commandFunction = Optional.ofNullable(commandMap.get(commandString))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid command"));
         return commandFunction.apply(userInputArray);
+    }
+
+    public String parseTokens(String[] userInputArray, String expectedToken) {
+        boolean isExpectedTokenIdentified = false;
+        String assembledToken = "";
+        for (String currentToken : userInputArray) {
+            if (currentToken.equals(expectedToken)) {
+                isExpectedTokenIdentified = true;
+                continue;
+            } else if (currentToken.startsWith("/")) {
+                isExpectedTokenIdentified = false;
+            }
+
+            if (!isExpectedTokenIdentified) {
+                continue;
+            }
+            assembledToken += (currentToken + " ");
+        }
+        return assembledToken.trim();
+    }
+
+    public String parseDescription(String[] userInputArray) {
+        boolean hasEncounteredOtherParameter = false;
+        String assembledDescription = "";
+
+        for (int i = 1; i < userInputArray.length; i++) {
+            String currentText = userInputArray[i];
+            if(currentText.startsWith("/")) {
+                break;
+            }
+            assembledDescription += (currentText + " ");
+        }
+
+        return assembledDescription.trim();
     }
 }

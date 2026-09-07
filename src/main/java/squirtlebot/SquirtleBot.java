@@ -129,7 +129,7 @@ public class SquirtleBot {
     private boolean executeCommand(String userInput) {
         boolean shouldExit = false;
         try {
-            Command userCommand = parser.processInput(userInput);
+            Command userCommand = parser.parseCommand(userInput);
             shouldExit = userCommand.shouldExit();
             userCommand.execute(taskList, ui, storage);
         } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
