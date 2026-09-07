@@ -93,11 +93,11 @@ public class Storage {
         File dataFile = new File(FILE_LOCATION);
         File directory = new File(DIRECTORY_NAME);
         if (!directory.exists()) {
-            boolean isDirectoryCreated = directory.mkdirs();
+            directory.mkdirs();
         }
 
         try {
-            boolean isFileCreated = dataFile.createNewFile();
+            dataFile.createNewFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
