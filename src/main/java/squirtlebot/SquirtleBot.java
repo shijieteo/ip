@@ -18,7 +18,11 @@ import squirtlebot.ui.Ui;
  * {@code list}, {@code find}, {@code mark}, {@code unmark}, and {@code delete}.
  */
 public class SquirtleBot {
+    public static final String CONTINUE_WITHOUT_STORAGE_RESPONSE = "Continuing without storage :)";
+    public static final String STORAGE_ISSUE_PROMPT = "There was an issue with storage :(\n" +
+            "Do you want to continue without storage features? [Y/N]";
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
+    private static final int MAX_RESET_COUNT = 2;
     private Storage storage;
     private TaskList taskList;
     private Ui ui;
@@ -44,7 +48,10 @@ public class SquirtleBot {
      */
     public void run() {
         ui.printBanner();
-        initializeTasks();
+        boolean isLoaded = initializeTasks();
+        if (!isLoaded) {
+            handleStorageIssue();
+        }
         runInteraction();
     }
 
@@ -63,20 +70,19 @@ public class SquirtleBot {
         squirtleBot.run();
     }
 
-    private boolean storageIssueHandler() {
+    private void handleStorageIssue() {
         String userAnswer = "";
-        do {
-            ui.setSavedMessage("\tThere was an issue with data storage... continue? [Y/N]: ");
+        while (true) {
+            ui.setSavedMessage("\t" + STORAGE_ISSUE_PROMPT);
+            ui.printSavedMessage();
             userAnswer = ui.readInput();
             if (userAnswer.equals("N")) {
-                return true;
+                System.exit(0);
+            } else if (userAnswer.equals("Y")) {
+                this.disableStorage();
+                break;
             }
-        } while (!userAnswer.equals("Y") && !userAnswer.equals("N"));
-        return false;
-    }
-
-    private void loadData() throws ClassNotFoundException, IOException {
-        taskList = storage.loadData();
+        }
     }
 
     public String getWelcomeMessage() {
@@ -95,7 +101,7 @@ public class SquirtleBot {
                 taskList = storage.loadData();
                 return true;
             } catch (InvalidClassException invalidClassException) {
-                if (resetCount > 2) {
+                if (resetCount > MAX_RESET_COUNT) {
                     return false;
                 }
                 storage.resetData();
@@ -133,6 +139,10 @@ public class SquirtleBot {
             ui.setSavedMessage("There was an issue with storage..... :(");
         }
         return shouldExit;
+    }
+
+    public void disableStorage() {
+        storage.setDisabled(true);
     }
 }
 

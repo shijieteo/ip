@@ -30,8 +30,9 @@ public class GuiMainWindow extends AnchorPane {
     private Button sendButton;
 
     private SquirtleBot squirtleBot;
+    private boolean isStorageDecision = false;
 
-    private Image peinImage = new Image(this.getClass().getResourceAsStream("/images/squirtle.jpg"));
+    private Image botImage = new Image(this.getClass().getResourceAsStream("/images/squirtle.jpg"));
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/user.png"));
 
     @FXML
@@ -45,25 +46,55 @@ public class GuiMainWindow extends AnchorPane {
 
     @FXML
     private void handleUserInput() {
+        if (isStorageDecision) {
+            handleStorageDecision();
+            return;
+        }
         String userInputText = userInput.getText();
         CommandResult commandResult = squirtleBot.getResponse(userInputText);
         if (commandResult.shouldExit()) {
             System.exit(0);
         }
-        dialogContainer.getChildren().addAll(
-                DialogBox.getUserDialog(userInputText, userImage),
-                DialogBox.getSquirtleBotDialog(commandResult.message(), peinImage)
-        );
+
+        addUserMessageToDisplay(userInputText);
+        addBotMessageToDisplay(commandResult.message());
         userInput.clear();
+    }
+
+    private void handleStorageDecision() {
+        String storageDecision = userInput.getText();
+        if(storageDecision.equals("Y")) {
+            squirtleBot.disableStorage();
+            isStorageDecision = false;
+
+            addUserMessageToDisplay(storageDecision);
+            addBotMessageToDisplay(SquirtleBot.CONTINUE_WITHOUT_STORAGE_RESPONSE);
+            userInput.clear();
+        } else if(storageDecision.equals("N")) {
+            System.exit(0);
+        } else {
+
+        }
     }
 
     /**
      * Retrieves SquirtleBot's welcome message and displays message in a {@link DialogBox}
      */
     public void printWelcomeMessage() {
-        dialogContainer.getChildren().addAll(
-                DialogBox.getSquirtleBotDialog(squirtleBot.getWelcomeMessage(), peinImage)
-        );
+        addBotMessageToDisplay(squirtleBot.getWelcomeMessage());
+    }
+
+    public void promptOnStorageIssue() {
+        isStorageDecision = true;
+        addBotMessageToDisplay(SquirtleBot.STORAGE_ISSUE_PROMPT);
+    }
+
+    private void addBotMessageToDisplay(String botMessage) {
+        dialogContainer.getChildren().add(DialogBox.getSquirtleBotDialog(botMessage, botImage));
+    }
+
+    private void addUserMessageToDisplay(String userInput) {
+        dialogContainer.getChildren().add(DialogBox.getUserDialog(userInput, userImage));
     }
 
 }

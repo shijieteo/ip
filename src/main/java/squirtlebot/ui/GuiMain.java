@@ -29,12 +29,19 @@ public class GuiMain extends Application {
             stage.setScene(scene);
             stage.setTitle("SquirtleBot");
 
-            squirtleBot.initializeTasks();
             GuiMainWindow controller = fxmlLoader.<GuiMainWindow>getController();
             controller.setSquirtleBot(squirtleBot);
-            controller.printWelcomeMessage();
 
             stage.show();
+
+            controller.printWelcomeMessage();
+
+            boolean isLoaded = squirtleBot.initializeTasks();
+            if (!isLoaded) {
+                controller.promptOnStorageIssue();
+            }
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
