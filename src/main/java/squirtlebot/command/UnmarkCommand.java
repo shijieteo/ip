@@ -31,13 +31,10 @@ public class UnmarkCommand extends Command {
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         Task unmarkedTask = taskList.get(index);
         unmarkedTask.setIsDone(false);
-        ui.setSavedMessage(String.format("\tThe following task was marked as not done:\n\t %s", unmarkedTask));
 
-        try {
-            storage.writeData(taskList);
-        } catch (java.io.IOException e) {
-            throw new RuntimeException(e);
-        }
+        super.updateStorage(taskList, storage);
+
+        ui.setSavedMessage(String.format("\tThe following task was marked as not done:\n\t %s", unmarkedTask));
     }
 
     /**

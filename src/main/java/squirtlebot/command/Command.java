@@ -30,4 +30,12 @@ public abstract class Command {
     public boolean shouldExit() {
         return false;
     }
+
+    protected void updateStorage(TaskList tasks, Storage storage) {
+        try {
+            storage.writeData(tasks);
+        } catch (java.io.IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

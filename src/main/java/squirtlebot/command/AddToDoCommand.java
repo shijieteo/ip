@@ -37,11 +37,9 @@ public class AddToDoCommand extends Command {
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         ToDo toDoTask = new ToDo(taskDescription);
         taskList.add(toDoTask);
-        try {
-            storage.writeData(taskList);
-        } catch (java.io.IOException e) {
-            throw new RuntimeException(e);
-        }
+
+        super.updateStorage(taskList, storage);
+
         ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n\t"
                 + "You now have %d tasks", toDoTask, taskList.size()));
     }
