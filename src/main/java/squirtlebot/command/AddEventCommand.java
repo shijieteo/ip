@@ -1,7 +1,12 @@
 package squirtlebot.command;
 
+import java.lang.reflect.Array;
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
+import squirtlebot.TemporalPair;
 import squirtlebot.parser.DateParser;
 import squirtlebot.parser.Parser;
 import squirtlebot.storage.Storage;
@@ -14,12 +19,11 @@ import squirtlebot.ui.Ui;
  * Contains the values required to create an Event object
  */
 public class AddEventCommand extends Command {
+    private static final String INVALID_DATETIME_FORMAT_MESSAGE = "Invalid date/datetime detected!";
     private static final String START_DATE_TOKEN = "/from";
     private static final String END_DATE_TOKEN = "/to";
 
-    private Temporal startDate;
-    private String taskDescription;
-    private Temporal endDate;
+    private Event eventToAdd;
 
     /**
      * Constructs a new AddEventCommand using inputs provided by a user
@@ -41,13 +45,12 @@ public class AddEventCommand extends Command {
      * @throws RuntimeException if an issue was encountered while attempting to write to storage
      */
     public void execute(TaskList taskList, Ui ui, Storage storage) {
-        Event eventTask = new Event(taskDescription, startDate, endDate);
-        taskList.add(eventTask);
+        taskList.add(eventToAdd);
 
         super.updateStorage(taskList, storage);
 
         ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n\t"
-                + "You now have %d tasks", eventTask, taskList.size()));
+                + "You now have %d tasks", eventToAdd, taskList.size()));
     }
 
     /**
@@ -60,24 +63,34 @@ public class AddEventCommand extends Command {
      */
     private void setAttributes(String[] userInputArray) {
         Parser parser = new Parser();
+        DateParser dateParser = new DateParser();
 
         String taskDescription = parser.parseDescription(userInputArray);
-        String startDate = parser.parseTokens(userInputArray, START_DATE_TOKEN);
-        String endDate = parser.parseTokens(userInputArray, END_DATE_TOKEN);
+        ArrayList<TemporalPair> possibleSchedules = new ArrayList<TemporalPair>();
 
-        if(taskDescription.isEmpty() || startDate.isEmpty() || endDate.isEmpty()) {
+        Stream.iterate(1, x -> x < userInputArray.length, x -> x + 1)
+                .filter(index -> {
+                    String currentToken = userInputArray[index];
+                    return currentToken.equals(START_DATE_TOKEN);
+                }).map(index -> {
+                    String startDate = parser.parseTokens(Arrays
+                            .copyOfRange(userInputArray, index, userInputArray.length), START_DATE_TOKEN);
+                    String endDate = parser.parseTokens(Arrays
+                            .copyOfRange(userInputArray, index, userInputArray.length), END_DATE_TOKEN);
+
+                    Temporal startTemporal = dateParser.parseTemporal(startDate)
+                            .orElseThrow(() -> new IllegalArgumentException(INVALID_DATETIME_FORMAT_MESSAGE));
+
+                    Temporal endTemporal = dateParser.parseTemporal(endDate)
+                            .orElseThrow(() -> new IllegalArgumentException(INVALID_DATETIME_FORMAT_MESSAGE));
+
+                    return new TemporalPair(startTemporal, endTemporal);
+                }).forEach(x -> possibleSchedules.add(x));
+
+        if(taskDescription.isEmpty() || possibleSchedules.isEmpty()) {
             throw new IllegalArgumentException("Please provide the correct arguments for Event!");
         }
 
-        DateParser dateParser = new DateParser();
-        Temporal startTemporal = dateParser.parseTemporal(startDate)
-                .orElseThrow(() -> new IllegalArgumentException("Please enter a valid start date/datetime!"));
-
-        Temporal endTemporal = dateParser.parseTemporal(endDate)
-                .orElseThrow(() -> new IllegalArgumentException("Please enter a valid end date/datetime!"));
-
-        this.startDate = startTemporal;
-        this.endDate = endTemporal;
-        this.taskDescription = taskDescription;
+        eventToAdd = new Event(taskDescription, possibleSchedules);
     }
 }
