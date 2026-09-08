@@ -10,6 +10,7 @@ import squirtlebot.command.AddDeadlineCommand;
 import squirtlebot.command.AddEventCommand;
 import squirtlebot.command.AddToDoCommand;
 import squirtlebot.command.Command;
+import squirtlebot.command.ConfirmEventDateCommand;
 import squirtlebot.command.DeleteCommand;
 import squirtlebot.command.ExitCommand;
 import squirtlebot.command.FindCommand;
@@ -37,6 +38,7 @@ public class Parser {
         commandMap.put("list", x -> new ListCommand());
         commandMap.put("find", x -> new FindCommand(x));
         commandMap.put("delete", x -> new DeleteCommand(x));
+        commandMap.put("confirm", x -> new ConfirmEventDateCommand(x));
     }
 
     /**
@@ -56,10 +58,15 @@ public class Parser {
     public String parseTokens(String[] userInputArray, String expectedToken) {
         boolean isExpectedTokenIdentified = false;
         String assembledToken = "";
+
         for (String currentToken : userInputArray) {
+            boolean isDoneReadingExpectedToken = currentToken.startsWith("/") && isExpectedTokenIdentified;
+
             if (currentToken.equals(expectedToken)) {
                 isExpectedTokenIdentified = true;
                 continue;
+            } else if (isDoneReadingExpectedToken) {
+                break;
             } else if (currentToken.startsWith("/")) {
                 isExpectedTokenIdentified = false;
             }
@@ -69,11 +76,11 @@ public class Parser {
             }
             assembledToken += (currentToken + " ");
         }
+
         return assembledToken.trim();
     }
 
     public String parseDescription(String[] userInputArray) {
-        boolean hasEncounteredOtherParameter = false;
         String assembledDescription = "";
 
         for (int i = 1; i < userInputArray.length; i++) {
