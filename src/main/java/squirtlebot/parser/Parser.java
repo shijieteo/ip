@@ -37,6 +37,7 @@ public class Parser {
         commandMap.put("list", x -> new ListCommand());
         commandMap.put("find", x -> new FindCommand(x));
         commandMap.put("delete", x -> new DeleteCommand(x));
+        commandMap.put("confirm", x -> new ConfirmEventDateCommand(x));
     }
 
     /**
