@@ -57,10 +57,15 @@ public class Parser {
     public String parseTokens(String[] userInputArray, String expectedToken) {
         boolean isExpectedTokenIdentified = false;
         String assembledToken = "";
+
         for (String currentToken : userInputArray) {
+            boolean isDoneReadingExpectedToken = currentToken.startsWith("/") && isExpectedTokenIdentified;
+
             if (currentToken.equals(expectedToken)) {
                 isExpectedTokenIdentified = true;
                 continue;
+            } else if (isDoneReadingExpectedToken) {
+                break;
             } else if (currentToken.startsWith("/")) {
                 isExpectedTokenIdentified = false;
             }
@@ -70,11 +75,11 @@ public class Parser {
             }
             assembledToken += (currentToken + " ");
         }
+
         return assembledToken.trim();
     }
 
     public String parseDescription(String[] userInputArray) {
-        boolean hasEncounteredOtherParameter = false;
         String assembledDescription = "";
 
         for (int i = 1; i < userInputArray.length; i++) {
