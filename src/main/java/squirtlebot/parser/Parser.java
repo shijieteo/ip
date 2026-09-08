@@ -10,6 +10,7 @@ import squirtlebot.command.AddDeadlineCommand;
 import squirtlebot.command.AddEventCommand;
 import squirtlebot.command.AddToDoCommand;
 import squirtlebot.command.Command;
+import squirtlebot.command.ConfirmEventDateCommand;
 import squirtlebot.command.DeleteCommand;
 import squirtlebot.command.ExitCommand;
 import squirtlebot.command.FindCommand;
