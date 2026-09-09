@@ -34,10 +34,14 @@ public class AddToDoCommand extends Command {
      */
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) {
+        int sizeBeforeAdding = taskList.size();
+
         ToDo toDoTask = new ToDo(taskDescription);
         taskList.add(toDoTask);
 
         super.updateStorage(taskList, storage);
+
+        assert sizeBeforeAdding == taskList.size() - 1;
 
         ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n\t"
                 + "You now have %d tasks", toDoTask, taskList.size()));
