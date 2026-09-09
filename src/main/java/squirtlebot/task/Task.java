@@ -24,6 +24,10 @@ public abstract class Task implements Serializable {
         this.isDone = isDone;
     }
 
+    public boolean isDone() {
+        return isDone;
+    }
+
     @Override
     public String toString() {
         return String.format("[%s] %s", isDone ? "X" : " ", taskDescription);
