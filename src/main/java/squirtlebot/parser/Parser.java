@@ -22,6 +22,8 @@ import squirtlebot.command.UnmarkCommand;
  * Parses user input strings to identify the command the user would like to execute
  */
 public class Parser {
+    private static final int NUMBER_OF_COMMANDS = 10;
+
     private final HashMap<String, Function<String[], Command>> commandMap = new HashMap<>();
 
     /**
@@ -39,6 +41,9 @@ public class Parser {
         commandMap.put("find", x -> new FindCommand(x));
         commandMap.put("delete", x -> new DeleteCommand(x));
         commandMap.put("confirm", x -> new ConfirmEventDateCommand(x));
+
+        assert commandMap.size() == NUMBER_OF_COMMANDS;
+        assert commandMap.values().stream().allMatch(function -> function != null);
     }
 
     /**
@@ -52,6 +57,9 @@ public class Parser {
         String commandString = userInputArray[0];
         Function<String[], Command> commandFunction = Optional.ofNullable(commandMap.get(commandString))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid command"));
+
+        assert commandFunction != null;
+        
         return commandFunction.apply(userInputArray);
     }
 
