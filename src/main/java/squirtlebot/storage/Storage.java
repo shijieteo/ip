@@ -37,6 +37,7 @@ public class Storage {
      * @throws IOException if an I/O error was encountered while opening the data file
      */
     public TaskList loadData() throws ClassNotFoundException, IOException {
+        assert !isDisabled;
         TaskList loadedTasks = new TaskList();
         try (FileInputStream fileInputStream = new FileInputStream(FILE_LOCATION);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
@@ -53,6 +54,9 @@ public class Storage {
      * Deletes the data file and creates a new data file
      */
     public void resetData() {
+        if (isDisabled) {
+            return;
+        }
         File dataFile = new File(FILE_LOCATION);
         dataFile.delete();
         createDataFile();
