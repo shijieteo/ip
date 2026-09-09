@@ -45,9 +45,13 @@ public class AddEventCommand extends Command {
      * @throws RuntimeException if an issue was encountered while attempting to write to storage
      */
     public void execute(TaskList taskList, Ui ui, Storage storage) {
+        int sizeBeforeAdding = taskList.size();
+
         taskList.add(eventToAdd);
 
         super.updateStorage(taskList, storage);
+
+        assert sizeBeforeAdding == taskList.size() - 1;
 
         ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n\t"
                 + "You now have %d tasks", eventToAdd, taskList.size()));

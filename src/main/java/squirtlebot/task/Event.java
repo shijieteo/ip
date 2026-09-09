@@ -12,16 +12,27 @@ import squirtlebot.TemporalPair;
  */
 public class Event extends Task {
     private ArrayList<TemporalPair> possibleSchedules;
+    private boolean isDateConfirmed;
 
     public Event(String taskDescription, ArrayList<TemporalPair> possibleSchedules) {
         super(taskDescription);
         this.possibleSchedules = possibleSchedules;
+        if (possibleSchedules.size() > 1) {
+            isDateConfirmed = false;
+        } else if (possibleSchedules.size() == 1) {
+            isDateConfirmed = true;
+        }
     }
 
     public void confirmEventDate(int index) {
+        if (isDateConfirmed) {
+            return;
+        }
         TemporalPair confirmedDate = possibleSchedules.get(index);
         possibleSchedules = new ArrayList<>();
         possibleSchedules.add(confirmedDate);
+
+        assert possibleSchedules.size() == 1;
     }
 
     @Override

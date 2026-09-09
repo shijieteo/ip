@@ -39,10 +39,14 @@ public class AddDeadlineCommand extends Command {
      */
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) {
+        int sizeBeforeAdding = taskList.size();
+
         Deadline deadlineTask = new Deadline(taskDescription, dueDate);
         taskList.add(deadlineTask);
 
         super.updateStorage(taskList, storage);
+
+        assert sizeBeforeAdding == taskList.size() - 1;
 
         ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n\t"
                 + "You now have %d tasks", deadlineTask, taskList.size()));
