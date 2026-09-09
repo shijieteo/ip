@@ -30,8 +30,12 @@ public class DeleteCommand extends Command {
      * @throws RuntimeException if an issue was encountered while attempting to write to storage
      */
     public void execute(TaskList taskList, Ui ui, Storage storage) {
+        int sizeBeforeRemoval = taskList.size();
+
         Task removedTask = taskList.remove(index);
         ui.setSavedMessage(String.format("\tThe following task was removed:\n\t %s", removedTask));
+
+        assert sizeBeforeRemoval == taskList.size() + 1;
 
         super.updateStorage(taskList, storage);
     }

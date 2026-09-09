@@ -33,7 +33,9 @@ public class MarkCommand extends Command {
         markedTask.setIsDone(true);
 
         super.updateStorage(taskList, storage);
-        
+
+        assert markedTask.isDone();
+
         ui.setSavedMessage(String.format("\tCongrats on completing the following task:\n\t %s", markedTask));
 
     }
