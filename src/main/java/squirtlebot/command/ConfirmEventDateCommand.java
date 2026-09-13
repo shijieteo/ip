@@ -6,25 +6,53 @@ import squirtlebot.task.Task;
 import squirtlebot.task.TaskList;
 import squirtlebot.ui.Ui;
 
+
+/**
+ * Represents the confirm command in {@code SquirtleBot}, allowing users to
+ * confirm a single start/end date for an event
+ */
 public class ConfirmEventDateCommand extends Command {
     private int tasksIndex;
     private int confirmedDateIndex;
 
+
+    /**
+     * Constructs a new ConfirmEventDateCommand using inputs provided by a user
+     *
+     * @param userInputArray array containing user inputs required to confirm the date of an event
+     */
     public ConfirmEventDateCommand(String[] userInputArray) {
         setAttributes(userInputArray);
     }
 
+    /**
+     * Retrieves the event to confirm from the task list<br>
+     * Verifies if the selected task is an Event<br>
+     * Sets the date of the event according to user's input
+     *
+     * @param taskList list containing tasks created previously by the user
+     * @param ui interface used to display output to the user
+     * @param storage storage handler used to persist changes made by the command
+     */
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         Task task = taskList.get(tasksIndex);
         if (!(task instanceof Event eventToConfirm)) {
             throw new IllegalArgumentException("Selected event was not an Event!");
         }
+
         eventToConfirm.confirmEventDate(confirmedDateIndex);
+
         ui.setSavedMessage("Event updated:\n" + eventToConfirm);
+
         updateStorage(taskList, storage);
     }
 
+    /**
+     * Extracts 2 indices required to confirm the date for an event.
+     *
+     * @param userInputArray array containing 2 indices required to confirm an event's date
+     */
     private void setAttributes(String[] userInputArray) {
         try {
             tasksIndex = Integer.parseInt(userInputArray[1]) - 1;

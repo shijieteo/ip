@@ -16,7 +16,6 @@ import squirtlebot.ui.Ui;
 
 /**
  * Represents the event command within <code>SquirtleBot</code>
- * Contains the values required to create an Event object
  */
 public class AddEventCommand extends Command {
     private static final String INVALID_DATETIME_FORMAT_MESSAGE = "Invalid date/datetime detected!";
@@ -35,9 +34,9 @@ public class AddEventCommand extends Command {
     }
 
     /**
-     * Creates an Event object based off user-provided
-     * values and adds to an existing task list
-     * Updates user on current state of the task list
+     * Adds the previously created Event object to the list of tasks
+     * Updates storage to reflect the newly added Event
+     * Uses Ui to store a message reflecting the newly added task
      *
      * @param taskList list containing tasks created previously by the user
      * @param ui interface used to display output to the user
@@ -58,8 +57,9 @@ public class AddEventCommand extends Command {
     }
 
     /**
-     * Extracts <code>taskDescription</code>, <code>startDate</code>
-     * and <code>endDate</code> from the array of user inputs
+     * Extracts <code>taskDescription</code> and start and end date pairs from the user input.
+     * Queries dateParser repeatedly to parse possible start and end dates
+     * Creates the event object to be added when executed
      *
      * @param userInputArray array containing user inputs required to create an Event object
      * @throws IllegalArgumentException if any of taskDescription, startDate or endDate is empty

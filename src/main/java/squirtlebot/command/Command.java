@@ -31,6 +31,13 @@ public abstract class Command {
         return false;
     }
 
+    /**
+     * Updates storage file by writing the curernt {@code tasks} to it<br>
+     * Common implementation used across different commands
+     *
+     * @param tasks list of tasks to be written to storage
+     * @param storage interface for storage-related operations
+     */
     protected void updateStorage(TaskList tasks, Storage storage) {
         try {
             storage.writeData(tasks);

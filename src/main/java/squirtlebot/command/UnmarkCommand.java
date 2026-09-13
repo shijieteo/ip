@@ -21,7 +21,7 @@ public class UnmarkCommand extends Command {
     }
 
     /**
-     * Unmarks the task in the task list at the user-supplied index
+     * Unmarks the task in the task list at the user-supplied index<br>
      * Displays a confirmation text to the user on command executed
      *
      * @param taskList list containing tasks created previously by the user

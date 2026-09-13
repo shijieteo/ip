@@ -22,9 +22,7 @@ public class ExitCommand extends Command {
     }
 
     /**
-     * Indicates whether the user-issued command was to exit the program
-     *
-     * @return true as this is the exit command
+     * {inheritDoc}
      */
     @Override
     public boolean shouldExit() {

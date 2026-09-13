@@ -8,7 +8,6 @@ import squirtlebot.ui.Ui;
 
 /**
  * Represents the todo command within <code>SquirtleBot</code>
- * Contains the values required to create a ToDo object
  */
 public class AddToDoCommand extends Command {
     private String taskDescription;
@@ -24,7 +23,7 @@ public class AddToDoCommand extends Command {
 
     /**
      * Creates a ToDo object based off user-provided
-     * values and adds to an existing task list
+     * values and adds to an existing task list<br>
      * Updates user on current state of the task list
      *
      * @param taskList list containing tasks created previously by the user
@@ -48,7 +47,7 @@ public class AddToDoCommand extends Command {
     }
 
     /**
-     * Reassembles user input that was previously split to form task description for ToDo object
+     * Reassembles user input to form task description for ToDo object
      *
      * @param userInputArray array containing user inputs required to create a ToDo object
      * @throws IllegalArgumentException if taskDescription is empty

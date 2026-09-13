@@ -22,7 +22,7 @@ public class FindCommand extends Command {
     }
 
     /**
-     * Filters the task list for tasks containing the user-supplied string
+     * Filters the task list for tasks containing the user-supplied string<br>
      * Displays the filtered tasks to the user
      *
      * @param taskList list containing tasks created previously by the user
@@ -32,7 +32,7 @@ public class FindCommand extends Command {
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         TaskList filteredList = new TaskList(taskList.stream().filter(x -> x.toString()
                 .contains(searchPattern)).toList());
-        ui.listTasks(filteredList);
+        ui.setSavedMessage(filteredList.toString());
     }
 
     /**
