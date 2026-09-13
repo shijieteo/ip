@@ -49,6 +49,24 @@ public class ConfirmEventDateCommand extends Command {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof ConfirmEventDateCommand otherConfirmEventDateCommand) {
+            boolean areTasksIndicesEqual = tasksIndex == otherConfirmEventDateCommand.tasksIndex;
+            boolean areConfirmedDateIndicesEqual = confirmedDateIndex
+                    == otherConfirmEventDateCommand.confirmedDateIndex;
+
+            return areTasksIndicesEqual && areConfirmedDateIndicesEqual;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Extracts 2 indices required to confirm the date for an event.
      *
      * @param userInputArray array containing 2 indices required to confirm an event's date

@@ -98,6 +98,9 @@ public class GuiMainWindow extends AnchorPane {
         addBotMessageToDisplay(squirtleBot.getWelcomeMessage());
     }
 
+    /**
+     * Adds message to prompt user for decision after encountering storage issues
+     */
     public void promptOnStorageIssue() {
         isAwaitingStorageDecision = true;
         addBotMessageToDisplay(SquirtleBot.STORAGE_ISSUE_PROMPT);

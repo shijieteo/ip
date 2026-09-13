@@ -57,7 +57,6 @@ public class Parser {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid command"));
 
         assert commandFunction != null;
-        
         return commandFunction.apply(userInputArray);
     }
 
@@ -106,7 +105,7 @@ public class Parser {
 
         for (int i = 1; i < userInputArray.length; i++) {
             String currentText = userInputArray[i];
-            if(currentText.startsWith("/")) {
+            if (currentText.startsWith("/")) {
                 break;
             }
             assembledDescription += (currentText + " ");

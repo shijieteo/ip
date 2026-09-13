@@ -10,7 +10,7 @@ import squirtlebot.ui.Ui;
  * Represents the todo command within <code>SquirtleBot</code>
  */
 public class AddToDoCommand extends Command {
-    private String taskDescription;
+    private ToDo toDoToAdd;
 
     /**
      * Constructs a new AddToDoCommand using inputs provided by a user
@@ -22,8 +22,7 @@ public class AddToDoCommand extends Command {
     }
 
     /**
-     * Creates a ToDo object based off user-provided
-     * values and adds to an existing task list<br>
+     * Adds previously created ToDo task to existing task list.
      * Updates user on current state of the task list
      *
      * @param taskList list containing tasks created previously by the user
@@ -35,19 +34,33 @@ public class AddToDoCommand extends Command {
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         int sizeBeforeAdding = taskList.size();
 
-        ToDo toDoTask = new ToDo(taskDescription);
-        taskList.add(toDoTask);
+        taskList.add(toDoToAdd);
 
         super.updateStorage(taskList, storage);
 
         assert sizeBeforeAdding == taskList.size() - 1;
 
         ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n\t"
-                + "You now have %d tasks", toDoTask, taskList.size()));
+                + "You now have %d tasks", toDoToAdd, taskList.size()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof AddToDoCommand otherAddToDoCommand) {
+            return toDoToAdd.equals(otherAddToDoCommand.toDoToAdd);
+        } else {
+            return false;
+        }
     }
 
     /**
      * Reassembles user input to form task description for ToDo object
+     * Creates ToDo task according to user input
      *
      * @param userInputArray array containing user inputs required to create a ToDo object
      * @throws IllegalArgumentException if taskDescription is empty
@@ -55,10 +68,12 @@ public class AddToDoCommand extends Command {
     private void setAttributes(String[] userInputArray) {
         Parser parser = new Parser();
 
-        taskDescription = parser.parseDescription(userInputArray);
+        String taskDescription = parser.parseDescription(userInputArray);
 
         if (taskDescription.isEmpty()) {
             throw new IllegalArgumentException("Please provide the correct arguments for ToDo!");
         }
+
+        this.toDoToAdd = new ToDo(taskDescription);
     }
 }

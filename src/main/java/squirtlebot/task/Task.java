@@ -29,6 +29,18 @@ public abstract class Task implements Serializable {
         return isDone;
     }
 
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof Task otherTask) {
+            return this.taskDescription.equals(otherTask.taskDescription)
+                    && this.isDone.equals(otherTask.isDone);
+        } else {
+            return false;
+        }
+    }
+
     /**
      * {@inheritDoc}
      */

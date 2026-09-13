@@ -19,6 +19,20 @@ public class ToDo extends Task {
      * {@inheritDoc}
      */
     @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof ToDo otherToDo) {
+            return super.equals(otherToDo);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String toString() {
         return String.format("[T] %s", super.toString());
     }

@@ -40,6 +40,20 @@ public class DeleteCommand extends Command {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof DeleteCommand otherDeleteCommand) {
+            return index == otherDeleteCommand.index;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Extracts the index to delete from an array of user inputs
      *
      * @param userInputArray array containing the task list index to delete from
@@ -49,7 +63,7 @@ public class DeleteCommand extends Command {
         try {
             index = Integer.parseInt(userInputArray[1]) - 1;
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("Please enter a valid index :( ");
+            throw new NumberFormatException("Please enter a valid index :(");
         }
     }
 }

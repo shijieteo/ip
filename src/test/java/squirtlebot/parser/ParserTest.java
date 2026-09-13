@@ -1,0 +1,56 @@
+package squirtlebot.parser;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.Test;
+
+import squirtlebot.command.AddDeadlineCommand;
+import squirtlebot.command.AddToDoCommand;
+import squirtlebot.command.MarkCommand;
+
+/**
+ * Tests command, description, and token parsing performed by {@link Parser}.
+ */
+public class ParserTest {
+    private final Parser parser = new Parser();
+
+    @Test
+    public void parseCommand_validCommands_returnsMatchingCommand() {
+        assertEquals(new AddToDoCommand(new String[]{"todo", "read", "book"}),
+                parser.parseCommand("todo read book"));
+        assertEquals(new AddDeadlineCommand(new String[]{"deadline", "submit", "report", "/by", "01-10-2026"}),
+                parser.parseCommand("deadline submit report /by 01-10-2026"));
+        assertEquals(new MarkCommand(new String[]{"mark", "2"}), parser.parseCommand("mark 2"));
+    }
+
+    @Test
+    public void parseCommand_unknownCommand_throwsIllegalArgumentException() {
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class, () -> parser.parseCommand("remind read book"));
+
+        assertEquals("Invalid command", exception.getMessage());
+    }
+
+    @Test
+    public void parseDescription_inputWithParameters_returnsTextBeforeFirstParameter() {
+        String[] input = "deadline submit project report /by 13-09-2026".split(" ");
+
+        assertEquals("submit project report", parser.parseDescription(input));
+    }
+
+    @Test
+    public void parseTokens_multipleParameters_returnsOnlyExpectedTokenValue() {
+        String[] input = "event workshop /from 13-09-2026 10:00:00 /to 13-09-2026 12:00:00".split(" ");
+
+        assertEquals("13-09-2026 10:00:00", parser.parseTokens(input, "/from"));
+        assertEquals("13-09-2026 12:00:00", parser.parseTokens(input, "/to"));
+    }
+
+    @Test
+    public void parseTokens_missingExpectedToken_returnsEmptyString() {
+        String[] input = "deadline submit report /by 13-09-2026".split(" ");
+
+        assertEquals("", parser.parseTokens(input, "/from"));
+    }
+}

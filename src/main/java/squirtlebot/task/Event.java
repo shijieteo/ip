@@ -1,7 +1,5 @@
 package squirtlebot.task;
 
-import java.time.temporal.Temporal;
-
 import java.util.ArrayList;
 
 import squirtlebot.TemporalPair;
@@ -52,10 +50,28 @@ public class Event extends Task {
      * {@inheritDoc}
      */
     @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof Event otherEvent) {
+            boolean arePossibleSchedulesEqual = possibleSchedules.equals(otherEvent.possibleSchedules);
+            boolean areDateConfirmedEqual = isDateConfirmed == otherEvent.isDateConfirmed;
+            boolean areTaskAttributesEqual = super.equals(otherEvent);
+
+            return arePossibleSchedulesEqual && areDateConfirmedEqual && areTaskAttributesEqual;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String toString() {
         String schedulesDisplays = possibleSchedules.stream()
                 .map(x -> String.format("from: %s to: %s", x.startDate(), x.endDate()))
-                .reduce("", (x,y) -> x + "\n\t" + y)
+                .reduce("", (x, y) -> x + "\n\t" + y)
                 .trim();
         return String.format("[E] %s \nPossible Schedules: \n\t%s", super.toString(), schedulesDisplays);
     }

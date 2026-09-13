@@ -1,6 +1,5 @@
 package squirtlebot.command;
 
-import java.lang.reflect.Array;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,6 +56,20 @@ public class AddEventCommand extends Command {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof AddEventCommand otherAddEventCommand) {
+            return eventToAdd.equals(otherAddEventCommand.eventToAdd);
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Extracts <code>taskDescription</code> and start and end date pairs from the user input.
      * Queries dateParser repeatedly to parse possible start and end dates
      * Creates the event object to be added when executed
@@ -91,7 +104,7 @@ public class AddEventCommand extends Command {
                     return new TemporalPair(startTemporal, endTemporal);
                 }).forEach(x -> possibleSchedules.add(x));
 
-        if(taskDescription.isEmpty() || possibleSchedules.isEmpty()) {
+        if (taskDescription.isEmpty() || possibleSchedules.isEmpty()) {
             throw new IllegalArgumentException("Please provide the correct arguments for Event!");
         }
 

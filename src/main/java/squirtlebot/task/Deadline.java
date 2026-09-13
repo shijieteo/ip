@@ -24,6 +24,23 @@ public class Deadline extends Task {
      * {@inheritDoc}
      */
     @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof Deadline otherDeadline) {
+            boolean areDueDatesEqual = dueDate.equals(otherDeadline.dueDate);
+            boolean areTaskAttributesEqual = super.equals(otherDeadline);
+
+            return areDueDatesEqual && areTaskAttributesEqual;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String toString() {
         return String.format("[D] %s (by: %s)", super.toString(), dueDate);
     }

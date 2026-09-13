@@ -16,16 +16,29 @@ import squirtlebot.task.TaskList;
  * Uses <code>data/Tasks.ser</code> as system file for read-write operations
  */
 public class Storage {
-    private static final String FILE_LOCATION = "data/Tasks.ser";
-    private static final String DIRECTORY_NAME = "data";
+    private static final String DEFAULT_FILE_LOCATION = "data/Tasks.ser";
 
     private boolean isDisabled;
+    private final String fileLocation;
+    private final String directoryName;
 
     /**
-     * Constructs a storage object
+     * Constructs a storage object using default file locations
      */
     public Storage() {
+        this(DEFAULT_FILE_LOCATION);
+    }
+
+    /**
+     * Constructs a storage object that persists data at the specified location.
+     *
+     * @param fileLocation path of the file used to store tasks
+     */
+    public Storage(String fileLocation) {
         isDisabled = false;
+        this.fileLocation = fileLocation;
+        File parentDirectory = new File(fileLocation).getParentFile();
+        this.directoryName = parentDirectory == null ? "." : parentDirectory.getPath();
     }
 
     /**
@@ -39,7 +52,7 @@ public class Storage {
     public TaskList loadData() throws ClassNotFoundException, IOException {
         assert !isDisabled;
         TaskList loadedTasks = new TaskList();
-        try (FileInputStream fileInputStream = new FileInputStream(FILE_LOCATION);
+        try (FileInputStream fileInputStream = new FileInputStream(fileLocation);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
             loadedTasks = (TaskList) objectInputStream.readObject();
         } catch (FileNotFoundException fileNotFoundException) {
@@ -57,7 +70,7 @@ public class Storage {
         if (isDisabled) {
             return;
         }
-        File dataFile = new File(FILE_LOCATION);
+        File dataFile = new File(fileLocation);
         dataFile.delete();
         createDataFile();
     }
@@ -81,21 +94,22 @@ public class Storage {
         }
         createDataFile();
 
-        FileOutputStream fileOutputStream = new FileOutputStream(FILE_LOCATION);
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-        objectOutputStream.writeObject(taskList);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(fileLocation);
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+            objectOutputStream.writeObject(taskList);
+        }
     }
 
     /**
-     * Creates data file at {@link #FILE_LOCATION}
+     * Creates the configured data file
      * Creates data directory if it does not already exist
      */
     private void createDataFile() {
         if (isDisabled) {
             return;
         }
-        File dataFile = new File(FILE_LOCATION);
-        File directory = new File(DIRECTORY_NAME);
+        File dataFile = new File(fileLocation);
+        File directory = new File(directoryName);
         if (!directory.exists()) {
             directory.mkdirs();
         }
@@ -106,4 +120,5 @@ public class Storage {
             throw new RuntimeException(e);
         }
     }
+
 }

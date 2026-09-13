@@ -1,17 +1,20 @@
 package squirtlebot.parser;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.Optional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
+/**
+ * Tests supported and unsupported date and date-time formats.
+ */
 public class DateParserTest {
     @Test
-    public void parseDate_correctFormat_OptionalDateReturned() {
+    public void parseDate_correctFormat_optionalDateReturned() {
         DateParser parser = new DateParser();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate localDate = LocalDate.parse("01-01-1970", formatter);
@@ -19,13 +22,13 @@ public class DateParserTest {
     }
 
     @Test
-    public void parseDate_wrongFormat_OptionalEmptyReturned() {
+    public void parseDate_wrongFormat_optionalEmptyReturned() {
         DateParser parser = new DateParser();
         assertEquals(Optional.empty(), parser.parseTemporal("12 12 1970"));
     }
 
     @Test
-    public void parseDateTime_correctFormat_OptionalDateTimeReturned() {
+    public void parseDateTime_correctFormat_optionalDateTimeReturned() {
         DateParser parser = new DateParser();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         LocalDateTime localDate = LocalDateTime.parse("26-08-2026 23:59:01", formatter);
@@ -33,7 +36,7 @@ public class DateParserTest {
     }
 
     @Test
-    public void parseDateTime_wrongFormat_OptionalEmptyReturned() {
+    public void parseDateTime_wrongFormat_optionalEmptyReturned() {
         DateParser parser = new DateParser();
         assertEquals(Optional.empty(), parser.parseTemporal("01-01-1970-23:59"));
     }

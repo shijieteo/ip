@@ -41,6 +41,20 @@ public class MarkCommand extends Command {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof MarkCommand otherMarkCommand) {
+            return index == otherMarkCommand.index;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Extracts the index within task list to mark
      *
      * @param userInputArray array containing index in task list to mark
