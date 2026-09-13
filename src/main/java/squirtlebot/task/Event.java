@@ -52,6 +52,24 @@ public class Event extends Task {
      * {@inheritDoc}
      */
     @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof Event otherEvent) {
+            boolean arePossibleSchedulesEqual = possibleSchedules.equals(otherEvent.possibleSchedules);
+            boolean areDateConfirmedEqual = isDateConfirmed == otherEvent.isDateConfirmed;
+            boolean areTaskAttributesEqual = super.equals(otherEvent);
+
+            return arePossibleSchedulesEqual && areDateConfirmedEqual && areTaskAttributesEqual;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String toString() {
         String schedulesDisplays = possibleSchedules.stream()
                 .map(x -> String.format("from: %s to: %s", x.startDate(), x.endDate()))
