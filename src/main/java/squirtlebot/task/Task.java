@@ -13,6 +13,7 @@ public abstract class Task implements Serializable {
     /**
      * Constructs a new task with a task description
      * This constructor is intended to be used by subclasses of task to set task description
+     *
      * @param taskDescription a description of the task
      */
     public Task(String taskDescription) {
@@ -28,6 +29,9 @@ public abstract class Task implements Serializable {
         return isDone;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return String.format("[%s] %s", isDone ? "X" : " ", taskDescription);

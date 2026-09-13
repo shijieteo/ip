@@ -11,7 +11,6 @@ import squirtlebot.ui.Ui;
 
 /**
  * Represents the deadline command within <code>SquirtleBot</code>
- * Contains the values required to create a Deadline object
  */
 public class AddDeadlineCommand extends Command {
     private Temporal dueDate;
@@ -28,8 +27,8 @@ public class AddDeadlineCommand extends Command {
     }
 
     /**
-     * Creates a Deadline object based off user-provided
-     * values and adds to an existing task list
+     * Creates a Deadline object based off user-provided<br>
+     * values and adds to an existing task list<br>
      * Updates user on current state of task list
      *
      * @param taskList list containing tasks created previously by the user

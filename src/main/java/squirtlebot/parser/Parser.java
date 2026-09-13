@@ -1,8 +1,6 @@
 package squirtlebot.parser;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -27,7 +25,7 @@ public class Parser {
     private final HashMap<String, Function<String[], Command>> commandMap = new HashMap<>();
 
     /**
-     * Constructs a Parser object
+     * Constructs a Parser object<br>
      * Initializes <code>commandMap</code> to contain the various mappings of user input to command
      */
     public Parser() {
@@ -63,6 +61,14 @@ public class Parser {
         return commandFunction.apply(userInputArray);
     }
 
+    /**
+     * Scans user input for values belonging to a specified-token<br>
+     * Stops when it detects the start of other tokens, identified by a preceding "/" character
+     *
+     * @param userInputArray array containing user input to scan for tokens
+     * @param expectedToken token to identify values for
+     * @return values belonging to {@code expectedToken}
+     */
     public String parseTokens(String[] userInputArray, String expectedToken) {
         boolean isExpectedTokenIdentified = false;
         String assembledToken = "";
@@ -88,6 +94,13 @@ public class Parser {
         return assembledToken.trim();
     }
 
+    /**
+     * Scans user input for text belonging to a task's description<br>
+     * Stops upon reading tokens/parameters of a command, identified by a preceding "/" character
+     *
+     * @param userInputArray array of user inputs containing a task description
+     * @return text describing a task
+     */
     public String parseDescription(String[] userInputArray) {
         String assembledDescription = "";
 

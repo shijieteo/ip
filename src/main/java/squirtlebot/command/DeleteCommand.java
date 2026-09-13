@@ -7,7 +7,6 @@ import squirtlebot.ui.Ui;
 
 /**
  * Represents the delete command within <code>SquirtleBot</code>
- * Contains the values required to create a <code>DeleteCommand</code> object
  */
 public class DeleteCommand extends Command {
     private int index;
@@ -27,7 +26,7 @@ public class DeleteCommand extends Command {
      * @param taskList list containing tasks created previously by the user
      * @param ui interface used to display output to the user
      * @param storage storage handler used to persist changes made by the command
-     * @throws RuntimeException if an issue was encountered while attempting to write to storage
+     * @throws RuntimeException if an issue was encountered while writing to storage
      */
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         int sizeBeforeRemoval = taskList.size();

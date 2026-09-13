@@ -21,7 +21,7 @@ public class MarkCommand extends Command {
     }
 
     /**
-     * Marks the task in the task list at the user-provided index
+     * Marks the task in the task list at the user-provided index<br>
      * Displays a confirmation text to the user on command executed
      *
      * @param taskList list containing tasks created previously by the user

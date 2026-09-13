@@ -14,6 +14,13 @@ public class Event extends Task {
     private ArrayList<TemporalPair> possibleSchedules;
     private boolean isDateConfirmed;
 
+
+    /**
+     * Constructs a new Event object based on user-provided inputs
+     *
+     * @param taskDescription a description of the event
+     * @param possibleSchedules a list containing pairs of possible start/end dates for the event
+     */
     public Event(String taskDescription, ArrayList<TemporalPair> possibleSchedules) {
         super(taskDescription);
         this.possibleSchedules = possibleSchedules;
@@ -24,6 +31,12 @@ public class Event extends Task {
         }
     }
 
+    /**
+     * Confirms the date of an event, setting the possible start/end dates to only 1
+     *
+     * @param index 0-based integer indicating the start/end date
+     *              in the list of possible start/end dates to set as the confirmed date
+     */
     public void confirmEventDate(int index) {
         if (isDateConfirmed) {
             return;
@@ -35,6 +48,9 @@ public class Event extends Task {
         assert possibleSchedules.size() == 1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         String schedulesDisplays = possibleSchedules.stream()
