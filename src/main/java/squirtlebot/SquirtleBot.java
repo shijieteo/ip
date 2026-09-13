@@ -30,10 +30,8 @@ public class SquirtleBot {
 
     /**
      * Constructs a new instance of SquirtleBot
-     * @param isGuiSquirtleBot {@code true} if creating a GUI-based SquirtleBot;
-     *                     {@code false} otherwise.
      */
-    public SquirtleBot(boolean isGuiSquirtleBot) {
+    public SquirtleBot() {
         storage = new Storage();
         taskList = new TaskList();
         ui = new Ui();
@@ -67,8 +65,13 @@ public class SquirtleBot {
         }
     }
 
+    /**
+     * Launches SquirtleBot in CLI mode of operation
+     *
+     * @param args command-line arguments
+     */
     public static void main(String[] args) {
-        SquirtleBot squirtleBot = new SquirtleBot(false);
+        SquirtleBot squirtleBot = new SquirtleBot();
         squirtleBot.run();
     }
 
@@ -88,12 +91,15 @@ public class SquirtleBot {
         }
     }
 
+    /**
+     * Returns SquirtleBot's welcome message to be displayed to the user
+     */
     public String getWelcomeMessage() {
         return this.ui.getGuiWelcomeMessage();
     }
 
     /**
-     * Uses storage to initialize
+     * Loads previously stored tasks
      * @return {@code true} if storage was loaded correctly <br>
      *      {@code false} if storage was not loaded
      */
@@ -126,6 +132,12 @@ public class SquirtleBot {
         return new CommandResult(shouldExit, ui.getSavedMessage());
     }
 
+    /**
+     * Executes the command indicated by user input
+     *
+     * @param userInput string containing command to execute and parameters
+     * @return boolean value indicating whether user would like to exit
+     */
     private boolean executeCommand(String userInput) {
         boolean shouldExit = false;
         try {
@@ -144,6 +156,9 @@ public class SquirtleBot {
         return shouldExit;
     }
 
+    /**
+     * Disables storage instance, disallowing use of storage functionality
+     */
     public void disableStorage() {
         storage.disable();
     }
