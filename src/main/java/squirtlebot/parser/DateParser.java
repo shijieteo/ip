@@ -10,14 +10,14 @@ import java.util.Optional;
 
 /**
  * Parses user input strings to identify date or dateTime values
- * DateParser contains a set of date and dateTime formats that it accepts
+ * Contains a set of accepted date and datetime formats
  */
 public class DateParser {
     private List<String> dateFormatList;
     private List<String> dateTimeFormatList;
 
     /**
-     * Constructs a DateParser object
+     * Constructs a DateParser object<br>
      * Initializes the formats list to include all the date and dateTime formats it can parse
      */
     public DateParser() {
@@ -26,6 +26,13 @@ public class DateParser {
                 "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss");
     }
 
+    /**
+     * Attempts to convert user input strings into either a {@link LocalDate} or {@link LocalDateTime} object
+     *
+     * @param userInput user input containing date or datetime
+     * @return an {@link Optional} containing a date or datetime object as a {@link Temporal}
+     *              or an empty {@link Optional} if user input is not of a supported format
+     */
     public Optional<Temporal> parseTemporal(String userInput) {
         Optional<Temporal> optionalDate = parseDate(userInput);
         Optional<Temporal> optionalDateTime = parseDateTime(userInput);
