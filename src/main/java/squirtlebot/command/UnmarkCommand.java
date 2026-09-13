@@ -40,6 +40,20 @@ public class UnmarkCommand extends Command {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof UnmarkCommand otherUnmarkCommand) {
+            return index == otherUnmarkCommand.index;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Extracts the index in the task list to unmark
      *
      * @param userInputArray array containing user-supplied list index to unmark

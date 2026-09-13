@@ -40,6 +40,20 @@ public class DeleteCommand extends Command {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof DeleteCommand otherDeleteCommand) {
+            return index == otherDeleteCommand.index;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Extracts the index to delete from an array of user inputs
      *
      * @param userInputArray array containing the task list index to delete from

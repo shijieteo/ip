@@ -36,6 +36,20 @@ public class FindCommand extends Command {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof FindCommand otherFindCommand) {
+            return searchPattern.equals(otherFindCommand.searchPattern);
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Extracts string to be searched for within the task list
      *
      * @param userInputArray array containing user-supplied search string

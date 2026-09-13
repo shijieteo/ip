@@ -50,6 +50,20 @@ public class AddDeadlineCommand extends Command {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof AddDeadlineCommand otherAddDeadlineCommand) {
+            return deadlineToAdd.equals(otherAddDeadlineCommand.deadlineToAdd);
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Extracts <code>taskDescription</code> and <code>dueDate</code> from the array of user inputs
      * Creates deadline task to be added later
      *

@@ -45,6 +45,20 @@ public class AddToDoCommand extends Command {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof AddToDoCommand otherAddToDoCommand) {
+            return toDoToAdd.equals(otherAddToDoCommand.toDoToAdd);
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Reassembles user input to form task description for ToDo object
      * Creates ToDo task according to user input
      *
