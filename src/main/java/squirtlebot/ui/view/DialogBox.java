@@ -49,10 +49,24 @@ public class DialogBox extends HBox {
         dialog.getStyleClass().add("reply-label");
     }
 
+    /**
+     * Creates a dialog box to represent a user's message to the bot
+     *
+     * @param text message entered by user
+     * @param img image to represent the user
+     * @return {@link DialogBox} with user image and message formatted
+     */
     public static DialogBox getUserDialog(String text, Image img) {
         return new DialogBox(text, img);
     }
 
+    /**
+     * Creates a dialog box to represent a bot's message
+     *
+     * @param text message from the bot
+     * @param img image to represent the bot
+     * @return {@link DialogBox} with bot image and message formatted
+     */
     public static DialogBox getSquirtleBotDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();

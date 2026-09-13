@@ -15,8 +15,17 @@ import squirtlebot.ui.controller.GuiMainWindow;
  * <p>Loads the GuiMainWindow layout, initializes SquirtleBot then sends instance of SquirtleBot to controller</p>
  */
 public class GuiMain extends Application {
-    private SquirtleBot squirtleBot = new SquirtleBot(true);
+    private SquirtleBot squirtleBot = new SquirtleBot();
 
+    /**
+     * Initializes and displays SquirtleBot GUI, connects controller
+     * to application and loads saved tasks.
+     *
+     * @param stage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     */
     @Override
     public void start(Stage stage) {
         try {

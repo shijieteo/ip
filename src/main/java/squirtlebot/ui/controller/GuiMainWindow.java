@@ -12,12 +12,9 @@ import squirtlebot.SquirtleBot;
 import squirtlebot.ui.view.DialogBox;
 
 /**
- * Controls user interactions within SquirtleBot's GUI
- *
- * <p>
- *     Accepts user input, sending them to SquirtleBot for processing.<br>
- *     Displays both user input and SquirtleBot's response
- * </p>
+ * Controls user interactions within SquirtleBot's GUI<br>
+ * Accepts user input, sending them to SquirtleBot for processing.<br>
+ * Displays both user input and SquirtleBot's response
  */
 public class GuiMainWindow extends AnchorPane {
     @FXML
@@ -35,15 +32,29 @@ public class GuiMainWindow extends AnchorPane {
     private final Image botImage = new Image(this.getClass().getResourceAsStream("/images/squirtle.jpg"));
     private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/user.png"));
 
+
+    /**
+     * Initializes GUI by binding scroll position to dialog container's height <br>
+     * Ensures scroll pane automatically shows the latest message
+     */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
+
+    /**
+     * Sets instance of {@link SquirtleBot} to be used for handling logic of the bot
+     *
+     * @param squirtleBot SquirtleBot instance to be used
+     */
     public void setSquirtleBot(SquirtleBot squirtleBot) {
         this.squirtleBot = squirtleBot;
     }
 
+    /**
+     * Extracts user input from dialog box, sends to {@link SquirtleBot} to retrieve response
+     */
     @FXML
     private void handleUserInput() {
         if (isAwaitingStorageDecision) {
@@ -61,6 +72,9 @@ public class GuiMainWindow extends AnchorPane {
         userInput.clear();
     }
 
+    /**
+     * Checks if user wants to continue without storage features
+     */
     private void handleStorageDecision() {
         String storageDecision = userInput.getText();
         if (storageDecision.equals("Y")) {
@@ -89,10 +103,16 @@ public class GuiMainWindow extends AnchorPane {
         addBotMessageToDisplay(SquirtleBot.STORAGE_ISSUE_PROMPT);
     }
 
+    /**
+     * Adds bot's message as dialog box to dialog container
+     */
     private void addBotMessageToDisplay(String botMessage) {
         dialogContainer.getChildren().add(DialogBox.getSquirtleBotDialog(botMessage, botImage));
     }
 
+    /**
+     * Adds user's message as dialog box to dialog container
+     */
     private void addUserMessageToDisplay(String userInput) {
         dialogContainer.getChildren().add(DialogBox.getUserDialog(userInput, userImage));
     }
