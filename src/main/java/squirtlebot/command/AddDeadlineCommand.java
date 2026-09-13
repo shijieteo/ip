@@ -13,8 +13,7 @@ import squirtlebot.ui.Ui;
  * Represents the deadline command within <code>SquirtleBot</code>
  */
 public class AddDeadlineCommand extends Command {
-    private Temporal dueDate;
-    private String taskDescription;
+    private Deadline deadlineToAdd;
 
 
     /**
@@ -40,19 +39,19 @@ public class AddDeadlineCommand extends Command {
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         int sizeBeforeAdding = taskList.size();
 
-        Deadline deadlineTask = new Deadline(taskDescription, dueDate);
-        taskList.add(deadlineTask);
+        taskList.add(deadlineToAdd);
 
         super.updateStorage(taskList, storage);
 
         assert sizeBeforeAdding == taskList.size() - 1;
 
         ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n\t"
-                + "You now have %d tasks", deadlineTask, taskList.size()));
+                + "You now have %d tasks", deadlineToAdd, taskList.size()));
     }
 
     /**
      * Extracts <code>taskDescription</code> and <code>dueDate</code> from the array of user inputs
+     * Creates deadline task to be added later
      *
      * @param userInputArray array containing user inputs required to create a Deadline object
      * @throws IllegalArgumentException if dueDate or taskDescription is empty,
@@ -62,17 +61,17 @@ public class AddDeadlineCommand extends Command {
         Parser parser = new Parser();
 
         String taskDescription = parser.parseDescription(userInputArray);
-        String dueDate = parser.parseTokens(userInputArray, "/by");
+        String dueDateString = parser.parseTokens(userInputArray, "/by");
 
-        if (dueDate.isEmpty() || taskDescription.isEmpty()) {
+        if (dueDateString.isEmpty() || taskDescription.isEmpty()) {
             throw new IllegalArgumentException("Please provide the correct arguments for Deadline!");
         }
 
         DateParser dateParser = new DateParser();
-
-        this.taskDescription = taskDescription;
-        this.dueDate = dateParser.parseTemporal(dueDate)
+        Temporal dueDateTemporal = dateParser.parseTemporal(dueDateString)
                 .orElseThrow(() -> new IllegalArgumentException("Please enter a valid due date/datetime!"));
+
+        deadlineToAdd = new Deadline(taskDescription, dueDateTemporal);
 
     }
 }
