@@ -63,7 +63,7 @@ public class DeleteCommand extends Command {
         try {
             index = Integer.parseInt(userInputArray[1]) - 1;
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("Please enter a valid index :( ");
+            throw new NumberFormatException("Please enter a valid index :(");
         }
     }
 }
