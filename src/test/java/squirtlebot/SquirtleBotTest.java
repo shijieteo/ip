@@ -76,10 +76,16 @@ public class SquirtleBotTest {
 
         @Override
         public TaskList loadData() throws IOException, ClassNotFoundException {
-            switch (exceptionType) {
-                case IO_EXCEPTION -> throw new IOException("");
-                case CLASS_NOT_FOUND -> throw new ClassNotFoundException("");
-                case INVALID_CLASS -> throw new InvalidClassException("");
+            loadCount += 1;
+            if (remainingLoadFailures > 0) {
+                remainingLoadFailures -= 1;
+                switch (exceptionType) {
+                    case IO_EXCEPTION -> throw new IOException("");
+                    case CLASS_NOT_FOUND -> throw new ClassNotFoundException("");
+                    case INVALID_CLASS -> throw new InvalidClassException("");
+                    case NONE -> { }
+                    default -> throw new AssertionError("Unexpected exception type");
+                }
             }
 
             return tasks;
@@ -147,5 +153,95 @@ public class SquirtleBotTest {
 
         assertTrue(result.shouldExit());
         assertEquals("Bye. Hope to see you soon :(", result.message());
+    }
+
+    @Test
+    public void initializeTasks_loadSucceeds_usesStoredTasks() {
+        TaskList storedTasks = new TaskList();
+        storedTasks.add(new ToDo("stored task"));
+        FakeStorage storage = new FakeStorage(storedTasks, ExceptionType.NONE);
+        SquirtleBot testBot = createBot(storage, new FakeUi(new ArrayList<>()));
+
+        assertTrue(testBot.initializeTasks());
+        assertEquals("1. [T] [ ] stored task", testBot.getResponse("list").message());
+        assertEquals(1, storage.loadCount);
+    }
+
+    @Test
+    public void initializeTasks_ioException_returnsFalse() {
+        FakeStorage storage = new FakeStorage(new TaskList(), ExceptionType.IO_EXCEPTION);
+        SquirtleBot testBot = createBot(storage, new FakeUi(new ArrayList<>()));
+
+        assertFalse(testBot.initializeTasks());
+        assertEquals(1, storage.loadCount);
+        assertEquals(0, storage.resetCount);
+    }
+
+    @Test
+    public void initializeTasks_classNotFound_returnsFalse() {
+        FakeStorage storage = new FakeStorage(new TaskList(), ExceptionType.CLASS_NOT_FOUND);
+        SquirtleBot testBot = createBot(storage, new FakeUi(new ArrayList<>()));
+
+        assertFalse(testBot.initializeTasks());
+        assertEquals(1, storage.loadCount);
+        assertEquals(0, storage.resetCount);
+    }
+
+    @Test
+    public void initializeTasks_invalidClassThenSuccess_resetsAndRetries() {
+        FakeStorage storage = new FakeStorage(new TaskList(), ExceptionType.INVALID_CLASS, 2);
+        SquirtleBot testBot = createBot(storage, new FakeUi(new ArrayList<>()));
+
+        assertTrue(testBot.initializeTasks());
+        assertEquals(3, storage.loadCount);
+        assertEquals(2, storage.resetCount);
+    }
+
+    @Test
+    public void run_storageLoads_processesCommandsUntilBye() {
+        TaskList storedTasks = new TaskList();
+        storedTasks.add(new ToDo("stored task"));
+        FakeStorage storage = new FakeStorage(storedTasks, ExceptionType.NONE);
+        FakeUi ui = new FakeUi(new ArrayList<>(List.of("list", "bye")));
+        SquirtleBot testBot = createBot(storage, ui);
+
+        testBot.run();
+
+        assertEquals(1, ui.bannerCount);
+        assertEquals(List.of("1. [T] [ ] stored task", "Bye. Hope to see you soon :("),
+                ui.printedMessages);
+    }
+
+    @Test
+    public void run_storageFailsAndUserDeclines_stopsInteraction() {
+        FakeStorage storage = new FakeStorage(new TaskList(), ExceptionType.IO_EXCEPTION);
+        FakeUi ui = new FakeUi(new ArrayList<>(List.of("N")));
+        SquirtleBot testBot = createBot(storage, ui);
+
+        testBot.run();
+
+        assertEquals(1, ui.bannerCount);
+        assertFalse(storage.isDisabled);
+        assertEquals(List.of(SquirtleBot.STORAGE_ISSUE_PROMPT), ui.printedMessages);
+    }
+
+    @Test
+    public void run_storageFailsAndUserContinues_disablesStorageAndRuns() {
+        FakeStorage storage = new FakeStorage(new TaskList(), ExceptionType.IO_EXCEPTION);
+        FakeUi ui = new FakeUi(new ArrayList<>(List.of("Y", "todo new task", "bye")));
+        SquirtleBot testBot = createBot(storage, ui);
+
+        testBot.run();
+
+        assertTrue(storage.isDisabled);
+        assertEquals(1, storage.writeCount);
+        assertEquals(SquirtleBot.STORAGE_ISSUE_PROMPT, ui.printedMessages.get(0));
+        assertEquals("added: [T] [ ] new task to your list of tasks\n\tYou now have 1 tasks",
+                ui.printedMessages.get(1));
+        assertEquals("Bye. Hope to see you soon :(", ui.printedMessages.get(2));
+    }
+
+    private SquirtleBot createBot(FakeStorage storage, FakeUi ui) {
+        return new SquirtleBot(storage, new TaskList(), new Parser(), ui);
     }
 }
