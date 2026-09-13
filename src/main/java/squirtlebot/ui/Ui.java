@@ -5,28 +5,23 @@ import java.util.Scanner;
 import squirtlebot.task.TaskList;
 
 /**
- * Handles user interaction such as reading input and printing messages when operating in {@code CLI} mode
- * <p>
- *     Helps to store messages to output when operating in {@code GUI} mode
- * </p>
+ * Handles user interaction such as reading input and printing messages
  */
 public class Ui {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
     private String savedMessage;
 
+
+    /**
+     * Constructs a new Ui
+     */
     public Ui() {
         savedMessage = "";
     }
 
-    public void listTasks(TaskList taskList) {
-        setSavedMessage(taskList.toString());
-    }
-
     /**
-     * Prints welcome banner for SquirtleBot
-     * <p>
-     *     Intended for use when operating in CLI-mode
-     * </p>
+     * Prints welcome banner for SquirtleBot. <br>
+     * Intended for use when operating in CLI-mode
      */
     public void printBanner() {
         String banner = """
@@ -67,25 +62,35 @@ public class Ui {
     }
 
     /**
-     * Prints output message between horizontal lines for formatting
-     * @param output message to display to user
+     * Updates saved message
+     *
+     * @param savedMessage new message to be saved
      */
-    public void setSavedMessage(String output) {
-        savedMessage = output;
+    public void setSavedMessage(String savedMessage) {
+        this.savedMessage = savedMessage;
     }
 
+    /**
+     * Displays the saved messaged between 2 horizontal lines for formatting
+     */
     public void printSavedMessage() {
         System.out.println(Ui.HORIZONTAL_LINE);
         System.out.println(savedMessage);
         System.out.println(Ui.HORIZONTAL_LINE);
     }
 
+    /**
+     * Returns saved message with trailing whitespace removed
+     *
+     * @return previously saved message
+     */
     public String getSavedMessage() {
         return savedMessage.trim();
     }
 
     /**
-     * Creates a scanner and reads the next line of user input
+     * Reads the next line of user input
+     *
      * @return string containing user's input
      */
     public String readInput() {
@@ -93,6 +98,10 @@ public class Ui {
         return scanner.nextLine();
     }
 
+
+    /**
+     * Returns the welcome message used for GUI mode of operation
+     */
     public String getGuiWelcomeMessage() {
         return ("Hello! I'm SquirtleBot :) \nWhat can I do for you?");
     }
