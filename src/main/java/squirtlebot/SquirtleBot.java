@@ -39,6 +39,21 @@ public class SquirtleBot {
     }
 
     /**
+     * Constructs a new instance of SquirtleBot using provided values
+     *
+     * @param storage instance of storage for writing/reading to storage
+     * @param taskList task list to contain user created tasks
+     * @param parser parses user input into commands
+     * @param ui handles user interactions, displaying of messages, reading input
+     */
+    SquirtleBot(Storage storage, TaskList taskList, Parser parser, Ui ui) {
+        this.storage = storage;
+        this.taskList = taskList;
+        this.parser = parser;
+        this.ui = ui;
+    }
+
+    /**
      * Starts an instance of {@code SquirtleBot}.<br>
      * Intended for use with SquirtleBot running in CLI-mode.<br>
      * SquirtleBot will attempt to load previously stored tasks, then start reading user commands. <br>
@@ -48,8 +63,8 @@ public class SquirtleBot {
         ui.printBanner();
 
         boolean isLoaded = initializeTasks();
-        if (!isLoaded) {
-            handleStorageIssue();
+        if (!isLoaded && !handleStorageIssue()) {
+            return;
         }
 
         runInteraction();
@@ -75,7 +90,7 @@ public class SquirtleBot {
         squirtleBot.run();
     }
 
-    private void handleStorageIssue() {
+    private boolean handleStorageIssue() {
         while (true) {
             ui.setSavedMessage("\t" + STORAGE_ISSUE_PROMPT);
             ui.printSavedMessage();
@@ -83,10 +98,10 @@ public class SquirtleBot {
             String userAnswer = ui.readInput();
 
             if (userAnswer.equals("N")) {
-                System.exit(0);
+                return false;
             } else if (userAnswer.equals("Y")) {
                 this.disableStorage();
-                break;
+                return true;
             }
         }
     }
