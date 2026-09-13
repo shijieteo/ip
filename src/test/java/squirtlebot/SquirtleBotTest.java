@@ -4,27 +4,32 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.io.InvalidClassException;
 import java.util.ArrayList;
+import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import squirtlebot.parser.Parser;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.TaskList;
+import squirtlebot.task.ToDo;
 import squirtlebot.ui.Ui;
 
 /**
  * Tests command handling through SquirtleBot's public GUI-facing API.
  */
 public class SquirtleBotTest {
-    private static enum ExceptionType {
-        IO_EXCEPTION, CLASS_NOT_FOUND, INVALID_CLASS
+    private enum ExceptionType {
+        NONE, IO_EXCEPTION, CLASS_NOT_FOUND, INVALID_CLASS
     }
 
     private static class FakeUi extends Ui {
-        private ArrayList<String> predeterminedInputs;
+        private final ArrayList<String> predeterminedInputs;
+        private final ArrayList<String> printedMessages = new ArrayList<>();
+        private int bannerCount;
 
         FakeUi(ArrayList<String> predeterminedInputs) {
             super();
@@ -38,15 +43,35 @@ public class SquirtleBotTest {
             }
             return predeterminedInputs.removeFirst();
         }
+
+        @Override
+        public void printBanner() {
+            bannerCount += 1;
+        }
+
+        @Override
+        public void printSavedMessage() {
+            printedMessages.add(getSavedMessage());
+        }
     }
 
     private static class FakeStorage extends Storage {
         private final TaskList tasks;
         private final ExceptionType exceptionType;
+        private int remainingLoadFailures;
+        private int loadCount;
+        private int resetCount;
+        private int writeCount;
+        private boolean isDisabled;
 
         FakeStorage(TaskList tasks, ExceptionType exceptionType) {
+            this(tasks, exceptionType, Integer.MAX_VALUE);
+        }
+
+        FakeStorage(TaskList tasks, ExceptionType exceptionType, int loadFailures) {
             this.tasks = tasks;
             this.exceptionType = exceptionType;
+            this.remainingLoadFailures = loadFailures;
         }
 
         @Override
@@ -62,10 +87,26 @@ public class SquirtleBotTest {
 
         @Override
         public void writeData(TaskList tasks) throws IOException {
+            writeCount += 1;
+            if (isDisabled) {
+                return;
+            }
             switch (exceptionType) {
                 case IO_EXCEPTION -> throw new IOException("");
                 case INVALID_CLASS -> throw new InvalidClassException("");
+                case NONE, CLASS_NOT_FOUND -> { }
+                default -> throw new AssertionError("Unexpected exception type");
             }
+        }
+
+        @Override
+        public void resetData() {
+            resetCount += 1;
+        }
+
+        @Override
+        public void disable() {
+            isDisabled = true;
         }
     }
 
