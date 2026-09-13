@@ -7,10 +7,68 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.InvalidClassException;
+import java.util.ArrayList;
+
+import squirtlebot.storage.Storage;
+import squirtlebot.task.TaskList;
+import squirtlebot.ui.Ui;
+
 /**
  * Tests command handling through SquirtleBot's public GUI-facing API.
  */
 public class SquirtleBotTest {
+    private static enum ExceptionType {
+        IO_EXCEPTION, CLASS_NOT_FOUND, INVALID_CLASS
+    }
+
+    private static class FakeUi extends Ui {
+        private ArrayList<String> predeterminedInputs;
+
+        FakeUi(ArrayList<String> predeterminedInputs) {
+            super();
+            this.predeterminedInputs = predeterminedInputs;
+        }
+
+        @Override
+        public String readInput() {
+            if (predeterminedInputs.isEmpty()) {
+                return "";
+            }
+            return predeterminedInputs.removeFirst();
+        }
+    }
+
+    private static class FakeStorage extends Storage {
+        private final TaskList tasks;
+        private final ExceptionType exceptionType;
+
+        FakeStorage(TaskList tasks, ExceptionType exceptionType) {
+            this.tasks = tasks;
+            this.exceptionType = exceptionType;
+        }
+
+        @Override
+        public TaskList loadData() throws IOException, ClassNotFoundException {
+            switch (exceptionType) {
+                case IO_EXCEPTION -> throw new IOException("");
+                case CLASS_NOT_FOUND -> throw new ClassNotFoundException("");
+                case INVALID_CLASS -> throw new InvalidClassException("");
+            }
+
+            return tasks;
+        }
+
+        @Override
+        public void writeData(TaskList tasks) throws IOException {
+            switch (exceptionType) {
+                case IO_EXCEPTION -> throw new IOException("");
+                case INVALID_CLASS -> throw new InvalidClassException("");
+            }
+        }
+    }
+
     private SquirtleBot bot;
 
     @BeforeEach
