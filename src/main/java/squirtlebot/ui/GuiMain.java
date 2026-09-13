@@ -21,10 +21,7 @@ public class GuiMain extends Application {
      * Initializes and displays SquirtleBot GUI, connects controller
      * to application and loads saved tasks.
      *
-     * @param stage the primary stage for this application, onto which
-     * the application scene can be set.
-     * Applications may create other stages, if needed, but they will not be
-     * primary stages.
+     * @param stage the primary stage for this application, onto which the application scene can be set.
      */
     @Override
     public void start(Stage stage) {

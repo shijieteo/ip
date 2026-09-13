@@ -1,7 +1,5 @@
 package squirtlebot.task;
 
-import java.time.temporal.Temporal;
-
 import java.util.ArrayList;
 
 import squirtlebot.TemporalPair;
@@ -73,7 +71,7 @@ public class Event extends Task {
     public String toString() {
         String schedulesDisplays = possibleSchedules.stream()
                 .map(x -> String.format("from: %s to: %s", x.startDate(), x.endDate()))
-                .reduce("", (x,y) -> x + "\n\t" + y)
+                .reduce("", (x, y) -> x + "\n\t" + y)
                 .trim();
         return String.format("[E] %s \nPossible Schedules: \n\t%s", super.toString(), schedulesDisplays);
     }

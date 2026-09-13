@@ -2,8 +2,6 @@ package squirtlebot.ui;
 
 import java.util.Scanner;
 
-import squirtlebot.task.TaskList;
-
 /**
  * Handles user interaction such as reading input and printing messages
  */
