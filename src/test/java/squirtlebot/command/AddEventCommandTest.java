@@ -64,4 +64,14 @@ public class AddEventCommandTest {
 
         assertEquals("Invalid date/datetime detected!", exception.getMessage());
     }
+
+    @Test
+    public void setAttributes_startDateAfterEndDate_throwsCommandException() {
+        String input = "do cs2103 /from 01-01-2027 /to 01-01-2026";
+
+        CommandException exception = assertThrows(
+                CommandException.class, () -> new AddEventCommand(input.split(" ")));
+
+        assertEquals("Event start date has to be earlier than end date!", exception.getMessage());
+    }
 }
