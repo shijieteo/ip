@@ -52,7 +52,10 @@ public class Parser {
      * @throws CommandException if user specifies an unsupported command
      */
     public Command parseCommand(String userInput) {
-        String[] userInputArray = userInput.split(" ");
+        validateUserInput(userInput);
+        
+        String[] userInputArray = userInput.trim().split("\\s+");
+
         String commandString = userInputArray[0];
         Function<String[], Command> commandFunction = Optional.ofNullable(commandMap.get(commandString))
                 .orElseThrow(() -> new CommandException("Invalid command"));
@@ -113,5 +116,11 @@ public class Parser {
         }
 
         return assembledDescription.trim();
+    }
+
+    private void validateUserInput(String userInput) {
+        if (userInput == null || userInput.isEmpty()) {
+            throw new CommandException("Please enter a command :(");
+        }
     }
 }
