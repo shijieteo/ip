@@ -45,6 +45,8 @@ public class Event extends Task {
             TemporalPair confirmedDate = possibleSchedules.get(index);
             possibleSchedules = new ArrayList<>();
             possibleSchedules.add(confirmedDate);
+
+            isDateConfirmed = true;
         } catch (IndexOutOfBoundsException e) {
             throw new CommandException("Invalid index entered for confirmed date :(", e);
         }
