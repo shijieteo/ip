@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import squirtlebot.command.AddDeadlineCommand;
 import squirtlebot.command.AddToDoCommand;
 import squirtlebot.command.MarkCommand;
+import squirtlebot.exception.CommandException;
 
 /**
  * Tests command, description, and token parsing performed by {@link Parser}.
@@ -25,9 +26,9 @@ public class ParserTest {
     }
 
     @Test
-    public void parseCommand_unknownCommand_throwsIllegalArgumentException() {
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class, () -> parser.parseCommand("remind read book"));
+    public void parseCommand_unknownCommand_throwsCommandException() {
+        CommandException exception = assertThrows(
+                CommandException.class, () -> parser.parseCommand("remind read book"));
 
         assertEquals("Invalid command", exception.getMessage());
     }

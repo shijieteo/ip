@@ -123,7 +123,7 @@ public class SquirtleBot {
                 taskList = storage.loadData();
                 return true;
             } catch (StorageException e) {
-                if (resetCount > MAX_RESET_COUNT) {
+                if (resetCount >= MAX_RESET_COUNT) {
                     return false;
                 }
                 storage.resetData();

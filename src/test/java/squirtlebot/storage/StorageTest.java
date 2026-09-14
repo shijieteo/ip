@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import squirtlebot.TemporalPair;
+import squirtlebot.exception.StorageException;
 import squirtlebot.task.Deadline;
 import squirtlebot.task.Event;
 import squirtlebot.task.TaskList;
@@ -104,7 +105,7 @@ public class StorageTest {
         Files.writeString(storagePath, "not serialized task data");
         Storage storage = new Storage(storagePath.toString());
 
-        assertThrows(IOException.class, storage::loadData);
+        assertThrows(StorageException.class, storage::loadData);
     }
 
     private TaskList createTaskList() {

@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import squirtlebot.exception.CommandException;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.TaskList;
 import squirtlebot.task.ToDo;
@@ -62,35 +63,35 @@ public class TaskMutationCommandTest {
     }
 
     @Test
-    public void mark_nonNumericIndex_throwsNumberFormatException() {
-        NumberFormatException exception = assertThrows(
-                NumberFormatException.class, () -> new MarkCommand(new String[]{"mark", "first"}));
+    public void mark_nonNumericIndex_throwsCommandException() {
+        CommandException exception = assertThrows(
+                CommandException.class, () -> new MarkCommand(new String[]{"mark", "first"}));
 
         assertEquals("Please insert a valid index :(", exception.getMessage());
     }
 
     @Test
-    public void unmark_nonNumericIndex_throwsNumberFormatException() {
-        NumberFormatException exception = assertThrows(
-                NumberFormatException.class, () -> new UnmarkCommand(
+    public void unmark_nonNumericIndex_throwsCommandException() {
+        CommandException exception = assertThrows(
+                CommandException.class, () -> new UnmarkCommand(
                         new String[]{"unmark", "not a number"}));
 
         assertEquals("Please enter a valid index :(", exception.getMessage());
     }
 
     @Test
-    public void delete_nonNumericIndex_throwsNumberFormatException() {
-        NumberFormatException exception = assertThrows(
-                NumberFormatException.class, () -> new DeleteCommand(
+    public void delete_nonNumericIndex_throwsCommandException() {
+        CommandException exception = assertThrows(
+                CommandException.class, () -> new DeleteCommand(
                         new String[]{"delete", "not a number"}));
 
         assertEquals("Please enter a valid index :(", exception.getMessage());
     }
     @Test
-    public void delete_indexOutsideList_throwsIndexOutOfBoundsException() {
+    public void delete_indexOutsideList_throwsCommandException() {
         DeleteCommand command = new DeleteCommand(new String[]{"delete", "3"});
 
-        assertThrows(IndexOutOfBoundsException.class, () -> command.execute(tasks, ui, storage));
+        assertThrows(CommandException.class, () -> command.execute(tasks, ui, storage));
         assertEquals(2, tasks.size());
     }
 }
