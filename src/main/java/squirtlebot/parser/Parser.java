@@ -15,6 +15,7 @@ import squirtlebot.command.FindCommand;
 import squirtlebot.command.ListCommand;
 import squirtlebot.command.MarkCommand;
 import squirtlebot.command.UnmarkCommand;
+import squirtlebot.exception.CommandException;
 
 /**
  * Parses user input strings to identify the command the user would like to execute
@@ -48,13 +49,13 @@ public class Parser {
      * Returns {@link Command} representing the user input
      *
      * @param userInput string representing command to execute and parameters if any
-     * @throws IllegalArgumentException if user specifies an unsupported command
+     * @throws CommandException if user specifies an unsupported command
      */
     public Command parseCommand(String userInput) {
         String[] userInputArray = userInput.split(" ");
         String commandString = userInputArray[0];
         Function<String[], Command> commandFunction = Optional.ofNullable(commandMap.get(commandString))
-                .orElseThrow(() -> new IllegalArgumentException("Invalid command"));
+                .orElseThrow(() -> new CommandException("Invalid command"));
 
         assert commandFunction != null;
         return commandFunction.apply(userInputArray);
