@@ -48,7 +48,7 @@ public class DisplayCommandTest {
     public void find_noMatch_displaysEmptyTaskList() {
         new FindCommand(new String[]{"find", "exercise"}).execute(tasks, ui, storage);
 
-        assertEquals("", ui.getSavedMessage());
+        assertEquals("No tasks match your search :(", ui.getSavedMessage());
     }
 
     @Test
