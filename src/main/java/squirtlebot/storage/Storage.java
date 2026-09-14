@@ -53,7 +53,11 @@ public class Storage {
         TaskList loadedTasks = new TaskList();
         try (FileInputStream fileInputStream = new FileInputStream(fileLocation);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-            loadedTasks = (TaskList) objectInputStream.readObject();
+            Object data = objectInputStream.readObject();
+            if (!(data instanceof TaskList taskList)) {
+                throw new StorageException("Stored data is invalid :(");
+            }
+            loadedTasks = taskList;
         } catch (FileNotFoundException fileNotFoundException) {
             createDataFile();
         } catch (EOFException eofException) {
