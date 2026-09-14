@@ -1,10 +1,8 @@
 package squirtlebot;
 
-import java.io.IOException;
-import java.io.InvalidClassException;
-import java.time.format.DateTimeParseException;
-
 import squirtlebot.command.Command;
+import squirtlebot.exception.SquirtleBotException;
+import squirtlebot.exception.StorageException;
 import squirtlebot.parser.Parser;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.TaskList;
@@ -124,14 +122,12 @@ public class SquirtleBot {
             try {
                 taskList = storage.loadData();
                 return true;
-            } catch (InvalidClassException invalidClassException) {
+            } catch (StorageException e) {
                 if (resetCount > MAX_RESET_COUNT) {
                     return false;
                 }
                 storage.resetData();
                 resetCount += 1;
-            } catch (ClassNotFoundException | IOException e) {
-                return false;
             }
         }
     }
@@ -159,14 +155,8 @@ public class SquirtleBot {
             Command userCommand = parser.parseCommand(userInput);
             shouldExit = userCommand.shouldExit();
             userCommand.execute(taskList, ui, storage);
-        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-            ui.setSavedMessage("\tPlease enter a valid index....");
-        } catch (DateTimeParseException dateTimeParseException) {
-            ui.setSavedMessage("\tPlease enter a valid date....");
-        } catch (IllegalArgumentException illegalArgumentException) {
-            ui.setSavedMessage("\t" + illegalArgumentException.getMessage());
-        } catch (RuntimeException runtimeException) {
-            ui.setSavedMessage("There was an issue with storage..... :(");
+        } catch (SquirtleBotException e) {
+            ui.setSavedMessage(e.getMessage());
         }
         return shouldExit;
     }
