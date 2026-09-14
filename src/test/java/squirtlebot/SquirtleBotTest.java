@@ -95,7 +95,7 @@ public class SquirtleBotTest {
         }
 
         @Override
-        public void writeData(TaskList tasks) throws IOException {
+        public void writeData(TaskList tasks) {
             writeCount += 1;
             if (isDisabled) {
                 return;

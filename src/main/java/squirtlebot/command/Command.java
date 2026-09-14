@@ -40,11 +40,7 @@ public abstract class Command {
      * @param storage interface for storage-related operations
      */
     protected void updateStorage(TaskList tasks, Storage storage) {
-        try {
-            storage.writeData(tasks);
-        } catch (java.io.IOException e) {
-            throw new RuntimeException(e);
-        }
+        storage.writeData(tasks);
     }
 
     protected void validateIndex(int index, TaskList tasks) {

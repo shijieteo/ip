@@ -34,6 +34,28 @@ public class ParserTest {
     }
 
     @Test
+    public void parseCommand_nullInput_throwsCommandException() {
+        CommandException exception = assertThrows(
+                CommandException.class, () -> parser.parseCommand(null));
+
+        assertEquals("Please enter a command :(", exception.getMessage());
+    }
+
+    @Test
+    public void parseCommand_emptyInput_throwsCommandException() {
+        CommandException exception = assertThrows(
+                CommandException.class, () -> parser.parseCommand(""));
+
+        assertEquals("Please enter a command :(", exception.getMessage());
+    }
+
+    @Test
+    public void parseCommand_irregularWhitespace_returnsMatchingCommand() {
+        assertEquals(new MarkCommand(new String[]{"mark", "2"}),
+                parser.parseCommand("  mark\t  2  "));
+    }
+
+    @Test
     public void parseDescription_inputWithParameters_returnsTextBeforeFirstParameter() {
         String[] input = "deadline submit project report /by 13-09-2026".split(" ");
 

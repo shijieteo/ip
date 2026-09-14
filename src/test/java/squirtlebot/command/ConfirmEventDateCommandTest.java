@@ -67,6 +67,40 @@ public class ConfirmEventDateCommandTest {
         assertEquals("Please enter a valid index :(", exception.getMessage());
     }
 
+    @Test
+    public void constructor_missingScheduleIndex_throwsCommandException() {
+        CommandException exception = assertThrows(
+                CommandException.class, () -> new ConfirmEventDateCommand(
+                        new String[]{"confirm", "1"}));
+
+        assertEquals("Please enter an index to confirm dates for :(", exception.getMessage());
+    }
+
+    @Test
+    public void execute_taskIndexOutsideList_throwsCommandException() {
+        ConfirmEventDateCommand command = new ConfirmEventDateCommand(
+                new String[]{"confirm", "1", "1"});
+
+        CommandException exception = assertThrows(
+                CommandException.class, () -> command.execute(tasks, ui, storage));
+
+        assertEquals("Please enter a valid index :(", exception.getMessage());
+    }
+
+    @Test
+    public void execute_eventAlreadyConfirmed_ignoresFurtherConfirmation() {
+        Event event = createEventWithTwoSchedules();
+        tasks.add(event);
+        new ConfirmEventDateCommand(new String[]{"confirm", "1", "2"})
+                .execute(tasks, ui, storage);
+
+        new ConfirmEventDateCommand(new String[]{"confirm", "1", "99"})
+                .execute(tasks, ui, storage);
+
+        assertFalse(event.toString().contains("2026-09-13"));
+        assertTrue(event.toString().contains("from: 2026-09-20 to: 2026-09-21"));
+    }
+
     private Event createEventWithTwoSchedules() {
         ArrayList<TemporalPair> schedules = new ArrayList<>();
         schedules.add(new TemporalPair(LocalDate.of(2026, 9, 13), LocalDate.of(2026, 9, 14)));

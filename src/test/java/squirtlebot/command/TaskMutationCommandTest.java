@@ -71,12 +71,52 @@ public class TaskMutationCommandTest {
     }
 
     @Test
+    public void mark_missingIndex_throwsCommandException() {
+        CommandException exception = assertThrows(
+                CommandException.class, () -> new MarkCommand(new String[]{"mark"}));
+
+        assertEquals("Please enter an index to mark :(", exception.getMessage());
+    }
+
+    @Test
+    public void mark_indexOutsideList_throwsCommandException() {
+        MarkCommand command = new MarkCommand(new String[]{"mark", "3"});
+
+        CommandException exception = assertThrows(
+                CommandException.class, () -> command.execute(tasks, ui, storage));
+
+        assertEquals("Please enter a valid index :(", exception.getMessage());
+        assertFalse(tasks.get(0).isDone());
+        assertFalse(tasks.get(1).isDone());
+    }
+
+    @Test
     public void unmark_nonNumericIndex_throwsCommandException() {
         CommandException exception = assertThrows(
                 CommandException.class, () -> new UnmarkCommand(
                         new String[]{"unmark", "not a number"}));
 
         assertEquals("Please enter a valid index :(", exception.getMessage());
+    }
+
+    @Test
+    public void unmark_missingIndex_throwsCommandException() {
+        CommandException exception = assertThrows(
+                CommandException.class, () -> new UnmarkCommand(new String[]{"unmark"}));
+
+        assertEquals("Please enter an index to unmark :(", exception.getMessage());
+    }
+
+    @Test
+    public void unmark_zeroIndex_throwsCommandException() {
+        tasks.get(0).setIsDone(true);
+        UnmarkCommand command = new UnmarkCommand(new String[]{"unmark", "0"});
+
+        CommandException exception = assertThrows(
+                CommandException.class, () -> command.execute(tasks, ui, storage));
+
+        assertEquals("Please enter a valid index :(", exception.getMessage());
+        assertTrue(tasks.get(0).isDone());
     }
 
     @Test
@@ -87,11 +127,23 @@ public class TaskMutationCommandTest {
 
         assertEquals("Please enter a valid index :(", exception.getMessage());
     }
+
+    @Test
+    public void delete_missingIndex_throwsCommandException() {
+        CommandException exception = assertThrows(
+                CommandException.class, () -> new DeleteCommand(new String[]{"delete"}));
+
+        assertEquals("Please enter an index to delete :(", exception.getMessage());
+    }
+
     @Test
     public void delete_indexOutsideList_throwsCommandException() {
         DeleteCommand command = new DeleteCommand(new String[]{"delete", "3"});
 
-        assertThrows(CommandException.class, () -> command.execute(tasks, ui, storage));
+        CommandException exception = assertThrows(
+                CommandException.class, () -> command.execute(tasks, ui, storage));
+
+        assertEquals("Please enter a valid index :(", exception.getMessage());
         assertEquals(2, tasks.size());
     }
 }

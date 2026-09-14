@@ -92,7 +92,7 @@ public class Storage {
      *
      * @param taskList TaskList object to be written to the data file
      */
-    public void writeData(TaskList taskList) throws IOException {
+    public void writeData(TaskList taskList) {
         if (isDisabled) {
             return;
         }

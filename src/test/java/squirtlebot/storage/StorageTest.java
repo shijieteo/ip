@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -106,6 +107,20 @@ public class StorageTest {
         Storage storage = new Storage(storagePath.toString());
 
         assertThrows(StorageException.class, storage::loadData);
+    }
+
+    @Test
+    public void loadData_serializedObjectIsNotTaskList_throwsStorageException() throws IOException {
+        Path storagePath = tempDirectory.resolve("Tasks.ser");
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(
+                Files.newOutputStream(storagePath))) {
+            outputStream.writeObject("not a task list");
+        }
+        Storage storage = new Storage(storagePath.toString());
+
+        StorageException exception = assertThrows(StorageException.class, storage::loadData);
+
+        assertEquals("Stored data is invalid :(", exception.getMessage());
     }
 
     private TaskList createTaskList() {

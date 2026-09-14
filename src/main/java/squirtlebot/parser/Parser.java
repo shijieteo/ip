@@ -53,7 +53,7 @@ public class Parser {
      */
     public Command parseCommand(String userInput) {
         validateUserInput(userInput);
-        
+
         String[] userInputArray = userInput.trim().split("\\s+");
 
         String commandString = userInputArray[0];
@@ -119,7 +119,7 @@ public class Parser {
     }
 
     private void validateUserInput(String userInput) {
-        if (userInput == null || userInput.isEmpty()) {
+        if (userInput == null || userInput.isBlank()) {
             throw new CommandException("Please enter a command :(");
         }
     }
