@@ -68,6 +68,8 @@ public class DeleteCommand extends Command {
             index = Integer.parseInt(userInputArray[1]) - 1;
         } catch (NumberFormatException e) {
             throw new CommandException("Please enter a valid index :(", e);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new CommandException("Please enter an index to delete :(", e);
         }
     }
 }

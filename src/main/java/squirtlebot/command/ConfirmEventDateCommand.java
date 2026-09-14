@@ -79,6 +79,8 @@ public class ConfirmEventDateCommand extends Command {
             confirmedDateIndex = Integer.parseInt(userInputArray[2]) - 1;
         } catch (NumberFormatException e) {
             throw new CommandException("Please enter a valid index :(", e);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new CommandException("Please enter an index to confirm dates for :(", e);
         }
     }
 }

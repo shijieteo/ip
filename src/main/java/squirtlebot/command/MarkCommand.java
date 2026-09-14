@@ -68,7 +68,9 @@ public class MarkCommand extends Command {
         try {
             index = Integer.parseInt(userInputArray[1]) - 1;
         } catch (NumberFormatException e) {
-            throw new CommandException("Please insert a valid index :(");
+            throw new CommandException("Please insert a valid index :(", e);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new CommandException("Please enter an index to mark :(", e);
         }
     }
 }
