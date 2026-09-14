@@ -3,6 +3,7 @@ package squirtlebot.task;
 import java.util.ArrayList;
 
 import squirtlebot.TemporalPair;
+import squirtlebot.exception.CommandException;
 
 /**
  * Represents the event task that users can add to their list of tasks
@@ -34,14 +35,19 @@ public class Event extends Task {
      *
      * @param index 0-based integer indicating the start/end date
      *              in the list of possible start/end dates to set as the confirmed date
+     * @throws CommandException if invalid index was supplied for date to confirm
      */
     public void confirmEventDate(int index) {
         if (isDateConfirmed) {
             return;
         }
-        TemporalPair confirmedDate = possibleSchedules.get(index);
-        possibleSchedules = new ArrayList<>();
-        possibleSchedules.add(confirmedDate);
+        try {
+            TemporalPair confirmedDate = possibleSchedules.get(index);
+            possibleSchedules = new ArrayList<>();
+            possibleSchedules.add(confirmedDate);
+        } catch (IndexOutOfBoundsException e) {
+            throw new CommandException("Invalid index entered for confirmed date :(", e);
+        }
 
         assert possibleSchedules.size() == 1;
     }
