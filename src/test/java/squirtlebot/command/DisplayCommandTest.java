@@ -38,6 +38,15 @@ public class DisplayCommandTest {
     }
 
     @Test
+    public void list_emptyTaskList_displaysEmptyListMessage() {
+        tasks.clear();
+
+        new ListCommand().execute(tasks, ui, storage);
+
+        assertEquals("Your list of tasks is currently empty :)", ui.getSavedMessage());
+    }
+
+    @Test
     public void find_execute_displaysOnlyMatchingTasks() {
         new FindCommand(new String[]{"find", "read"}).execute(tasks, ui, storage);
 
@@ -48,7 +57,7 @@ public class DisplayCommandTest {
     public void find_noMatch_displaysEmptyTaskList() {
         new FindCommand(new String[]{"find", "exercise"}).execute(tasks, ui, storage);
 
-        assertEquals("", ui.getSavedMessage());
+        assertEquals("No tasks match your search :(", ui.getSavedMessage());
     }
 
     @Test

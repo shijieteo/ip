@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import squirtlebot.exception.CommandException;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.Deadline;
 import squirtlebot.task.TaskList;
@@ -42,9 +43,9 @@ public class AddTaskCommandTest {
     }
 
     @Test
-    public void addToDo_emptyDescription_throwsIllegalArgumentException() {
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class, () -> new AddToDoCommand(new String[]{"todo"}));
+    public void addToDo_emptyDescription_throwsCommandException() {
+        CommandException exception = assertThrows(
+                CommandException.class, () -> new AddToDoCommand(new String[]{"todo"}));
 
         assertEquals("Please provide the correct arguments for ToDo!", exception.getMessage());
     }
@@ -62,17 +63,17 @@ public class AddTaskCommandTest {
     }
 
     @Test
-    public void addDeadline_missingDueDate_throwsIllegalArgumentException() {
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class, () -> new AddDeadlineCommand("deadline submit report".split(" ")));
+    public void addDeadline_missingDueDate_throwsCommandException() {
+        CommandException exception = assertThrows(
+                CommandException.class, () -> new AddDeadlineCommand("deadline submit report".split(" ")));
 
         assertEquals("Please provide the correct arguments for Deadline!", exception.getMessage());
     }
 
     @Test
-    public void addDeadline_invalidDate_throwsIllegalArgumentException() {
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class, () -> new AddDeadlineCommand(
+    public void addDeadline_invalidDate_throwsCommandException() {
+        CommandException exception = assertThrows(
+                CommandException.class, () -> new AddDeadlineCommand(
                         "deadline submit report /by tomorrow".split(" ")));
 
         assertEquals("Please enter a valid due date/datetime!", exception.getMessage());

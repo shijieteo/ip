@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import squirtlebot.command.AddDeadlineCommand;
 import squirtlebot.command.AddToDoCommand;
 import squirtlebot.command.MarkCommand;
+import squirtlebot.exception.CommandException;
 
 /**
  * Tests command, description, and token parsing performed by {@link Parser}.
@@ -25,11 +26,33 @@ public class ParserTest {
     }
 
     @Test
-    public void parseCommand_unknownCommand_throwsIllegalArgumentException() {
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class, () -> parser.parseCommand("remind read book"));
+    public void parseCommand_unknownCommand_throwsCommandException() {
+        CommandException exception = assertThrows(
+                CommandException.class, () -> parser.parseCommand("remind read book"));
 
         assertEquals("Invalid command", exception.getMessage());
+    }
+
+    @Test
+    public void parseCommand_nullInput_throwsCommandException() {
+        CommandException exception = assertThrows(
+                CommandException.class, () -> parser.parseCommand(null));
+
+        assertEquals("Please enter a command :(", exception.getMessage());
+    }
+
+    @Test
+    public void parseCommand_emptyInput_throwsCommandException() {
+        CommandException exception = assertThrows(
+                CommandException.class, () -> parser.parseCommand(""));
+
+        assertEquals("Please enter a command :(", exception.getMessage());
+    }
+
+    @Test
+    public void parseCommand_irregularWhitespace_returnsMatchingCommand() {
+        assertEquals(new MarkCommand(new String[]{"mark", "2"}),
+                parser.parseCommand("  mark\t  2  "));
     }
 
     @Test
