@@ -31,12 +31,10 @@ public class DeleteCommand extends Command {
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         int sizeBeforeRemoval = taskList.size();
 
-        try {
-            Task removedTask = taskList.remove(index);
-            ui.setSavedMessage(String.format("\tThe following task was removed:\n\t %s", removedTask));
-        } catch (IndexOutOfBoundsException e) {
-            throw new CommandException("Please enter a valid index :(", e);
-        }
+        validateIndex(index, taskList);
+
+        Task removedTask = taskList.remove(index);
+        ui.setSavedMessage(String.format("\tThe following task was removed:\n\t %s", removedTask));
 
         assert sizeBeforeRemoval == taskList.size() + 1;
 

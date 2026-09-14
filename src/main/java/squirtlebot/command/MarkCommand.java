@@ -30,18 +30,16 @@ public class MarkCommand extends Command {
      * @param storage storage handler used to persist changes made by the command
      */
     public void execute(TaskList taskList, Ui ui, Storage storage) {
-        try {
-            Task markedTask = taskList.get(index);
-            markedTask.setIsDone(true);
+        validateIndex(index, taskList);
 
-            assert markedTask.isDone();
+        Task markedTask = taskList.get(index);
+        markedTask.setIsDone(true);
 
-            super.updateStorage(taskList, storage);
+        assert markedTask.isDone();
 
-            ui.setSavedMessage(String.format("\tCongrats on completing the following task:\n\t %s", markedTask));
-        } catch (IndexOutOfBoundsException e) {
-            throw new CommandException("Please enter a valid index :(", e);
-        }
+        super.updateStorage(taskList, storage);
+
+        ui.setSavedMessage(String.format("\tCongrats on completing the following task:\n\t %s", markedTask));
     }
 
     /**

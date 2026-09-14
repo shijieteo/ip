@@ -37,6 +37,9 @@ public class ConfirmEventDateCommand extends Command {
      */
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) {
+
+        validateIndex(tasksIndex, taskList);
+
         Task task = taskList.get(tasksIndex);
         if (!(task instanceof Event eventToConfirm)) {
             throw new CommandException("Selected event was not an Event!");

@@ -30,17 +30,15 @@ public class UnmarkCommand extends Command {
      * @param storage storage handler used to persist changes made by the command
      */
     public void execute(TaskList taskList, Ui ui, Storage storage) {
-        try {
-            Task unmarkedTask = taskList.get(index);
-            unmarkedTask.setIsDone(false);
-            super.updateStorage(taskList, storage);
+        validateIndex(index, taskList);
 
-            assert !unmarkedTask.isDone();
+        Task unmarkedTask = taskList.get(index);
+        unmarkedTask.setIsDone(false);
+        super.updateStorage(taskList, storage);
 
-            ui.setSavedMessage(String.format("\tThe following task was marked as not done:\n\t %s", unmarkedTask));
-        } catch (IndexOutOfBoundsException e) {
-            throw new CommandException("Please enter a valid index :(", e);
-        }
+        assert !unmarkedTask.isDone();
+
+        ui.setSavedMessage(String.format("\tThe following task was marked as not done:\n\t %s", unmarkedTask));
     }
 
     /**
