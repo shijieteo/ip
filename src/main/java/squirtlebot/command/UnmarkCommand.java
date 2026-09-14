@@ -1,5 +1,6 @@
 package squirtlebot.command;
 
+import squirtlebot.exception.CommandException;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.Task;
 import squirtlebot.task.TaskList;
@@ -29,14 +30,17 @@ public class UnmarkCommand extends Command {
      * @param storage storage handler used to persist changes made by the command
      */
     public void execute(TaskList taskList, Ui ui, Storage storage) {
-        Task unmarkedTask = taskList.get(index);
-        unmarkedTask.setIsDone(false);
+        try {
+            Task unmarkedTask = taskList.get(index);
+            unmarkedTask.setIsDone(false);
+            super.updateStorage(taskList, storage);
 
-        super.updateStorage(taskList, storage);
+            assert !unmarkedTask.isDone();
 
-        assert !unmarkedTask.isDone();
-
-        ui.setSavedMessage(String.format("\tThe following task was marked as not done:\n\t %s", unmarkedTask));
+            ui.setSavedMessage(String.format("\tThe following task was marked as not done:\n\t %s", unmarkedTask));
+        } catch (IndexOutOfBoundsException e) {
+            throw new CommandException("Please enter a valid index :(", e);
+        }
     }
 
     /**
@@ -57,13 +61,13 @@ public class UnmarkCommand extends Command {
      * Extracts the index in the task list to unmark
      *
      * @param userInputArray array containing user-supplied list index to unmark
-     * @throws NumberFormatException if index value provided is not a number
+     * @throws CommandException if index value provided is not a number
      */
     private void parseParams(String[] userInputArray) {
         try {
             index = Integer.parseInt(userInputArray[1]) - 1;
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("Please enter a valid index :(");
+            throw new CommandException("Please enter a valid index :(");
         }
     }
 }

@@ -2,6 +2,7 @@ package squirtlebot.command;
 
 import java.time.temporal.Temporal;
 
+import squirtlebot.exception.CommandException;
 import squirtlebot.parser.DateParser;
 import squirtlebot.parser.Parser;
 import squirtlebot.storage.Storage;
@@ -33,7 +34,6 @@ public class AddDeadlineCommand extends Command {
      * @param taskList list containing tasks created previously by the user
      * @param ui interface used to display output to the user
      * @param storage storage handler used to persist changes made by the command
-     * @throws RuntimeException if an issue was encountered while attempting to write to storage
      */
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) {
@@ -68,7 +68,7 @@ public class AddDeadlineCommand extends Command {
      * Creates deadline task to be added later
      *
      * @param userInputArray array containing user inputs required to create a Deadline object
-     * @throws IllegalArgumentException if dueDate or taskDescription is empty,
+     * @throws CommandException if dueDate or taskDescription is empty,
      *              or if dueDate is not in a valid format
      */
     private void setAttributes(String[] userInputArray) {
@@ -78,12 +78,12 @@ public class AddDeadlineCommand extends Command {
         String dueDateString = parser.parseTokens(userInputArray, "/by");
 
         if (dueDateString.isEmpty() || taskDescription.isEmpty()) {
-            throw new IllegalArgumentException("Please provide the correct arguments for Deadline!");
+            throw new CommandException("Please provide the correct arguments for Deadline!");
         }
 
         DateParser dateParser = new DateParser();
         Temporal dueDateTemporal = dateParser.parseTemporal(dueDateString)
-                .orElseThrow(() -> new IllegalArgumentException("Please enter a valid due date/datetime!"));
+                .orElseThrow(() -> new CommandException("Please enter a valid due date/datetime!"));
 
         deadlineToAdd = new Deadline(taskDescription, dueDateTemporal);
 

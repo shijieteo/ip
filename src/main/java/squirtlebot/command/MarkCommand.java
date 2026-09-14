@@ -1,5 +1,6 @@
 package squirtlebot.command;
 
+import squirtlebot.exception.CommandException;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.Task;
 import squirtlebot.task.TaskList;
@@ -29,15 +30,18 @@ public class MarkCommand extends Command {
      * @param storage storage handler used to persist changes made by the command
      */
     public void execute(TaskList taskList, Ui ui, Storage storage) {
-        Task markedTask = taskList.get(index);
-        markedTask.setIsDone(true);
+        try {
+            Task markedTask = taskList.get(index);
+            markedTask.setIsDone(true);
 
-        super.updateStorage(taskList, storage);
+            assert markedTask.isDone();
 
-        assert markedTask.isDone();
+            super.updateStorage(taskList, storage);
 
-        ui.setSavedMessage(String.format("\tCongrats on completing the following task:\n\t %s", markedTask));
-
+            ui.setSavedMessage(String.format("\tCongrats on completing the following task:\n\t %s", markedTask));
+        } catch (IndexOutOfBoundsException e) {
+            throw new CommandException("Please enter a valid index :(", e);
+        }
     }
 
     /**
@@ -58,13 +62,13 @@ public class MarkCommand extends Command {
      * Extracts the index within task list to mark
      *
      * @param userInputArray array containing index in task list to mark
-     * @throws NumberFormatException if index value provided is not a number
+     * @throws CommandException if index value provided is not a number
      */
     private void parseParams(String[] userInputArray) {
         try {
             index = Integer.parseInt(userInputArray[1]) - 1;
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("Please insert a valid index :(");
+            throw new CommandException("Please insert a valid index :(");
         }
     }
 }

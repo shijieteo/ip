@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 import squirtlebot.TemporalPair;
+import squirtlebot.exception.CommandException;
 import squirtlebot.parser.DateParser;
 import squirtlebot.parser.Parser;
 import squirtlebot.storage.Storage;
@@ -40,7 +41,6 @@ public class AddEventCommand extends Command {
      * @param taskList list containing tasks created previously by the user
      * @param ui interface used to display output to the user
      * @param storage storage handler used to persist changes made by the command
-     * @throws RuntimeException if an issue was encountered while attempting to write to storage
      */
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         int sizeBeforeAdding = taskList.size();
@@ -75,7 +75,7 @@ public class AddEventCommand extends Command {
      * Creates the event object to be added when executed
      *
      * @param userInputArray array containing user inputs required to create an Event object
-     * @throws IllegalArgumentException if any of taskDescription, startDate or endDate is empty
+     * @throws CommandException if any of taskDescription, startDate or endDate is empty
      *                  or if any of startDate or endDate is not in a valid format
      */
     private void setAttributes(String[] userInputArray) {
@@ -96,16 +96,16 @@ public class AddEventCommand extends Command {
                             .copyOfRange(userInputArray, index, userInputArray.length), END_DATE_TOKEN);
 
                     Temporal startTemporal = dateParser.parseTemporal(startDate)
-                            .orElseThrow(() -> new IllegalArgumentException(INVALID_DATETIME_FORMAT_MESSAGE));
+                            .orElseThrow(() -> new CommandException(INVALID_DATETIME_FORMAT_MESSAGE));
 
                     Temporal endTemporal = dateParser.parseTemporal(endDate)
-                            .orElseThrow(() -> new IllegalArgumentException(INVALID_DATETIME_FORMAT_MESSAGE));
+                            .orElseThrow(() -> new CommandException(INVALID_DATETIME_FORMAT_MESSAGE));
 
                     return new TemporalPair(startTemporal, endTemporal);
                 }).forEach(x -> possibleSchedules.add(x));
 
         if (taskDescription.isEmpty() || possibleSchedules.isEmpty()) {
-            throw new IllegalArgumentException("Please provide the correct arguments for Event!");
+            throw new CommandException("Please provide the correct arguments for Event!");
         }
 
         eventToAdd = new Event(taskDescription, possibleSchedules);

@@ -1,5 +1,6 @@
 package squirtlebot.command;
 
+import squirtlebot.exception.CommandException;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.Event;
 import squirtlebot.task.Task;
@@ -38,7 +39,7 @@ public class ConfirmEventDateCommand extends Command {
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         Task task = taskList.get(tasksIndex);
         if (!(task instanceof Event eventToConfirm)) {
-            throw new IllegalArgumentException("Selected event was not an Event!");
+            throw new CommandException("Selected event was not an Event!");
         }
 
         eventToConfirm.confirmEventDate(confirmedDateIndex);
@@ -70,13 +71,14 @@ public class ConfirmEventDateCommand extends Command {
      * Extracts 2 indices required to confirm the date for an event.
      *
      * @param userInputArray array containing 2 indices required to confirm an event's date
+     * @throws CommandException if provided index is not a number
      */
     private void setAttributes(String[] userInputArray) {
         try {
             tasksIndex = Integer.parseInt(userInputArray[1]) - 1;
             confirmedDateIndex = Integer.parseInt(userInputArray[2]) - 1;
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("Please enter a valid index :( ");
+            throw new CommandException("Please enter a valid index :(", e);
         }
     }
 }
