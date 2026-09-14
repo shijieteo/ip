@@ -1,5 +1,7 @@
 package squirtlebot.command;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -101,6 +103,8 @@ public class AddEventCommand extends Command {
                     Temporal endTemporal = dateParser.parseTemporal(endDate)
                             .orElseThrow(() -> new CommandException(INVALID_DATETIME_FORMAT_MESSAGE));
 
+                    validateTemporal(startTemporal, endTemporal);
+
                     return new TemporalPair(startTemporal, endTemporal);
                 }).forEach(x -> possibleSchedules.add(x));
 
@@ -109,5 +113,19 @@ public class AddEventCommand extends Command {
         }
 
         eventToAdd = new Event(taskDescription, possibleSchedules);
+    }
+
+    private void validateTemporal(Temporal startTemporal, Temporal endTemporal) {
+        LocalDateTime startDateTime = startTemporal instanceof LocalDate startDate
+                ? startDate.atStartOfDay()
+                : (LocalDateTime) startTemporal;
+
+        LocalDateTime endDateTime = endTemporal instanceof LocalDate endDate
+                ? endDate.atStartOfDay()
+                : (LocalDateTime) endTemporal;
+
+        if (startDateTime.isAfter(endDateTime)) {
+            throw new CommandException("Event start date has to be earlier than end date!");
+        }
     }
 }
