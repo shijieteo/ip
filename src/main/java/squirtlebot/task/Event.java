@@ -86,6 +86,6 @@ public class Event extends Task {
                 .map(x -> String.format("from: %s to: %s", x.startDate(), x.endDate()))
                 .reduce("", (x, y) -> x + "\n" + y)
                 .trim();
-        return String.format("[E] %s \nPossible Schedules: \n\t%s", super.toString(), schedulesDisplays);
+        return String.format("[E] %s \nPossible Schedules: \n%s", super.toString(), schedulesDisplays);
     }
 }
