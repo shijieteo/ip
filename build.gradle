@@ -68,7 +68,7 @@ jar {
 }
 
 shadowJar {
-    archiveFileName = 'peinbot.jar'
+    archiveFileName = 'SquirtleBot.jar'
 }
 
 run {
