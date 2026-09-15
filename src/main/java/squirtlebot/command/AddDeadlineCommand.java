@@ -45,7 +45,7 @@ public class AddDeadlineCommand extends Command {
 
         assert sizeBeforeAdding == taskList.size() - 1;
 
-        ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n\t"
+        ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n"
                 + "You now have %d tasks", deadlineToAdd, taskList.size()));
     }
 

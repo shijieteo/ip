@@ -38,7 +38,7 @@ public class TaskMutationCommandTest {
 
         assertFalse(tasks.get(0).isDone());
         assertTrue(tasks.get(1).isDone());
-        assertEquals("Congrats on completing the following task:\n\t [T] [X] second task",
+        assertEquals("Congrats on completing the following task:\n[T] [X] second task",
                 ui.getSavedMessage());
     }
 
@@ -49,7 +49,7 @@ public class TaskMutationCommandTest {
         new UnmarkCommand(new String[]{"unmark", "1"}).execute(tasks, ui, storage);
 
         assertFalse(tasks.get(0).isDone());
-        assertEquals("The following task was marked as not done:\n\t [T] [ ] first task",
+        assertEquals("The following task was marked as not done:\n[T] [ ] first task",
                 ui.getSavedMessage());
     }
 
@@ -59,7 +59,7 @@ public class TaskMutationCommandTest {
 
         assertEquals(1, tasks.size());
         assertEquals(new ToDo("second task"), tasks.get(0));
-        assertEquals("The following task was removed:\n\t [T] [ ] first task", ui.getSavedMessage());
+        assertEquals("The following task was removed:\n[T] [ ] first task", ui.getSavedMessage());
     }
 
     @Test

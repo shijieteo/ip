@@ -38,7 +38,7 @@ public class UnmarkCommand extends Command {
 
         assert !unmarkedTask.isDone();
 
-        ui.setSavedMessage(String.format("\tThe following task was marked as not done:\n\t %s", unmarkedTask));
+        ui.setSavedMessage(String.format("\tThe following task was marked as not done:\n%s", unmarkedTask));
     }
 
     /**
