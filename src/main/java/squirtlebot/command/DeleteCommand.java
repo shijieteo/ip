@@ -34,7 +34,7 @@ public class DeleteCommand extends Command {
         validateIndex(index, taskList);
 
         Task removedTask = taskList.remove(index);
-        ui.setSavedMessage(String.format("\tThe following task was removed:\n\t %s", removedTask));
+        ui.setSavedMessage(String.format("\tThe following task was removed:\n%s", removedTask));
 
         assert sizeBeforeRemoval == taskList.size() + 1;
 
