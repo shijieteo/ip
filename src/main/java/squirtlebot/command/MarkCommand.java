@@ -25,19 +25,19 @@ public class MarkCommand extends Command {
      * Marks the task in the task list at the user-provided index<br>
      * Displays a confirmation text to the user on command executed
      *
-     * @param taskList list containing tasks created previously by the user
+     * @param tasks list containing tasks created previously by the user
      * @param ui interface used to display output to the user
      * @param storage storage handler used to persist changes made by the command
      */
-    public void execute(TaskList taskList, Ui ui, Storage storage) {
-        validateIndex(index, taskList);
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
+        validateIndex(index, tasks);
 
-        Task markedTask = taskList.get(index);
+        Task markedTask = tasks.get(index);
         markedTask.setIsDone(true);
 
         assert markedTask.isDone();
 
-        super.updateStorage(taskList, storage);
+        super.updateStorage(tasks, storage);
 
         ui.setSavedMessage(String.format("\tCongrats on completing the following task:\n%s", markedTask));
     }

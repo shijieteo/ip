@@ -25,12 +25,12 @@ public class FindCommand extends Command {
      * Filters the task list for tasks containing the user-supplied string<br>
      * Displays the filtered tasks to the user
      *
-     * @param taskList list containing tasks created previously by the user
+     * @param tasks list containing tasks created previously by the user
      * @param ui interface used to display output to the user
      * @param storage storage handler used to persist changes made by the command
      */
-    public void execute(TaskList taskList, Ui ui, Storage storage) {
-        TaskList filteredList = new TaskList(taskList.stream().filter(x -> x.toString()
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
+        TaskList filteredList = new TaskList(tasks.stream().filter(x -> x.toString()
                 .contains(searchPattern)).toList());
         if (filteredList.isEmpty()) {
             ui.setSavedMessage("No tasks match your search :(");

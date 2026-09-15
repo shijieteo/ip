@@ -24,21 +24,21 @@ public class DeleteCommand extends Command {
     /**
      * Deletes a user-specified task from task list
      *
-     * @param taskList list containing tasks created previously by the user
+     * @param tasks list containing tasks created previously by the user
      * @param ui interface used to display output to the user
      * @param storage storage handler used to persist changes made by the command
      */
-    public void execute(TaskList taskList, Ui ui, Storage storage) {
-        int sizeBeforeRemoval = taskList.size();
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
+        int sizeBeforeRemoval = tasks.size();
 
-        validateIndex(index, taskList);
+        validateIndex(index, tasks);
 
-        Task removedTask = taskList.remove(index);
+        Task removedTask = tasks.remove(index);
         ui.setSavedMessage(String.format("\tThe following task was removed:\n%s", removedTask));
 
-        assert sizeBeforeRemoval == taskList.size() + 1;
+        assert sizeBeforeRemoval == tasks.size() + 1;
 
-        super.updateStorage(taskList, storage);
+        super.updateStorage(tasks, storage);
     }
 
     /**

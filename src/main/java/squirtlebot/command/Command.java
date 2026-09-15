@@ -16,11 +16,11 @@ public abstract class Command {
      * Performs the actions of the command, applying its actions to the given task list,
      * user interfaces, and storage
      *
-     * @param taskList list containing tasks created previously by the user
+     * @param tasks list containing tasks created previously by the user
      * @param ui interface used to display output to the user
      * @param storage storage handler used to persist changes made by the command
      */
-    public abstract void execute(TaskList taskList, Ui ui, Storage storage);
+    public abstract void execute(TaskList tasks, Ui ui, Storage storage);
 
 
     /**

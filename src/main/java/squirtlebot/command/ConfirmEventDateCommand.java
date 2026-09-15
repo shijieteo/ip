@@ -31,16 +31,16 @@ public class ConfirmEventDateCommand extends Command {
      * Verifies if the selected task is an Event<br>
      * Sets the date of the event according to user's input
      *
-     * @param taskList list containing tasks created previously by the user
+     * @param tasks list containing tasks created previously by the user
      * @param ui interface used to display output to the user
      * @param storage storage handler used to persist changes made by the command
      */
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) {
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
 
-        validateIndex(tasksIndex, taskList);
+        validateIndex(tasksIndex, tasks);
 
-        Task task = taskList.get(tasksIndex);
+        Task task = tasks.get(tasksIndex);
         if (!(task instanceof Event eventToConfirm)) {
             throw new CommandException("Selected event was not an Event!");
         }
@@ -49,7 +49,7 @@ public class ConfirmEventDateCommand extends Command {
 
         ui.setSavedMessage("Event updated:\n" + eventToConfirm);
 
-        updateStorage(taskList, storage);
+        updateStorage(tasks, storage);
     }
 
     /**

@@ -54,10 +54,10 @@ public class Storage {
         try (FileInputStream fileInputStream = new FileInputStream(fileLocation);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
             Object data = objectInputStream.readObject();
-            if (!(data instanceof TaskList taskList)) {
+            if (!(data instanceof TaskList tasks)) {
                 throw new StorageException("Stored data is invalid :(");
             }
-            loadedTasks = taskList;
+            loadedTasks = tasks;
         } catch (FileNotFoundException fileNotFoundException) {
             createDataFile();
         } catch (EOFException eofException) {
@@ -90,9 +90,9 @@ public class Storage {
     /**
      * Creates FileOutputStream and ObjectOutputStream objects required to write to data file
      *
-     * @param taskList TaskList object to be written to the data file
+     * @param tasks TaskList object to be written to the data file
      */
-    public void writeData(TaskList taskList) {
+    public void writeData(TaskList tasks) {
         if (isDisabled) {
             return;
         }
@@ -100,7 +100,7 @@ public class Storage {
 
         try (FileOutputStream fileOutputStream = new FileOutputStream(fileLocation);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
-            objectOutputStream.writeObject(taskList);
+            objectOutputStream.writeObject(tasks);
         }
         catch (IOException e) {
             throw new StorageException("There was an error writing to storage :(", e);

@@ -26,22 +26,22 @@ public class AddToDoCommand extends Command {
      * Adds previously created ToDo task to existing task list.
      * Updates user on current state of the task list
      *
-     * @param taskList list containing tasks created previously by the user
+     * @param tasks list containing tasks created previously by the user
      * @param ui interface used to display output to the user
      * @param storage storage handler used to persist changes made by the command
      */
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) {
-        int sizeBeforeAdding = taskList.size();
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
+        int sizeBeforeAdding = tasks.size();
 
-        taskList.add(toDoToAdd);
+        tasks.add(toDoToAdd);
 
-        super.updateStorage(taskList, storage);
+        super.updateStorage(tasks, storage);
 
-        assert sizeBeforeAdding == taskList.size() - 1;
+        assert sizeBeforeAdding == tasks.size() - 1;
 
         ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n"
-                + "You now have %d tasks", toDoToAdd, taskList.size()));
+                + "You now have %d tasks", toDoToAdd, tasks.size()));
     }
 
     /**

@@ -22,7 +22,7 @@ public class SquirtleBot {
     private static final int MAX_RESET_COUNT = 2;
 
     private Storage storage;
-    private TaskList taskList;
+    private TaskList tasks;
     private Ui ui;
     private Parser parser;
 
@@ -31,7 +31,7 @@ public class SquirtleBot {
      */
     public SquirtleBot() {
         storage = new Storage();
-        taskList = new TaskList();
+        tasks = new TaskList();
         ui = new Ui();
         parser = new Parser();
     }
@@ -40,13 +40,13 @@ public class SquirtleBot {
      * Constructs a new instance of SquirtleBot using provided values
      *
      * @param storage instance of storage for writing/reading to storage
-     * @param taskList task list to contain user created tasks
+     * @param tasks task list to contain user created tasks
      * @param parser parses user input into commands
      * @param ui handles user interactions, displaying of messages, reading input
      */
-    SquirtleBot(Storage storage, TaskList taskList, Parser parser, Ui ui) {
+    SquirtleBot(Storage storage, TaskList tasks, Parser parser, Ui ui) {
         this.storage = storage;
-        this.taskList = taskList;
+        this.tasks = tasks;
         this.parser = parser;
         this.ui = ui;
     }
@@ -120,7 +120,7 @@ public class SquirtleBot {
         int resetCount = 0;
         while (true) {
             try {
-                taskList = storage.loadData();
+                tasks = storage.loadData();
                 return true;
             } catch (StorageException e) {
                 if (resetCount >= MAX_RESET_COUNT) {
@@ -154,7 +154,7 @@ public class SquirtleBot {
         try {
             Command userCommand = parser.parseCommand(userInput);
             shouldExit = userCommand.shouldExit();
-            userCommand.execute(taskList, ui, storage);
+            userCommand.execute(tasks, ui, storage);
         } catch (SquirtleBotException e) {
             ui.setSavedMessage(e.getMessage());
         }
