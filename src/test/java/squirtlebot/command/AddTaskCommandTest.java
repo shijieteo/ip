@@ -38,7 +38,7 @@ public class AddTaskCommandTest {
         command.execute(tasks, ui, storage);
 
         assertEquals(new ToDo("read chapter 2"), tasks.get(0));
-        assertEquals("added: [T] [ ] read chapter 2 to your list of tasks\n\tYou now have 1 tasks",
+        assertEquals("added: [T] [ ] read chapter 2 to your list of tasks\nYou now have 1 tasks",
                 ui.getSavedMessage());
     }
 
@@ -59,7 +59,7 @@ public class AddTaskCommandTest {
 
         assertEquals(new Deadline("submit report", LocalDate.of(2026, 9, 30)), tasks.get(0));
         assertEquals("added: [D] [ ] submit report (by: 2026-09-30) to your list of tasks\n"
-                + "\tYou now have 1 tasks", ui.getSavedMessage());
+                + "You now have 1 tasks", ui.getSavedMessage());
     }
 
     @Test

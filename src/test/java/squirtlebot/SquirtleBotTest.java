@@ -135,10 +135,10 @@ public class SquirtleBotTest {
         CommandResult listResult = bot.getResponse("list");
 
         assertFalse(addResult.shouldExit());
-        assertEquals("added: [T] [ ] read chapter 1 to your list of tasks\n\tYou now have 1 tasks",
+        assertEquals("added: [T] [ ] read chapter 1 to your list of tasks\nYou now have 1 tasks",
                 addResult.message());
         assertFalse(markResult.shouldExit());
-        assertEquals("Congrats on completing the following task:\n\t [T] [X] read chapter 1",
+        assertEquals("Congrats on completing the following task:\n[T] [X] read chapter 1",
                 markResult.message());
         assertEquals("1. [T] [X] read chapter 1", listResult.message());
     }
@@ -230,7 +230,7 @@ public class SquirtleBotTest {
         assertTrue(storage.isDisabled);
         assertEquals(1, storage.writeCount);
         assertEquals(SquirtleBot.STORAGE_ISSUE_PROMPT, ui.printedMessages.get(0));
-        assertEquals("added: [T] [ ] new task to your list of tasks\n\tYou now have 1 tasks",
+        assertEquals("added: [T] [ ] new task to your list of tasks\nYou now have 1 tasks",
                 ui.printedMessages.get(1));
         assertEquals("Bye. Hope to see you soon :(", ui.printedMessages.get(2));
     }
