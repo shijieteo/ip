@@ -1,5 +1,6 @@
 package squirtlebot.command;
 
+import squirtlebot.exception.CommandException;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.TaskList;
 import squirtlebot.ui.Ui;
@@ -39,10 +40,12 @@ public abstract class Command {
      * @param storage interface for storage-related operations
      */
     protected void updateStorage(TaskList tasks, Storage storage) {
-        try {
-            storage.writeData(tasks);
-        } catch (java.io.IOException e) {
-            throw new RuntimeException(e);
+        storage.writeData(tasks);
+    }
+
+    protected void validateIndex(int index, TaskList tasks) {
+        if (index < 0 || index >= tasks.size()) {
+            throw new CommandException("Please enter a valid index :(");
         }
     }
 }

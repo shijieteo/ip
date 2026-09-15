@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import squirtlebot.exception.StorageException;
 import squirtlebot.task.TaskList;
 
 /**
@@ -45,20 +46,24 @@ public class Storage {
      * Creates FileInputStream and ObjectInputStream objects required to read from data file
      *
      * @return List of task objects from data file on the system
-     * @throws ClassNotFoundException if {@link squirtlebot.task.Task} subclasses or {@link squirtlebot.task.TaskList}
-     *                  could not be found on the classpath
-     * @throws IOException if an I/O error was encountered while opening the data file
+     * @throws StorageException if there was an IO/Class-related issue while loading from storage
      */
-    public TaskList loadData() throws ClassNotFoundException, IOException {
+    public TaskList loadData() {
         assert !isDisabled;
         TaskList loadedTasks = new TaskList();
         try (FileInputStream fileInputStream = new FileInputStream(fileLocation);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-            loadedTasks = (TaskList) objectInputStream.readObject();
+            Object data = objectInputStream.readObject();
+            if (!(data instanceof TaskList taskList)) {
+                throw new StorageException("Stored data is invalid :(");
+            }
+            loadedTasks = taskList;
         } catch (FileNotFoundException fileNotFoundException) {
             createDataFile();
-        } catch (EOFException exception) {
+        } catch (EOFException eofException) {
             return loadedTasks;
+        } catch (ClassNotFoundException | IOException e) {
+            throw new StorageException("There was an issue encountered while loading data :(", e);
         }
         return loadedTasks;
     }
@@ -86,9 +91,8 @@ public class Storage {
      * Creates FileOutputStream and ObjectOutputStream objects required to write to data file
      *
      * @param taskList TaskList object to be written to the data file
-     * @throws IOException if an I/O error was encountered while writing to the data file
      */
-    public void writeData(TaskList taskList) throws IOException {
+    public void writeData(TaskList taskList) {
         if (isDisabled) {
             return;
         }
@@ -97,6 +101,9 @@ public class Storage {
         try (FileOutputStream fileOutputStream = new FileOutputStream(fileLocation);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
             objectOutputStream.writeObject(taskList);
+        }
+        catch (IOException e) {
+            throw new StorageException("There was an error writing to storage :(", e);
         }
     }
 
@@ -117,7 +124,7 @@ public class Storage {
         try {
             dataFile.createNewFile();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new StorageException("There was an issue creating the data file :(", e);
         }
     }
 

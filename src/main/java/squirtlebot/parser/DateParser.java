@@ -21,9 +21,9 @@ public class DateParser {
      * Initializes the formats list to include all the date and dateTime formats it can parse
      */
     public DateParser() {
-        dateFormatList = List.<String>of("dd-MM-yyyy", "dd/MM/yyyy", "yyyy-MM-dd", "yyyy/MM/dd");
-        dateTimeFormatList = List.<String>of("dd-MM-yyyy HH:mm:ss", "dd/MM/yyyy HH:mm:ss",
-                "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss");
+        dateFormatList = List.<String>of("dd-MM-uuuu", "dd/MM/uuuu", "uuuu-MM-dd", "uuuu/MM/dd");
+        dateTimeFormatList = List.<String>of("dd-MM-uuuu HH:mm:ss", "dd/MM/uuuu HH:mm:ss",
+                "uuuu-MM-dd HH:mm:ss", "uuuu/MM/dd HH:mm:ss");
     }
 
     /**

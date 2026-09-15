@@ -32,6 +32,10 @@ public class FindCommand extends Command {
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         TaskList filteredList = new TaskList(taskList.stream().filter(x -> x.toString()
                 .contains(searchPattern)).toList());
+        if (filteredList.isEmpty()) {
+            ui.setSavedMessage("No tasks match your search :(");
+            return;
+        }
         ui.setSavedMessage(filteredList.toString());
     }
 

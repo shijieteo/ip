@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import squirtlebot.TemporalPair;
+import squirtlebot.exception.CommandException;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.Event;
 import squirtlebot.task.TaskList;
@@ -32,11 +33,11 @@ public class AddEventCommandTest {
     }
 
     @Test
-    public void setAttributes_noTaskDescription_exceptionThrown() {
+    public void setAttributes_noTaskDescription_throwsCommandException() {
         String input = "/from 01-01-2026 /to 01-01-2027";
 
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class, () -> new AddEventCommand(input.split(" ")));
+        CommandException exception = assertThrows(
+                CommandException.class, () -> new AddEventCommand(input.split(" ")));
 
         assertEquals("Please provide the correct arguments for Event!", exception.getMessage());
     }
@@ -55,12 +56,22 @@ public class AddEventCommandTest {
     }
 
     @Test
-    public void constructor_invalidStartDate_throwsIllegalArgumentException() {
+    public void constructor_invalidStartDate_throwsCommandException() {
         String input = "event meeting /from tomorrow /to 14-09-2026";
 
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class, () -> new AddEventCommand(input.split(" ")));
+        CommandException exception = assertThrows(
+                CommandException.class, () -> new AddEventCommand(input.split(" ")));
 
         assertEquals("Invalid date/datetime detected!", exception.getMessage());
+    }
+
+    @Test
+    public void setAttributes_startDateAfterEndDate_throwsCommandException() {
+        String input = "do cs2103 /from 01-01-2027 /to 01-01-2026";
+
+        CommandException exception = assertThrows(
+                CommandException.class, () -> new AddEventCommand(input.split(" ")));
+
+        assertEquals("Event start date has to be earlier than end date!", exception.getMessage());
     }
 }

@@ -1,5 +1,6 @@
 package squirtlebot.command;
 
+import squirtlebot.exception.CommandException;
 import squirtlebot.parser.Parser;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.TaskList;
@@ -28,7 +29,6 @@ public class AddToDoCommand extends Command {
      * @param taskList list containing tasks created previously by the user
      * @param ui interface used to display output to the user
      * @param storage storage handler used to persist changes made by the command
-     * @throws RuntimeException if an issue was encountered while attempting to write to storage
      */
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) {
@@ -40,7 +40,7 @@ public class AddToDoCommand extends Command {
 
         assert sizeBeforeAdding == taskList.size() - 1;
 
-        ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n\t"
+        ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n"
                 + "You now have %d tasks", toDoToAdd, taskList.size()));
     }
 
@@ -63,7 +63,7 @@ public class AddToDoCommand extends Command {
      * Creates ToDo task according to user input
      *
      * @param userInputArray array containing user inputs required to create a ToDo object
-     * @throws IllegalArgumentException if taskDescription is empty
+     * @throws CommandException if taskDescription is empty
      */
     private void setAttributes(String[] userInputArray) {
         Parser parser = new Parser();
@@ -71,7 +71,7 @@ public class AddToDoCommand extends Command {
         String taskDescription = parser.parseDescription(userInputArray);
 
         if (taskDescription.isEmpty()) {
-            throw new IllegalArgumentException("Please provide the correct arguments for ToDo!");
+            throw new CommandException("Please provide the correct arguments for ToDo!");
         }
 
         this.toDoToAdd = new ToDo(taskDescription);

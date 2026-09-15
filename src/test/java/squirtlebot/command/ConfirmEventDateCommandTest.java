@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import squirtlebot.TemporalPair;
+import squirtlebot.exception.CommandException;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.Event;
 import squirtlebot.task.TaskList;
@@ -47,23 +48,57 @@ public class ConfirmEventDateCommandTest {
     }
 
     @Test
-    public void execute_selectedTaskIsNotEvent_throwsIllegalArgumentException() {
+    public void execute_selectedTaskIsNotEvent_throwsCommandException() {
         tasks.add(new ToDo("read textbook"));
         ConfirmEventDateCommand command = new ConfirmEventDateCommand(new String[]{"confirm", "1", "1"});
 
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class, () -> command.execute(tasks, ui, storage));
+        CommandException exception = assertThrows(
+                CommandException.class, () -> command.execute(tasks, ui, storage));
 
         assertEquals("Selected event was not an Event!", exception.getMessage());
     }
 
     @Test
-    public void constructor_nonNumericIndex_throwsNumberFormatException() {
-        NumberFormatException exception = assertThrows(
-                NumberFormatException.class, () -> new ConfirmEventDateCommand(
+    public void constructor_nonNumericIndex_throwsCommandException() {
+        CommandException exception = assertThrows(
+                CommandException.class, () -> new ConfirmEventDateCommand(
                         new String[]{"confirm", "one", "two"}));
 
-        assertEquals("Please enter a valid index :( ", exception.getMessage());
+        assertEquals("Please enter a valid index :(", exception.getMessage());
+    }
+
+    @Test
+    public void constructor_missingScheduleIndex_throwsCommandException() {
+        CommandException exception = assertThrows(
+                CommandException.class, () -> new ConfirmEventDateCommand(
+                        new String[]{"confirm", "1"}));
+
+        assertEquals("Please enter an index to confirm dates for :(", exception.getMessage());
+    }
+
+    @Test
+    public void execute_taskIndexOutsideList_throwsCommandException() {
+        ConfirmEventDateCommand command = new ConfirmEventDateCommand(
+                new String[]{"confirm", "1", "1"});
+
+        CommandException exception = assertThrows(
+                CommandException.class, () -> command.execute(tasks, ui, storage));
+
+        assertEquals("Please enter a valid index :(", exception.getMessage());
+    }
+
+    @Test
+    public void execute_eventAlreadyConfirmed_ignoresFurtherConfirmation() {
+        Event event = createEventWithTwoSchedules();
+        tasks.add(event);
+        new ConfirmEventDateCommand(new String[]{"confirm", "1", "2"})
+                .execute(tasks, ui, storage);
+
+        new ConfirmEventDateCommand(new String[]{"confirm", "1", "99"})
+                .execute(tasks, ui, storage);
+
+        assertFalse(event.toString().contains("2026-09-13"));
+        assertTrue(event.toString().contains("from: 2026-09-20 to: 2026-09-21"));
     }
 
     private Event createEventWithTwoSchedules() {

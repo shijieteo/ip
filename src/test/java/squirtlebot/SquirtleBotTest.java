@@ -12,6 +12,9 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import squirtlebot.exception.CommandException;
+import squirtlebot.exception.SquirtleBotException;
+import squirtlebot.exception.StorageException;
 import squirtlebot.parser.Parser;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.TaskList;
@@ -23,7 +26,7 @@ import squirtlebot.ui.Ui;
  */
 public class SquirtleBotTest {
     private enum ExceptionType {
-        NONE, IO_EXCEPTION, CLASS_NOT_FOUND, INVALID_CLASS
+        NONE, SQUIRTLE_BOT_EXCEPTION, COMMAND_EXCEPTION, STORAGE_EXCEPTION
     }
 
     private static class FakeUi extends Ui {
@@ -75,14 +78,14 @@ public class SquirtleBotTest {
         }
 
         @Override
-        public TaskList loadData() throws IOException, ClassNotFoundException {
+        public TaskList loadData() {
             loadCount += 1;
             if (remainingLoadFailures > 0) {
                 remainingLoadFailures -= 1;
                 switch (exceptionType) {
-                    case IO_EXCEPTION -> throw new IOException("");
-                    case CLASS_NOT_FOUND -> throw new ClassNotFoundException("");
-                    case INVALID_CLASS -> throw new InvalidClassException("");
+                    case SQUIRTLE_BOT_EXCEPTION -> throw new SquirtleBotException("");
+                    case STORAGE_EXCEPTION -> throw new StorageException("");
+                    case COMMAND_EXCEPTION -> throw new CommandException("");
                     case NONE -> { }
                     default -> throw new AssertionError("Unexpected exception type");
                 }
@@ -92,15 +95,16 @@ public class SquirtleBotTest {
         }
 
         @Override
-        public void writeData(TaskList tasks) throws IOException {
+        public void writeData(TaskList tasks) {
             writeCount += 1;
             if (isDisabled) {
                 return;
             }
             switch (exceptionType) {
-                case IO_EXCEPTION -> throw new IOException("");
-                case INVALID_CLASS -> throw new InvalidClassException("");
-                case NONE, CLASS_NOT_FOUND -> { }
+                case SQUIRTLE_BOT_EXCEPTION -> throw new SquirtleBotException("");
+                case STORAGE_EXCEPTION -> throw new StorageException("");
+                case COMMAND_EXCEPTION -> throw new CommandException("");
+                case NONE -> { }
                 default -> throw new AssertionError("Unexpected exception type");
             }
         }
@@ -131,10 +135,10 @@ public class SquirtleBotTest {
         CommandResult listResult = bot.getResponse("list");
 
         assertFalse(addResult.shouldExit());
-        assertEquals("added: [T] [ ] read chapter 1 to your list of tasks\n\tYou now have 1 tasks",
+        assertEquals("added: [T] [ ] read chapter 1 to your list of tasks\nYou now have 1 tasks",
                 addResult.message());
         assertFalse(markResult.shouldExit());
-        assertEquals("Congrats on completing the following task:\n\t [T] [X] read chapter 1",
+        assertEquals("Congrats on completing the following task:\n[T] [X] read chapter 1",
                 markResult.message());
         assertEquals("1. [T] [X] read chapter 1", listResult.message());
     }
@@ -168,28 +172,18 @@ public class SquirtleBotTest {
     }
 
     @Test
-    public void initializeTasks_ioException_returnsFalse() {
-        FakeStorage storage = new FakeStorage(new TaskList(), ExceptionType.IO_EXCEPTION);
+    public void initializeTasks_storageException_returnsFalse() {
+        FakeStorage storage = new FakeStorage(new TaskList(), ExceptionType.STORAGE_EXCEPTION);
         SquirtleBot testBot = createBot(storage, new FakeUi(new ArrayList<>()));
 
         assertFalse(testBot.initializeTasks());
-        assertEquals(1, storage.loadCount);
-        assertEquals(0, storage.resetCount);
-    }
-
-    @Test
-    public void initializeTasks_classNotFound_returnsFalse() {
-        FakeStorage storage = new FakeStorage(new TaskList(), ExceptionType.CLASS_NOT_FOUND);
-        SquirtleBot testBot = createBot(storage, new FakeUi(new ArrayList<>()));
-
-        assertFalse(testBot.initializeTasks());
-        assertEquals(1, storage.loadCount);
-        assertEquals(0, storage.resetCount);
+        assertEquals(3, storage.loadCount);
+        assertEquals(2, storage.resetCount);
     }
 
     @Test
     public void initializeTasks_invalidClassThenSuccess_resetsAndRetries() {
-        FakeStorage storage = new FakeStorage(new TaskList(), ExceptionType.INVALID_CLASS, 2);
+        FakeStorage storage = new FakeStorage(new TaskList(), ExceptionType.STORAGE_EXCEPTION, 2);
         SquirtleBot testBot = createBot(storage, new FakeUi(new ArrayList<>()));
 
         assertTrue(testBot.initializeTasks());
@@ -214,7 +208,7 @@ public class SquirtleBotTest {
 
     @Test
     public void run_storageFailsAndUserDeclines_stopsInteraction() {
-        FakeStorage storage = new FakeStorage(new TaskList(), ExceptionType.IO_EXCEPTION);
+        FakeStorage storage = new FakeStorage(new TaskList(), ExceptionType.STORAGE_EXCEPTION);
         FakeUi ui = new FakeUi(new ArrayList<>(List.of("N")));
         SquirtleBot testBot = createBot(storage, ui);
 
@@ -227,7 +221,7 @@ public class SquirtleBotTest {
 
     @Test
     public void run_storageFailsAndUserContinues_disablesStorageAndRuns() {
-        FakeStorage storage = new FakeStorage(new TaskList(), ExceptionType.IO_EXCEPTION);
+        FakeStorage storage = new FakeStorage(new TaskList(), ExceptionType.STORAGE_EXCEPTION);
         FakeUi ui = new FakeUi(new ArrayList<>(List.of("Y", "todo new task", "bye")));
         SquirtleBot testBot = createBot(storage, ui);
 
@@ -236,7 +230,7 @@ public class SquirtleBotTest {
         assertTrue(storage.isDisabled);
         assertEquals(1, storage.writeCount);
         assertEquals(SquirtleBot.STORAGE_ISSUE_PROMPT, ui.printedMessages.get(0));
-        assertEquals("added: [T] [ ] new task to your list of tasks\n\tYou now have 1 tasks",
+        assertEquals("added: [T] [ ] new task to your list of tasks\nYou now have 1 tasks",
                 ui.printedMessages.get(1));
         assertEquals("Bye. Hope to see you soon :(", ui.printedMessages.get(2));
     }

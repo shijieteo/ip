@@ -3,6 +3,7 @@ package squirtlebot.task;
 import java.util.ArrayList;
 
 import squirtlebot.TemporalPair;
+import squirtlebot.exception.CommandException;
 
 /**
  * Represents the event task that users can add to their list of tasks
@@ -34,14 +35,21 @@ public class Event extends Task {
      *
      * @param index 0-based integer indicating the start/end date
      *              in the list of possible start/end dates to set as the confirmed date
+     * @throws CommandException if invalid index was supplied for date to confirm
      */
     public void confirmEventDate(int index) {
         if (isDateConfirmed) {
             return;
         }
-        TemporalPair confirmedDate = possibleSchedules.get(index);
-        possibleSchedules = new ArrayList<>();
-        possibleSchedules.add(confirmedDate);
+        try {
+            TemporalPair confirmedDate = possibleSchedules.get(index);
+            possibleSchedules = new ArrayList<>();
+            possibleSchedules.add(confirmedDate);
+
+            isDateConfirmed = true;
+        } catch (IndexOutOfBoundsException e) {
+            throw new CommandException("Invalid index entered for confirmed date :(", e);
+        }
 
         assert possibleSchedules.size() == 1;
     }
@@ -69,10 +77,15 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
+        if (isDateConfirmed) {
+            TemporalPair confirmedDate = possibleSchedules.get(0);
+            return String.format("[E] %s (from: %s to: %s)", super.toString(),
+                    confirmedDate.startDate(), confirmedDate.endDate());
+        }
         String schedulesDisplays = possibleSchedules.stream()
                 .map(x -> String.format("from: %s to: %s", x.startDate(), x.endDate()))
-                .reduce("", (x, y) -> x + "\n\t" + y)
+                .reduce("", (x, y) -> x + "\n" + y)
                 .trim();
-        return String.format("[E] %s \nPossible Schedules: \n\t%s", super.toString(), schedulesDisplays);
+        return String.format("[E] %s \nPossible Schedules: \n%s", super.toString(), schedulesDisplays);
     }
 }

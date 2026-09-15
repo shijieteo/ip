@@ -1,5 +1,6 @@
 package squirtlebot.command;
 
+import squirtlebot.exception.CommandException;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.Task;
 import squirtlebot.task.TaskList;
@@ -26,13 +27,14 @@ public class DeleteCommand extends Command {
      * @param taskList list containing tasks created previously by the user
      * @param ui interface used to display output to the user
      * @param storage storage handler used to persist changes made by the command
-     * @throws RuntimeException if an issue was encountered while writing to storage
      */
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         int sizeBeforeRemoval = taskList.size();
 
+        validateIndex(index, taskList);
+
         Task removedTask = taskList.remove(index);
-        ui.setSavedMessage(String.format("\tThe following task was removed:\n\t %s", removedTask));
+        ui.setSavedMessage(String.format("\tThe following task was removed:\n%s", removedTask));
 
         assert sizeBeforeRemoval == taskList.size() + 1;
 
@@ -57,13 +59,15 @@ public class DeleteCommand extends Command {
      * Extracts the index to delete from an array of user inputs
      *
      * @param userInputArray array containing the task list index to delete from
-     * @throws NumberFormatException if index value provided is not a number
+     * @throws CommandException if index value provided is not a number
      */
     private void parseParams(String[] userInputArray) {
         try {
             index = Integer.parseInt(userInputArray[1]) - 1;
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("Please enter a valid index :(");
+            throw new CommandException("Please enter a valid index :(", e);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new CommandException("Please enter an index to delete :(", e);
         }
     }
 }
