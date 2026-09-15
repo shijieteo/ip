@@ -9,18 +9,28 @@ import java.util.stream.IntStream;
  */
 public class TaskList extends ArrayList<Task> {
 
+    /**
+     * Constructs an empty task list
+     */
     public TaskList() {
         super();
     }
 
+    /**
+     * Constructs a task list containing objects specified by {@code collection}
+     */
     public TaskList(Collection<Task> collection) {
         super(collection);
     }
 
+    /**
+     * Returns the string representation of {@link Task} objects contained within this collection<br>
+     * String representation of contained {@link Task} objects are split by a newline character
+     */
     @Override
     public String toString() {
         String accumulatedString = IntStream.range(0, size()).boxed()
-                .map(x -> String.format("\t%d. %s", x + 1, get(x)))
+                .map(x -> String.format("%d. %s", x + 1, get(x)))
                 .reduce("", (x, y) -> x + y + "\n");
 
         return "\t" + accumulatedString.trim();

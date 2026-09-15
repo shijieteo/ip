@@ -22,7 +22,7 @@ public class FindCommand extends Command {
     }
 
     /**
-     * Filters the task list for tasks containing the user-supplied string
+     * Filters the task list for tasks containing the user-supplied string<br>
      * Displays the filtered tasks to the user
      *
      * @param taskList list containing tasks created previously by the user
@@ -32,7 +32,25 @@ public class FindCommand extends Command {
     public void execute(TaskList taskList, Ui ui, Storage storage) {
         TaskList filteredList = new TaskList(taskList.stream().filter(x -> x.toString()
                 .contains(searchPattern)).toList());
-        ui.listTasks(filteredList);
+        if (filteredList.isEmpty()) {
+            ui.setSavedMessage("No tasks match your search :(");
+            return;
+        }
+        ui.setSavedMessage(filteredList.toString());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof FindCommand otherFindCommand) {
+            return searchPattern.equals(otherFindCommand.searchPattern);
+        } else {
+            return false;
+        }
     }
 
     /**

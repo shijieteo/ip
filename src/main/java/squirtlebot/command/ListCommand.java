@@ -18,6 +18,10 @@ public class ListCommand extends Command {
      */
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) {
-        ui.listTasks(taskList);
+        if (taskList.isEmpty()) {
+            ui.setSavedMessage("Your list of tasks is currently empty :)");
+            return;
+        }
+        ui.setSavedMessage(taskList.toString());
     }
 }

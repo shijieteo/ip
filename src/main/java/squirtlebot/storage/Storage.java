@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import squirtlebot.exception.StorageException;
 import squirtlebot.task.TaskList;
 
 /**
@@ -16,31 +17,53 @@ import squirtlebot.task.TaskList;
  * Uses <code>data/Tasks.ser</code> as system file for read-write operations
  */
 public class Storage {
-    private static final String FILE_LOCATION = "data/Tasks.ser";
-    private static final String DIRECTORY_NAME = "data";
+    private static final String DEFAULT_FILE_LOCATION = "data/Tasks.ser";
+
+    private boolean isDisabled;
+    private final String fileLocation;
+    private final String directoryName;
 
     /**
-     * Constructs a storage object
+     * Constructs a storage object using default file locations
      */
-    public Storage() {}
+    public Storage() {
+        this(DEFAULT_FILE_LOCATION);
+    }
+
+    /**
+     * Constructs a storage object that persists data at the specified location.
+     *
+     * @param fileLocation path of the file used to store tasks
+     */
+    public Storage(String fileLocation) {
+        isDisabled = false;
+        this.fileLocation = fileLocation;
+        File parentDirectory = new File(fileLocation).getParentFile();
+        this.directoryName = parentDirectory == null ? "." : parentDirectory.getPath();
+    }
 
     /**
      * Creates FileInputStream and ObjectInputStream objects required to read from data file
      *
      * @return List of task objects from data file on the system
-     * @throws ClassNotFoundException if {@link squirtlebot.task.Task} subclasses or {@link squirtlebot.task.TaskList}
-     *                  could not be found on the classpath
-     * @throws IOException if an I/O error was encountered while opening the data file
+     * @throws StorageException if there was an IO/Class-related issue while loading from storage
      */
-    public TaskList loadData() throws ClassNotFoundException, IOException {
+    public TaskList loadData() {
+        assert !isDisabled;
         TaskList loadedTasks = new TaskList();
-        try (FileInputStream fileInputStream = new FileInputStream(FILE_LOCATION);
+        try (FileInputStream fileInputStream = new FileInputStream(fileLocation);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-            loadedTasks = (TaskList) objectInputStream.readObject();
+            Object data = objectInputStream.readObject();
+            if (!(data instanceof TaskList taskList)) {
+                throw new StorageException("Stored data is invalid :(");
+            }
+            loadedTasks = taskList;
         } catch (FileNotFoundException fileNotFoundException) {
             createDataFile();
-        } catch (EOFException exception) {
+        } catch (EOFException eofException) {
             return loadedTasks;
+        } catch (ClassNotFoundException | IOException e) {
+            throw new StorageException("There was an issue encountered while loading data :(", e);
         }
         return loadedTasks;
     }
@@ -49,43 +72,60 @@ public class Storage {
      * Deletes the data file and creates a new data file
      */
     public void resetData() {
-        File dataFile = new File(FILE_LOCATION);
+        if (isDisabled) {
+            return;
+        }
+        File dataFile = new File(fileLocation);
         dataFile.delete();
         createDataFile();
+    }
+
+    /**
+     * Sets the value of isDisabled to disable all storage-related operations
+     */
+    public void disable() {
+        this.isDisabled = true;
     }
 
     /**
      * Creates FileOutputStream and ObjectOutputStream objects required to write to data file
      *
      * @param taskList TaskList object to be written to the data file
-     * @throws IOException if an I/O error was encountered while writing to the data file
      */
-    public void writeData(TaskList taskList) throws IOException {
-        try (FileOutputStream fileOutputStream = new FileOutputStream(FILE_LOCATION);
+    public void writeData(TaskList taskList) {
+        if (isDisabled) {
+            return;
+        }
+        createDataFile();
+
+        try (FileOutputStream fileOutputStream = new FileOutputStream(fileLocation);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
             objectOutputStream.writeObject(taskList);
-
-        } catch (FileNotFoundException fileNotFoundException) {
-            createDataFile();
-            writeData(taskList);
+        }
+        catch (IOException e) {
+            throw new StorageException("There was an error writing to storage :(", e);
         }
     }
 
     /**
-     * Creates data file at {@link #FILE_LOCATION}
+     * Creates the configured data file
      * Creates data directory if it does not already exist
      */
     private void createDataFile() {
-        File dataFile = new File(FILE_LOCATION);
-        File directory = new File(DIRECTORY_NAME);
+        if (isDisabled) {
+            return;
+        }
+        File dataFile = new File(fileLocation);
+        File directory = new File(directoryName);
         if (!directory.exists()) {
-            boolean isDirectoryCreated = directory.mkdirs();
+            directory.mkdirs();
         }
 
         try {
-            boolean isFileCreated = dataFile.createNewFile();
+            dataFile.createNewFile();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new StorageException("There was an issue creating the data file :(", e);
         }
     }
+
 }

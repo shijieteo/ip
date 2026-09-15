@@ -10,20 +10,34 @@ import java.util.Optional;
 
 /**
  * Parses user input strings to identify date or dateTime values
- * DateParser contains a set of date and dateTime formats that it accepts
+ * Contains a set of accepted date and datetime formats
  */
 public class DateParser {
     private List<String> dateFormatList;
     private List<String> dateTimeFormatList;
 
     /**
-     * Constructs a DateParser object
+     * Constructs a DateParser object<br>
      * Initializes the formats list to include all the date and dateTime formats it can parse
      */
     public DateParser() {
-        dateFormatList = List.<String>of("dd-MM-yyyy", "dd/MM/yyyy", "yyyy-MM-dd", "yyyy/MM/dd");
-        dateTimeFormatList = List.<String>of("dd-MM-yyyy HH:mm:ss", "dd/MM/yyyy HH:mm:ss",
-                "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss");
+        dateFormatList = List.<String>of("dd-MM-uuuu", "dd/MM/uuuu", "uuuu-MM-dd", "uuuu/MM/dd");
+        dateTimeFormatList = List.<String>of("dd-MM-uuuu HH:mm:ss", "dd/MM/uuuu HH:mm:ss",
+                "uuuu-MM-dd HH:mm:ss", "uuuu/MM/dd HH:mm:ss");
+    }
+
+    /**
+     * Attempts to convert user input strings into either a {@link LocalDate} or {@link LocalDateTime} object
+     *
+     * @param userInput user input containing date or datetime
+     * @return an {@link Optional} containing a date or datetime object as a {@link Temporal}
+     *              or an empty {@link Optional} if user input is not of a supported format
+     */
+    public Optional<Temporal> parseTemporal(String userInput) {
+        Optional<Temporal> optionalDate = parseDate(userInput);
+        Optional<Temporal> optionalDateTime = parseDateTime(userInput);
+
+        return optionalDate.or(() -> optionalDateTime);
     }
 
     /**
@@ -33,7 +47,7 @@ public class DateParser {
      * @return an {@link Optional} containing the date object represented by user input
      *                  or an empty {@link Optional} if the user input is of an unsupported format
      */
-    public Optional<Temporal> parseDate(String userInput) {
+    private Optional<Temporal> parseDate(String userInput) {
         for (String format : dateFormatList) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
             try {
@@ -53,7 +67,7 @@ public class DateParser {
      * @return an {@link Optional} containing the dateTime object represented by user input
      *                  or an empty {@link Optional} if the user input is of an unsupported format
      */
-    public Optional<Temporal> parseDateTime(String userInput) {
+    private Optional<Temporal> parseDateTime(String userInput) {
         for (String format : dateTimeFormatList) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
             try {

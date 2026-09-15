@@ -2,41 +2,24 @@ package squirtlebot.ui;
 
 import java.util.Scanner;
 
-import squirtlebot.task.TaskList;
-
 /**
- * Handles user interaction such as reading input and printing messages when operating in {@code CLI} mode
- * <p>
- *     Helps to store messages to output when operating in {@code GUI} mode
- * </p>
+ * Handles user interaction such as reading input and printing messages
  */
 public class Ui {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
-    private boolean isGuiInstance;
     private String savedMessage;
 
-    private Ui(boolean isGuiInstance) {
-        this.isGuiInstance = isGuiInstance;
+
+    /**
+     * Constructs a new Ui
+     */
+    public Ui() {
         savedMessage = "";
     }
 
-    public static Ui getGuiInstance() {
-        return new Ui(true);
-    }
-
-    public static Ui getCliInstance() {
-        return new Ui(false);
-    }
-
-    public void listTasks(TaskList taskList) {
-        setSavedMessage(taskList.toString());
-    }
-
     /**
-     * Prints welcome banner for SquirtleBot
-     * <p>
-     *     Intended for use when operating in CLI-mode
-     * </p>
+     * Prints welcome banner for SquirtleBot. <br>
+     * Intended for use when operating in CLI-mode
      */
     public void printBanner() {
         String banner = """
@@ -67,8 +50,6 @@ public class Ui {
                    066666660 79 0008   80  08888888338888888 4000         \s
                    186666660  0     73 00 333333333333333388  0           \s
                      080800  00000  33 00 000000000858000000              \s
-                
-                
                 """;
 
         System.out.println(Ui.HORIZONTAL_LINE);
@@ -79,25 +60,35 @@ public class Ui {
     }
 
     /**
-     * Prints output message between horizontal lines for formatting
-     * @param output message to display to user
+     * Updates saved message
+     *
+     * @param savedMessage new message to be saved
      */
-    public void setSavedMessage(String output) {
-        savedMessage = output;
+    public void setSavedMessage(String savedMessage) {
+        this.savedMessage = savedMessage;
     }
 
+    /**
+     * Displays the saved messaged between 2 horizontal lines for formatting
+     */
     public void printSavedMessage() {
         System.out.println(Ui.HORIZONTAL_LINE);
         System.out.println(savedMessage);
         System.out.println(Ui.HORIZONTAL_LINE);
     }
 
+    /**
+     * Returns saved message with trailing whitespace removed
+     *
+     * @return previously saved message
+     */
     public String getSavedMessage() {
         return savedMessage.trim();
     }
 
     /**
-     * Creates a scanner and reads the next line of user input
+     * Reads the next line of user input
+     *
      * @return string containing user's input
      */
     public String readInput() {
@@ -105,6 +96,10 @@ public class Ui {
         return scanner.nextLine();
     }
 
+
+    /**
+     * Returns the welcome message used for GUI mode of operation
+     */
     public String getGuiWelcomeMessage() {
         return ("Hello! I'm SquirtleBot :) \nWhat can I do for you?");
     }

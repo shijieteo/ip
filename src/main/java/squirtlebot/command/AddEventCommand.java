@@ -1,9 +1,16 @@
 package squirtlebot.command;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
+import squirtlebot.TemporalPair;
+import squirtlebot.exception.CommandException;
 import squirtlebot.parser.DateParser;
+import squirtlebot.parser.Parser;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.Event;
 import squirtlebot.task.TaskList;
@@ -11,12 +18,13 @@ import squirtlebot.ui.Ui;
 
 /**
  * Represents the event command within <code>SquirtleBot</code>
- * Contains the values required to create an Event object
  */
 public class AddEventCommand extends Command {
-    private Temporal startDate;
-    private String taskDescription;
-    private Temporal endDate;
+    private static final String INVALID_DATETIME_FORMAT_MESSAGE = "Invalid date/datetime detected!";
+    private static final String START_DATE_TOKEN = "/from";
+    private static final String END_DATE_TOKEN = "/to";
+
+    private Event eventToAdd;
 
     /**
      * Constructs a new AddEventCommand using inputs provided by a user
@@ -24,91 +32,100 @@ public class AddEventCommand extends Command {
      * @param userInput array containing user inputs required to create an Event object
      */
     public AddEventCommand(String[] userInput) {
-        parseParams(userInput);
+        setAttributes(userInput);
     }
 
     /**
-     * Creates an Event object based off user-provided
-     * values and adds to an existing task list
-     * Updates user on current state of the task list
+     * Adds the previously created Event object to the list of tasks
+     * Updates storage to reflect the newly added Event
+     * Uses Ui to store a message reflecting the newly added task
      *
      * @param taskList list containing tasks created previously by the user
      * @param ui interface used to display output to the user
      * @param storage storage handler used to persist changes made by the command
-     * @throws RuntimeException if an issue was encountered while attempting to write to storage
      */
     public void execute(TaskList taskList, Ui ui, Storage storage) {
-        Event eventTask = new Event(taskDescription, startDate, endDate);
-        taskList.add(eventTask);
-        try {
-            storage.writeData(taskList);
-        } catch (java.io.IOException e) {
-            throw new RuntimeException(e);
-        }
-        ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n\t"
-                + "You now have %d tasks", eventTask, taskList.size()));
+        int sizeBeforeAdding = taskList.size();
+
+        taskList.add(eventToAdd);
+
+        super.updateStorage(taskList, storage);
+
+        assert sizeBeforeAdding == taskList.size() - 1;
+
+        ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n"
+                + "You now have %d tasks", eventToAdd, taskList.size()));
     }
 
     /**
-     * Extracts <code>taskDescription</code>, <code>startDate</code>
-     * and <code>endDate</code> from the array of user inputs
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof AddEventCommand otherAddEventCommand) {
+            return eventToAdd.equals(otherAddEventCommand.eventToAdd);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Extracts <code>taskDescription</code> and start and end date pairs from the user input.
+     * Queries dateParser repeatedly to parse possible start and end dates
+     * Creates the event object to be added when executed
      *
      * @param userInputArray array containing user inputs required to create an Event object
-     * @throws IllegalArgumentException if any of taskDescription, startDate or endDate is empty
+     * @throws CommandException if any of taskDescription, startDate or endDate is empty
      *                  or if any of startDate or endDate is not in a valid format
      */
-    private void parseParams(String[] userInputArray) {
-        boolean isEndDate = false;
-        boolean isStartDate = false;
-        String startDate = "";
-        String endDate = "";
-        int index = 1;
-        String taskDescription = "";
-
-        while (index < userInputArray.length) {
-            if (userInputArray[index].equals("/from")) {
-                isStartDate = true;
-                isEndDate = false;
-                index++;
-                continue;
-            } else if (userInputArray[index].equals("/to")) {
-                isEndDate = true;
-                isStartDate = false;
-                index++;
-                continue;
-            }
-            if (isEndDate) {
-                endDate += userInputArray[index];
-                endDate += " ";
-            } else if (isStartDate) {
-                startDate += userInputArray[index];
-                startDate += " ";
-            } else {
-                taskDescription += userInputArray[index];
-                taskDescription += " ";
-            }
-            index++;
-        }
-        if (startDate.isEmpty() || taskDescription.isEmpty() || endDate.isEmpty()) {
-            throw new IllegalArgumentException("Please provide the correct arguments for Event!");
-        }
-
-        startDate = startDate.trim();
-        endDate = endDate.trim();
-
+    private void setAttributes(String[] userInputArray) {
+        Parser parser = new Parser();
         DateParser dateParser = new DateParser();
-        Optional<Temporal> startDateOptional = dateParser.parseDate(startDate);
-        Optional<Temporal> startDateTimeOptional = dateParser.parseDateTime(startDate);
-        Temporal startTemporal = startDateOptional.or(() -> startDateTimeOptional)
-                .orElseThrow(() -> new IllegalArgumentException("Please enter a start valid date/datetime!"));
 
-        Optional<Temporal> endDateOptional = dateParser.parseDate(endDate);
-        Optional<Temporal> endDateTimeOptional = dateParser.parseDateTime(endDate);
-        Temporal endTemporal = endDateOptional.or(() -> endDateTimeOptional)
-                .orElseThrow(() -> new IllegalArgumentException("Please enter a end valid date/datetime!"));
+        String taskDescription = parser.parseDescription(userInputArray);
+        ArrayList<TemporalPair> possibleSchedules = new ArrayList<TemporalPair>();
 
-        this.startDate = startTemporal;
-        this.endDate = endTemporal;
-        this.taskDescription = taskDescription;
+        Stream.iterate(1, x -> x < userInputArray.length, x -> x + 1)
+                .filter(index -> {
+                    String currentToken = userInputArray[index];
+                    return currentToken.equals(START_DATE_TOKEN);
+                }).map(index -> {
+                    String startDate = parser.parseTokens(Arrays
+                            .copyOfRange(userInputArray, index, userInputArray.length), START_DATE_TOKEN);
+                    String endDate = parser.parseTokens(Arrays
+                            .copyOfRange(userInputArray, index, userInputArray.length), END_DATE_TOKEN);
+
+                    Temporal startTemporal = dateParser.parseTemporal(startDate)
+                            .orElseThrow(() -> new CommandException(INVALID_DATETIME_FORMAT_MESSAGE));
+
+                    Temporal endTemporal = dateParser.parseTemporal(endDate)
+                            .orElseThrow(() -> new CommandException(INVALID_DATETIME_FORMAT_MESSAGE));
+
+                    validateTemporal(startTemporal, endTemporal);
+
+                    return new TemporalPair(startTemporal, endTemporal);
+                }).forEach(x -> possibleSchedules.add(x));
+
+        if (taskDescription.isEmpty() || possibleSchedules.isEmpty()) {
+            throw new CommandException("Please provide the correct arguments for Event!");
+        }
+
+        eventToAdd = new Event(taskDescription, possibleSchedules);
+    }
+
+    private void validateTemporal(Temporal startTemporal, Temporal endTemporal) {
+        LocalDateTime startDateTime = startTemporal instanceof LocalDate startDate
+                ? startDate.atStartOfDay()
+                : (LocalDateTime) startTemporal;
+
+        LocalDateTime endDateTime = endTemporal instanceof LocalDate endDate
+                ? endDate.atStartOfDay()
+                : (LocalDateTime) endTemporal;
+
+        if (startDateTime.isAfter(endDateTime)) {
+            throw new CommandException("Event start date has to be earlier than end date!");
+        }
     }
 }

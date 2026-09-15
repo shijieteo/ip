@@ -1,9 +1,10 @@
 package squirtlebot.command;
 
 import java.time.temporal.Temporal;
-import java.util.Optional;
 
+import squirtlebot.exception.CommandException;
 import squirtlebot.parser.DateParser;
+import squirtlebot.parser.Parser;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.Deadline;
 import squirtlebot.task.TaskList;
@@ -11,11 +12,9 @@ import squirtlebot.ui.Ui;
 
 /**
  * Represents the deadline command within <code>SquirtleBot</code>
- * Contains the values required to create a Deadline object
  */
 public class AddDeadlineCommand extends Command {
-    private Temporal dueDate;
-    private String taskDescription;
+    private Deadline deadlineToAdd;
 
 
     /**
@@ -24,73 +23,69 @@ public class AddDeadlineCommand extends Command {
      * @param userInput array containing user inputs required to create a Deadline object
      */
     public AddDeadlineCommand(String[] userInput) {
-        parseParams(userInput);
+        setAttributes(userInput);
     }
 
     /**
-     * Creates a Deadline object based off user-provided
-     * values and adds to an existing task list
+     * Creates a Deadline object based off user-provided<br>
+     * values and adds to an existing task list<br>
      * Updates user on current state of task list
      *
      * @param taskList list containing tasks created previously by the user
      * @param ui interface used to display output to the user
      * @param storage storage handler used to persist changes made by the command
-     * @throws RuntimeException if an issue was encountered while attempting to write to storage
      */
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) {
-        Deadline deadlineTask = new Deadline(taskDescription, dueDate);
-        taskList.add(deadlineTask);
-        try {
-            storage.writeData(taskList);
-        } catch (java.io.IOException e) {
-            throw new RuntimeException(e);
+        int sizeBeforeAdding = taskList.size();
+
+        taskList.add(deadlineToAdd);
+
+        super.updateStorage(taskList, storage);
+
+        assert sizeBeforeAdding == taskList.size() - 1;
+
+        ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n"
+                + "You now have %d tasks", deadlineToAdd, taskList.size()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof AddDeadlineCommand otherAddDeadlineCommand) {
+            return deadlineToAdd.equals(otherAddDeadlineCommand.deadlineToAdd);
+        } else {
+            return false;
         }
-        ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n\t"
-                + "You now have %d tasks", deadlineTask, taskList.size()));
     }
 
     /**
      * Extracts <code>taskDescription</code> and <code>dueDate</code> from the array of user inputs
+     * Creates deadline task to be added later
      *
      * @param userInputArray array containing user inputs required to create a Deadline object
-     * @throws IllegalArgumentException if dueDate or taskDescription is empty,
+     * @throws CommandException if dueDate or taskDescription is empty,
      *              or if dueDate is not in a valid format
      */
-    private void parseParams(String[] userInputArray) {
-        String dueDate = "";
-        String taskDescription = "";
-        boolean isDueDate = false;
-        int index = 1;
-        while (index < userInputArray.length) {
-            if (userInputArray[index].equals("/by")) {
-                isDueDate = true;
-                index++;
-                continue;
-            }
+    private void setAttributes(String[] userInputArray) {
+        Parser parser = new Parser();
 
-            if (isDueDate) {
-                dueDate += userInputArray[index];
-                dueDate += " ";
-            } else {
-                taskDescription += userInputArray[index];
-                taskDescription += " ";
-            }
-            index++;
-        }
-        if (dueDate.isEmpty() || taskDescription.isEmpty()) {
-            throw new IllegalArgumentException("Please provide the correct arguments for Deadline!");
-        }
+        String taskDescription = parser.parseDescription(userInputArray);
+        String dueDateString = parser.parseTokens(userInputArray, "/by");
 
-        dueDate = dueDate.trim();
+        if (dueDateString.isEmpty() || taskDescription.isEmpty()) {
+            throw new CommandException("Please provide the correct arguments for Deadline!");
+        }
 
         DateParser dateParser = new DateParser();
-        Optional<Temporal> startDateOptional = dateParser.parseDate(dueDate);
-        Optional<Temporal> startDateTimeOptional = dateParser.parseDateTime(dueDate);
-        Temporal startTemporal = startDateOptional.or(() -> startDateTimeOptional)
-                .orElseThrow(() -> new IllegalArgumentException("Please enter a due date/datetime!"));
+        Temporal dueDateTemporal = dateParser.parseTemporal(dueDateString)
+                .orElseThrow(() -> new CommandException("Please enter a valid due date/datetime!"));
 
-        this.dueDate = startTemporal;
-        this.taskDescription = taskDescription;
+        deadlineToAdd = new Deadline(taskDescription, dueDateTemporal);
+
     }
 }
