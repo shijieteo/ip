@@ -77,9 +77,14 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
+        if (isDateConfirmed) {
+            TemporalPair confirmedDate = possibleSchedules.get(0);
+            return String.format("[E] %s (from: %s to: %s)", super.toString(),
+                    confirmedDate.startDate(), confirmedDate.endDate());
+        }
         String schedulesDisplays = possibleSchedules.stream()
                 .map(x -> String.format("from: %s to: %s", x.startDate(), x.endDate()))
-                .reduce("", (x, y) -> x + "\n\t" + y)
+                .reduce("", (x, y) -> x + "\n" + y)
                 .trim();
         return String.format("[E] %s \nPossible Schedules: \n\t%s", super.toString(), schedulesDisplays);
     }
