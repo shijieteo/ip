@@ -42,6 +42,7 @@ public class AddEventCommand extends Command {
      * @param ui interface used to display output to the user.
      * @param storage storage handler used to persist changes made by the command.
      */
+    @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         int sizeBeforeAdding = tasks.size();
 
