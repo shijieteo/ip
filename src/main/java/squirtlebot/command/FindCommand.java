@@ -7,27 +7,27 @@ import squirtlebot.task.TaskList;
 import squirtlebot.ui.Ui;
 
 /**
- * Represents the find command within <code>SquirtleBot</code>
+ * Represents the find command within {@code SquirtleBot}.
  */
 public class FindCommand extends Command {
     private String searchPattern;
 
     /**
-     * Constructs a new FindCommand object using inputs provided by a user
+     * Constructs a new FindCommand object using inputs provided by a user.
      *
-     * @param userInput array containing user inputs required to create a FindCommand object
+     * @param userInput array containing user inputs required to create a FindCommand object.
      */
     public FindCommand(String[] userInput) {
         parseParams(userInput);
     }
 
     /**
-     * Filters the task list for tasks containing the user-supplied string<br>
-     * Displays the filtered tasks to the user
+     * Filters the task list for tasks containing the user-supplied string.
+     * Displays the filtered tasks to the user.
      *
-     * @param tasks list containing tasks created previously by the user
-     * @param ui interface used to display output to the user
-     * @param storage storage handler used to persist changes made by the command
+     * @param tasks list containing tasks created previously by the user.
+     * @param ui interface used to display output to the user.
+     * @param storage storage handler used to persist changes made by the command.
      */
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         TaskList filteredList = new TaskList(tasks.stream().filter(x -> x.getTaskDescription()
@@ -54,9 +54,9 @@ public class FindCommand extends Command {
     }
 
     /**
-     * Extracts string to be searched for within the task list
+     * Extracts string to be searched for within the task list.
      *
-     * @param userInputArray array containing user-supplied search string
+     * @param userInputArray array containing user-supplied search string.
      */
     private void parseParams(String[] userInputArray) {
         this.searchPattern = IntStream.range(1, userInputArray.length).boxed()

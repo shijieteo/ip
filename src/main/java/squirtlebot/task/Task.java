@@ -3,18 +3,18 @@ package squirtlebot.task;
 import java.io.Serializable;
 
 /**
- * Provides a base implementation for tasks used in <code>SquirtleBot</code>
- * Contains common methods used by other subclasses of task
+ * Provides a base implementation for tasks used in {@code SquirtleBot}.
+ * Contains common methods used by other subclasses of task.
  */
 public abstract class Task implements Serializable {
     private String taskDescription;
     private Boolean isDone;
 
     /**
-     * Constructs a new task with a task description
-     * This constructor is intended to be used by subclasses of task to set task description
+     * Constructs a new task with a task description.
+     * This constructor is intended to be used by subclasses of task to set task description.
      *
-     * @param taskDescription a description of the task
+     * @param taskDescription a description of the task.
      */
     public Task(String taskDescription) {
         this.taskDescription = taskDescription.trim();

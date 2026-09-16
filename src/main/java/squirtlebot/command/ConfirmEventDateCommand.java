@@ -10,7 +10,7 @@ import squirtlebot.ui.Ui;
 
 /**
  * Represents the confirm command in {@code SquirtleBot}, allowing users to
- * confirm a single start/end date for an event
+ * confirm a single start/end date for an event.
  */
 public class ConfirmEventDateCommand extends Command {
     private int tasksIndex;
@@ -18,22 +18,23 @@ public class ConfirmEventDateCommand extends Command {
 
 
     /**
-     * Constructs a new ConfirmEventDateCommand using inputs provided by a user
+     * Constructs a new ConfirmEventDateCommand using inputs provided by a user.
      *
-     * @param userInputArray array containing user inputs required to confirm the date of an event
+     * @param userInputArray array containing user inputs required to confirm the date of an event.
      */
     public ConfirmEventDateCommand(String[] userInputArray) {
         setAttributes(userInputArray);
     }
 
     /**
-     * Retrieves the event to confirm from the task list<br>
-     * Verifies if the selected task is an Event<br>
-     * Sets the date of the event according to user's input
+     * Retrieves the event to confirm from the task list.
+     * Verifies if the selected task is an Event.
+     * Sets the date of the event according to user's input.
      *
-     * @param tasks list containing tasks created previously by the user
-     * @param ui interface used to display output to the user
-     * @param storage storage handler used to persist changes made by the command
+     * @param tasks list containing tasks created previously by the user.
+     * @param ui interface used to display output to the user.
+     * @param storage storage handler used to persist changes made by the command.
+     * @throws CommandException if selected task to confirm is not an {@link Event}.
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
@@ -73,8 +74,8 @@ public class ConfirmEventDateCommand extends Command {
     /**
      * Extracts two indices required to confirm the date for an event.
      *
-     * @param userInputArray array containing two indices required to confirm an event's date
-     * @throws CommandException if provided indices are not numbers
+     * @param userInputArray array containing two indices required to confirm an event's date.
+     * @throws CommandException if provided indices are not numbers.
      */
     private void setAttributes(String[] userInputArray) {
         try {

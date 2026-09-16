@@ -7,26 +7,26 @@ import squirtlebot.task.TaskList;
 import squirtlebot.ui.Ui;
 
 /**
- * Represents the delete command within <code>SquirtleBot</code>
+ * Represents the delete command within {@code SquirtleBot}.
  */
 public class DeleteCommand extends Command {
     private int index;
 
     /**
-     * Constructs a DeleteCommand object using user inputs
+     * Constructs a DeleteCommand object using user inputs.
      *
-     * @param userInput array containing index value required for creating a DeleteCommand object
+     * @param userInput array containing index value required for creating a DeleteCommand object.
      */
     public DeleteCommand(String[] userInput) {
         parseParams(userInput);
     }
 
     /**
-     * Deletes a user-specified task from task list
+     * Deletes a user-specified task from task list.
      *
-     * @param tasks list containing tasks created previously by the user
-     * @param ui interface used to display output to the user
-     * @param storage storage handler used to persist changes made by the command
+     * @param tasks list containing tasks created previously by the user.
+     * @param ui interface used to display output to the user.
+     * @param storage storage handler used to persist changes made by the command.
      */
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         int sizeBeforeRemoval = tasks.size();
@@ -56,10 +56,10 @@ public class DeleteCommand extends Command {
     }
 
     /**
-     * Extracts the index to delete from an array of user inputs
+     * Extracts the index to delete from an array of user inputs.
      *
-     * @param userInputArray array containing the task list index to delete from
-     * @throws CommandException if index value provided is not a number
+     * @param userInputArray array containing the task list index to delete from.
+     * @throws CommandException if index value provided is not a number.
      */
     private void parseParams(String[] userInputArray) {
         try {

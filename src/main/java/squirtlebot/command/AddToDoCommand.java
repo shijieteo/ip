@@ -8,15 +8,15 @@ import squirtlebot.task.ToDo;
 import squirtlebot.ui.Ui;
 
 /**
- * Represents the todo command within <code>SquirtleBot</code>
+ * Represents the todo command within {@code SquirtleBot}.
  */
 public class AddToDoCommand extends Command {
     private ToDo toDoToAdd;
 
     /**
-     * Constructs a new AddToDoCommand using inputs provided by a user
+     * Constructs a new AddToDoCommand using inputs provided by a user.
      *
-     * @param userInput array containing user inputs required to create a ToDo object
+     * @param userInput array containing user inputs required to create a ToDo object.
      */
     public AddToDoCommand(String[] userInput) {
         setAttributes(userInput);
@@ -24,11 +24,11 @@ public class AddToDoCommand extends Command {
 
     /**
      * Adds previously created ToDo task to existing task list.
-     * Updates user on current state of the task list
+     * Updates user on current state of the task list.
      *
-     * @param tasks list containing tasks created previously by the user
-     * @param ui interface used to display output to the user
-     * @param storage storage handler used to persist changes made by the command
+     * @param tasks list containing tasks created previously by the user.
+     * @param ui interface used to display output to the user.
+     * @param storage storage handler used to persist changes made by the command.
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
@@ -59,11 +59,11 @@ public class AddToDoCommand extends Command {
     }
 
     /**
-     * Reassembles user input to form task description for ToDo object
-     * Creates ToDo task according to user input
+     * Reassembles user input to form task description for ToDo object.
+     * Creates ToDo task according to user input.
      *
-     * @param userInputArray array containing user inputs required to create a ToDo object
-     * @throws CommandException if taskDescription is empty
+     * @param userInputArray array containing user inputs required to create a ToDo object.
+     * @throws CommandException if taskDescription is empty.
      */
     private void setAttributes(String[] userInputArray) {
         Parser parser = new Parser();

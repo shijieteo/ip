@@ -9,16 +9,16 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Parses user input strings to identify date or dateTime values
- * Contains a set of accepted date and datetime formats
+ * Parses user input strings to identify date or datetime values.
+ * Contains a set of accepted date and datetime formats.
  */
 public class DateParser {
     private List<String> dateFormatList;
     private List<String> dateTimeFormatList;
 
     /**
-     * Constructs a DateParser object<br>
-     * Initializes the formats list to include all the date and dateTime formats it can parse
+     * Constructs a DateParser object.
+     * Initializes the formats list to include all the date and datetime formats it can parse.
      */
     public DateParser() {
         dateFormatList = List.<String>of("dd-MM-uuuu", "dd/MM/uuuu", "uuuu-MM-dd", "uuuu/MM/dd");
@@ -27,11 +27,11 @@ public class DateParser {
     }
 
     /**
-     * Attempts to convert user input strings into either a {@link LocalDate} or {@link LocalDateTime} object
+     * Attempts to convert user input strings into either a {@link LocalDate} or {@link LocalDateTime} object.
      *
-     * @param userInput user input containing date or datetime
+     * @param userInput user input containing a date or datetime.
      * @return an {@link Optional} containing a date or datetime object as a {@link Temporal}
-     *              or an empty {@link Optional} if user input is not of a supported format
+     *  or an empty {@link Optional} if user input is not of a supported format.
      */
     public Optional<Temporal> parseTemporal(String userInput) {
         Optional<Temporal> optionalDate = parseDate(userInput);
@@ -41,11 +41,11 @@ public class DateParser {
     }
 
     /**
-     * Converts a user input string into a {@link LocalDate} object
+     * Converts a user input string into a {@link LocalDate} object.
      *
-     * @param userInput user input containing a date
+     * @param userInput user input containing a date.
      * @return an {@link Optional} containing the date object represented by user input
-     *                  or an empty {@link Optional} if the user input is of an unsupported format
+     *  or an empty {@link Optional} if the user input is of an unsupported format.
      */
     private Optional<Temporal> parseDate(String userInput) {
         for (String format : dateFormatList) {
@@ -61,11 +61,11 @@ public class DateParser {
     }
 
     /**
-     * Converts a user input string into a {@link LocalDateTime} object
+     * Converts a user input string into a {@link LocalDateTime} object.
      *
-     * @param userInput user input containing a datetime
+     * @param userInput user input containing a datetime.
      * @return an {@link Optional} containing the dateTime object represented by user input
-     *                  or an empty {@link Optional} if the user input is of an unsupported format
+     *  or an empty {@link Optional} if the user input is of an unsupported format.
      */
     private Optional<Temporal> parseDateTime(String userInput) {
         for (String format : dateTimeFormatList) {

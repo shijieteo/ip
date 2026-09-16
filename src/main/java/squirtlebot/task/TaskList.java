@@ -5,28 +5,29 @@ import java.util.Collection;
 import java.util.stream.IntStream;
 
 /**
- * Contains currently active tasks created by the user
+ * Contains currently active tasks created by the user.
  */
 public class TaskList extends ArrayList<Task> {
 
     /**
-     * Constructs an empty task list
+     * Constructs an empty task list.
      */
     public TaskList() {
         super();
     }
 
     /**
-     * Constructs a task list containing objects specified by {@code collection}
-     * @param collection collection whose elements are to be placed into this list
+     * Constructs a task list containing objects specified by {@code collection}.
+     * 
+     * @param collection collection whose elements are to be placed into this list.
      */
     public TaskList(Collection<Task> collection) {
         super(collection);
     }
 
     /**
-     * Returns the string representation of {@link Task} objects contained within this collection<br>
-     * String representation of contained {@link Task} objects are split by a newline character
+     * Returns the string representation of {@link Task} objects contained within this collection.
+     * String representation of contained {@link Task} objects are split by a newline character.
      */
     @Override
     public String toString() {

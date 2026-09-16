@@ -11,14 +11,15 @@ import squirtlebot.ui.Ui;
 /**
  * Coordinates command parsing, task management, storage, and user interaction
  * for SquirtleBot.
- *
- * <p>Supports commands such as {@code todo}, {@code deadline}, {@code event},
- * {@code list}, {@code find}, {@code mark}, {@code unmark}, and {@code delete}.
  */
 public class SquirtleBot {
+    // Message to display if user continues without storage after storage issues
     public static final String CONTINUE_WITHOUT_STORAGE_RESPONSE = "Continuing without storage :)";
+
+    // Prompt to user asking if they would like to continue without storage features
     public static final String STORAGE_ISSUE_PROMPT = "There was an issue with storage :(\n"
             + "Do you want to continue without storage features? [Y/N]";
+
     private static final int MAX_RESET_COUNT = 2;
 
     private Storage storage;
@@ -27,7 +28,7 @@ public class SquirtleBot {
     private Parser parser;
 
     /**
-     * Constructs a new instance of SquirtleBot
+     * Constructs a new instance of SquirtleBot.
      */
     public SquirtleBot() {
         storage = new Storage();
@@ -37,12 +38,12 @@ public class SquirtleBot {
     }
 
     /**
-     * Constructs a new instance of SquirtleBot using provided values
+     * Constructs a new instance of SquirtleBot using provided values.
      *
-     * @param storage instance of storage for writing/reading to storage
-     * @param tasks task list to contain user created tasks
-     * @param parser parses user input into commands
-     * @param ui handles user interactions, displaying of messages, reading input
+     * @param storage instance of storage for writing/reading to storage.
+     * @param tasks task list to contain user created tasks.
+     * @param parser parses user input into commands.
+     * @param ui handles user interactions, displaying of messages, reading input.
      */
     SquirtleBot(Storage storage, TaskList tasks, Parser parser, Ui ui) {
         this.storage = storage;
@@ -52,10 +53,10 @@ public class SquirtleBot {
     }
 
     /**
-     * Starts an instance of {@code SquirtleBot}.<br>
-     * Intended for use with SquirtleBot running in CLI-mode.<br>
-     * SquirtleBot will attempt to load previously stored tasks, then start reading user commands. <br>
-     * Will continue running till user issues a <code>bye</code> command
+     * Starts an instance of SquirtleBot.
+     * Intended for use with SquirtleBot running in CLI-mode.
+     * SquirtleBot will attempt to load previously stored tasks, then start reading user commands.
+     * Will continue running till user issues a {@code bye} command.
      */
     public void run() {
         ui.printBanner();
@@ -79,9 +80,9 @@ public class SquirtleBot {
     }
 
     /**
-     * Launches SquirtleBot in CLI mode of operation
+     * Launches SquirtleBot in CLI mode of operation.
      *
-     * @param args command-line arguments
+     * @param args command-line arguments.
      */
     public static void main(String[] args) {
         SquirtleBot squirtleBot = new SquirtleBot();
@@ -105,16 +106,17 @@ public class SquirtleBot {
     }
 
     /**
-     * Returns SquirtleBot's welcome message to be displayed to the user
+     * Returns SquirtleBot's welcome message to be displayed to the user.
      */
     public String getWelcomeMessage() {
         return this.ui.getGuiWelcomeMessage();
     }
 
     /**
-     * Loads previously stored tasks
-     * @return {@code true} if storage was loaded correctly <br>
-     *      {@code false} if storage was not loaded
+     * Loads previously stored tasks.
+     *
+     * @return {@code true} if storage was loaded correctly;
+     *  {@code false} if storage not loaded.
      */
     public boolean initializeTasks() {
         int resetCount = 0;
@@ -133,10 +135,11 @@ public class SquirtleBot {
     }
 
     /**
-     * Runs the command entered by user, retrieves corresponding output
-     * Intended for use with SquirtleBot running in GUI mode
-     * @param userInput user input containing command to run and relevant parameters
-     * @return output corresponding to user's command
+     * Runs the command entered by user, retrieves corresponding output.
+     * Intended for use with SquirtleBot running in GUI mode.
+     *
+     * @param userInput user input containing command to run and relevant parameters.
+     * @return output corresponding to user's command.
      */
     public CommandResult getResponse(String userInput) {
         boolean shouldExit = executeCommand(userInput);
@@ -144,10 +147,10 @@ public class SquirtleBot {
     }
 
     /**
-     * Executes the command indicated by user input
+     * Executes the command indicated by user input.
      *
-     * @param userInput string containing command to execute and parameters
-     * @return boolean value indicating whether user would like to exit
+     * @param userInput string containing command to execute and parameters.
+     * @return boolean value indicating whether user would like to exit.
      */
     private boolean executeCommand(String userInput) {
         boolean shouldExit = false;
@@ -162,7 +165,7 @@ public class SquirtleBot {
     }
 
     /**
-     * Disables storage instance, disallowing use of storage functionality
+     * Disables storage instance, disallowing use of storage functionality.
      */
     public void disableStorage() {
         storage.disable();

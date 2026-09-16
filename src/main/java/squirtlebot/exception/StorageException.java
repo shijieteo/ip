@@ -1,23 +1,23 @@
 package squirtlebot.exception;
 
 /**
- * Represents exceptions encountered during storage operations such as reading/writing
+ * Represents exceptions encountered during storage operations such as reading/writing.
  */
 public class StorageException extends SquirtleBotException {
 
     /**
-     * Constructs a StorageException with a message to describe the error encountered
+     * Constructs a StorageException with a message to describe the error encountered.
      *
-     * @param message description of error encountered
+     * @param message description of error encountered.
      */
     public StorageException(String message) {
         super(message);
     }
 
     /**
-     * Constructs a StorageException with a message describing error encountered, and underlying cause
-     * @param message description of error encountered
-     * @param cause underlying cause of error
+     * Constructs a StorageException with a message describing error encountered, and underlying cause.
+     * @param message description of error encountered.
+     * @param cause underlying cause of error.
      */
     public StorageException(String message, Throwable cause) {
         super(message, cause);

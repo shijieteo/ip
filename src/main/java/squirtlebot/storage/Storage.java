@@ -13,8 +13,8 @@ import squirtlebot.exception.StorageException;
 import squirtlebot.task.TaskList;
 
 /**
- * Handles all read-write operations to persist task list changes
- * Uses <code>data/Tasks.ser</code> as system file for read-write operations
+ * Handles all read-write operations to persist task list changes.
+ * Uses {@code data/Tasks.ser} as system file for read-write operations.
  */
 public class Storage {
     private static final String DEFAULT_FILE_LOCATION = "data/Tasks.ser";
@@ -24,7 +24,7 @@ public class Storage {
     private final String directoryName;
 
     /**
-     * Constructs a storage object using default file locations
+     * Constructs a storage object using default file locations.
      */
     public Storage() {
         this(DEFAULT_FILE_LOCATION);
@@ -33,7 +33,7 @@ public class Storage {
     /**
      * Constructs a storage object that persists data at the specified location.
      *
-     * @param fileLocation path of the file used to store tasks
+     * @param fileLocation path of the file used to store tasks.
      */
     public Storage(String fileLocation) {
         isDisabled = false;
@@ -43,10 +43,10 @@ public class Storage {
     }
 
     /**
-     * Creates FileInputStream and ObjectInputStream objects required to read from data file
+     * Creates FileInputStream and ObjectInputStream objects required to read from data file.
      *
-     * @return List of task objects from data file on the system
-     * @throws StorageException if there was an IO/Class-related issue while loading from storage
+     * @return List of task objects from data file on the system.
+     * @throws StorageException if there was an IO/Class-related issue while loading from storage.
      */
     public TaskList loadData() {
         assert !isDisabled;
@@ -69,7 +69,7 @@ public class Storage {
     }
 
     /**
-     * Deletes the data file and creates a new data file
+     * Deletes the data file and creates a new data file.
      */
     public void resetData() {
         if (isDisabled) {
@@ -81,16 +81,16 @@ public class Storage {
     }
 
     /**
-     * Sets the value of isDisabled to disable all storage-related operations
+     * Sets the value of isDisabled to disable all storage-related operations.
      */
     public void disable() {
         this.isDisabled = true;
     }
 
     /**
-     * Creates FileOutputStream and ObjectOutputStream objects required to write to data file
+     * Creates FileOutputStream and ObjectOutputStream objects required to write to data file.
      *
-     * @param tasks TaskList object to be written to the data file
+     * @param tasks TaskList object to be written to the data file.
      */
     public void writeData(TaskList tasks) {
         if (isDisabled) {
@@ -108,8 +108,8 @@ public class Storage {
     }
 
     /**
-     * Creates the configured data file
-     * Creates data directory if it does not already exist
+     * Creates the configured data file.
+     * Creates data directory if it does not already exist.
      */
     private void createDataFile() {
         if (isDisabled) {

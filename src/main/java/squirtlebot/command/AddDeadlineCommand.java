@@ -11,15 +11,15 @@ import squirtlebot.task.TaskList;
 import squirtlebot.ui.Ui;
 
 /**
- * Represents the deadline command within <code>SquirtleBot</code>.
+ * Represents the deadline command within {@code SquirtleBot}.
  */
 public class AddDeadlineCommand extends Command {
     private Deadline deadlineToAdd;
 
     /**
-     * Constructs a new AddDeadlineCommand using inputs provided by a user
+     * Constructs a new AddDeadlineCommand using inputs provided by a user.
      *
-     * @param userInput array containing user inputs required to create a Deadline object
+     * @param userInput array containing user inputs required to create a Deadline object.
      */
     public AddDeadlineCommand(String[] userInput) {
         setAttributes(userInput);
@@ -27,11 +27,11 @@ public class AddDeadlineCommand extends Command {
 
     /**
      * Adds previously created deadline task to an existing task list.
-     * Updates user on current state of task list
+     * Updates user on current state of task list.
      *
-     * @param tasks list containing tasks created previously by the user
-     * @param ui interface used to display output to the user
-     * @param storage storage handler used to persist changes made by the command
+     * @param tasks list containing tasks created previously by the user.
+     * @param ui interface used to display output to the user.
+     * @param storage storage handler used to persist changes made by the command.
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
@@ -62,7 +62,7 @@ public class AddDeadlineCommand extends Command {
     }
 
     /**
-     * Extracts <code>taskDescription</code> and <code>dueDate</code> from the array of user inputs
+     * Extracts {@code taskDescription} and {@code dueDate} from the array of user inputs
      * Creates deadline task to be added later
      *
      * @param userInputArray array containing user inputs required to create a Deadline object

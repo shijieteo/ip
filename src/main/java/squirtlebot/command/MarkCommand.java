@@ -7,27 +7,27 @@ import squirtlebot.task.TaskList;
 import squirtlebot.ui.Ui;
 
 /**
- * Represents the mark command within <code>SquirtleBot</code>
+ * Represents the mark command within {@code SquirtleBot}.
  */
 public class MarkCommand extends Command {
     private int index;
 
     /**
-     * Constructs a new MarkCommand object using user inputs
+     * Constructs a new MarkCommand object using user inputs.
      *
-     * @param userInput array containing index value required to create a MarkCommand object
+     * @param userInput array containing index value required to create a MarkCommand object.
      */
     public MarkCommand(String[] userInput) {
         parseParams(userInput);
     }
 
     /**
-     * Marks the task in the task list at the user-provided index<br>
-     * Displays a confirmation text to the user on command executed
+     * Marks the task in the task list at the user-provided index.
+     * Displays a confirmation text to the user on command executed.
      *
-     * @param tasks list containing tasks created previously by the user
-     * @param ui interface used to display output to the user
-     * @param storage storage handler used to persist changes made by the command
+     * @param tasks list containing tasks created previously by the user.
+     * @param ui interface used to display output to the user.
+     * @param storage storage handler used to persist changes made by the command.
      */
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         validateIndex(index, tasks);
@@ -57,10 +57,10 @@ public class MarkCommand extends Command {
     }
 
     /**
-     * Extracts the index within task list to mark
+     * Extracts the index within task list to mark.
      *
-     * @param userInputArray array containing index in task list to mark
-     * @throws CommandException if index value provided is not a number
+     * @param userInputArray array containing index in task list to mark.
+     * @throws CommandException if index value provided is not a number.
      */
     private void parseParams(String[] userInputArray) {
         try {

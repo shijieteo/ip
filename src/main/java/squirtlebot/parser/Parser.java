@@ -18,7 +18,7 @@ import squirtlebot.command.UnmarkCommand;
 import squirtlebot.exception.CommandException;
 
 /**
- * Parses user input strings to identify the command the user would like to execute
+ * Parses user input strings to identify the command the user would like to execute.
  */
 public class Parser {
     private static final int NUMBER_OF_COMMANDS = 10;
@@ -26,8 +26,8 @@ public class Parser {
     private final HashMap<String, Function<String[], Command>> commandMap = new HashMap<>();
 
     /**
-     * Constructs a Parser object<br>
-     * Initializes <code>commandMap</code> to contain the various mappings of user input to command
+     * Constructs a Parser object.
+     * Initializes {@code commandMap} to contain the various mappings of user input to command.
      */
     public Parser() {
         commandMap.put("todo", x -> new AddToDoCommand(x));
@@ -46,11 +46,11 @@ public class Parser {
     }
 
     /**
-     * Returns {@link Command} representing the user input
+     * Returns {@link Command} representing the user input.
      *
-     * @param userInput string representing command to execute and parameters if any
-     * @return a {@link Command} object representing the user-entered command
-     * @throws CommandException if user specifies an unsupported command
+     * @param userInput string representing command to execute and its parameters.
+     * @return a {@link Command} object representing the user-entered command.
+     * @throws CommandException if user specifies an unsupported command.
      */
     public Command parseCommand(String userInput) {
         validateUserInput(userInput);
@@ -66,12 +66,12 @@ public class Parser {
     }
 
     /**
-     * Scans user input for values belonging to a specified token<br>
-     * Stops when it detects the start of other tokens, identified by a preceding "/" character
+     * Scans user input for values belonging to a specified token.
+     * Stops when it detects the start of other tokens, identified by a preceding "/" character.
      *
-     * @param userInputArray array containing user input to scan for tokens
-     * @param expectedToken token to identify values for
-     * @return values belonging to {@code expectedToken}
+     * @param userInputArray array containing user input to scan for tokens.
+     * @param expectedToken token to identify values for.
+     * @return values belonging to {@code expectedToken}.
      */
     public String parseTokens(String[] userInputArray, String expectedToken) {
         boolean isExpectedTokenIdentified = false;
@@ -99,11 +99,11 @@ public class Parser {
     }
 
     /**
-     * Scans user input for text belonging to a task's description<br>
-     * Stops upon reading tokens/parameters of a command, identified by a preceding "/" character
+     * Scans user input for text belonging to a task's description.
+     * Stops upon reading tokens/parameters of a command, identified by a preceding "/" character.
      *
-     * @param userInputArray array of user inputs containing a task description
-     * @return text describing a task
+     * @param userInputArray array of user inputs containing a task description.
+     * @return text describing a task.
      */
     public String parseDescription(String[] userInputArray) {
         String assembledDescription = "";

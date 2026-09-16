@@ -6,8 +6,8 @@ import squirtlebot.TemporalPair;
 import squirtlebot.exception.CommandException;
 
 /**
- * Represents the event task that users can add to their list of tasks
- * Contains a task description, and one or more sets of possible start and end dates
+ * Represents the event task that users can add to their list of tasks.
+ * Contains a task description, and one or more sets of possible start and end dates.
  */
 public class Event extends Task {
     private ArrayList<TemporalPair> possibleSchedules;
@@ -15,10 +15,10 @@ public class Event extends Task {
 
 
     /**
-     * Constructs a new Event object based on user-provided inputs
+     * Constructs a new Event object based on user-provided inputs.
      *
-     * @param taskDescription a description of the event
-     * @param possibleSchedules a list containing pairs of possible start/end dates for the event
+     * @param taskDescription a description of the event.
+     * @param possibleSchedules a list containing pairs of possible start/end dates for the event.
      */
     public Event(String taskDescription, ArrayList<TemporalPair> possibleSchedules) {
         super(taskDescription);
@@ -31,11 +31,11 @@ public class Event extends Task {
     }
 
     /**
-     * Confirms the date of an event, setting the possible start/end dates to only one
+     * Confirms the date of an event, setting the possible start/end dates to only one.
      *
-     * @param index 0-based integer indicating the start/end date
-     *              in the list of possible start/end dates to set as the confirmed date
-     * @throws CommandException if an invalid index was supplied for date to confirm
+     * @param index zero-based integer indicating the start/end date
+     *              in the list of possible start/end dates to set as the confirmed date.
+     * @throws CommandException if {@code index} is not a valid index for the list of schedules
      */
     public void confirmEventDate(int index) {
         if (isDateConfirmed) {

@@ -17,7 +17,7 @@ import squirtlebot.task.TaskList;
 import squirtlebot.ui.Ui;
 
 /**
- * Represents the event command within <code>SquirtleBot</code>
+ * Represents the event command within {@code SquirtleBot}.
  */
 public class AddEventCommand extends Command {
     private static final String INVALID_DATETIME_FORMAT_MESSAGE = "Invalid date/datetime detected!";
@@ -27,22 +27,22 @@ public class AddEventCommand extends Command {
     private Event eventToAdd;
 
     /**
-     * Constructs a new AddEventCommand using inputs provided by a user
+     * Constructs a new AddEventCommand using inputs provided by a user.
      *
-     * @param userInput array containing user inputs required to create an Event object
+     * @param userInput array containing user inputs required to create an Event object.
      */
     public AddEventCommand(String[] userInput) {
         setAttributes(userInput);
     }
 
     /**
-     * Adds the previously created Event object to the list of tasks
-     * Updates storage to reflect the newly added Event
-     * Uses Ui to store a message reflecting the newly added task
+     * Adds the previously created Event object to the list of tasks.
+     * Updates storage to reflect the newly added Event.
+     * Uses Ui to store a message reflecting the newly added task.
      *
-     * @param tasks list containing tasks created previously by the user
-     * @param ui interface used to display output to the user
-     * @param storage storage handler used to persist changes made by the command
+     * @param tasks list containing tasks created previously by the user.
+     * @param ui interface used to display output to the user.
+     * @param storage storage handler used to persist changes made by the command.
      */
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         int sizeBeforeAdding = tasks.size();
@@ -72,13 +72,13 @@ public class AddEventCommand extends Command {
     }
 
     /**
-     * Extracts <code>taskDescription</code> and start and end date pairs from the user input.
-     * Queries dateParser repeatedly to parse possible start and end dates
-     * Creates the event object to be added when executed
+     * Extracts {@code taskDescription} and start and end date pairs from the user input.
+     * Queries dateParser repeatedly to parse possible start and end dates.
+     * Creates the event object to be added when executed.
      *
-     * @param userInputArray array containing user inputs required to create an Event object
+     * @param userInputArray array containing user inputs required to create an Event object.
      * @throws CommandException if any of taskDescription, startDate or endDate is empty
-     *                  or if any of startDate or endDate is not in a valid format
+     *                  or if any of startDate or endDate is not in a valid format.
      */
     private void setAttributes(String[] userInputArray) {
         Parser parser = new Parser();

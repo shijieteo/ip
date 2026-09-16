@@ -9,9 +9,9 @@ import squirtlebot.ui.GuiMain;
 public class Launcher {
 
     /**
-     * Launches SquirtleBot application
+     * Launches SquirtleBot application.
      *
-     * @param args command-line arguments to be passed to application
+     * @param args command-line arguments to be passed to application.
      */
     public static void main(String[] args) {
         Application.launch(GuiMain.class, args);
