@@ -33,7 +33,7 @@ public class UnmarkCommand extends Command {
         validateIndex(index, tasks);
 
         Task unmarkedTask = tasks.get(index);
-        unmarkedTask.setIsDone(false);
+        unmarkedTask.setDone(false);
         super.updateStorage(tasks, storage);
 
         assert !unmarkedTask.isDone();

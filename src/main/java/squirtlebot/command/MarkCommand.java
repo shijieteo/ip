@@ -33,7 +33,7 @@ public class MarkCommand extends Command {
         validateIndex(index, tasks);
 
         Task markedTask = tasks.get(index);
-        markedTask.setIsDone(true);
+        markedTask.setDone(true);
 
         assert markedTask.isDone();
 
