@@ -104,8 +104,7 @@ public class Storage {
         try (FileOutputStream fileOutputStream = new FileOutputStream(fileLocation);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
             objectOutputStream.writeObject(tasks);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new StorageException("There was an error writing to storage :(", e);
         }
     }

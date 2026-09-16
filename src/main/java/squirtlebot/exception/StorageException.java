@@ -16,7 +16,7 @@ public class StorageException extends SquirtleBotException {
 
     /**
      * Constructs a StorageException with a message describing error encountered, and underlying cause.
-     * 
+     *
      * @param message description of error encountered.
      * @param cause underlying cause of error.
      */

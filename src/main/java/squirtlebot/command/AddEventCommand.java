@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Stream;
 
 import squirtlebot.TemporalPair;
 import squirtlebot.exception.CommandException;
@@ -13,7 +11,6 @@ import squirtlebot.parser.DateParser;
 import squirtlebot.parser.Parser;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.Event;
-import squirtlebot.task.Task;
 import squirtlebot.task.TaskList;
 import squirtlebot.ui.Ui;
 

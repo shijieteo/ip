@@ -31,7 +31,7 @@ public class DateParser {
      *
      * @param userInput user input containing a date or datetime.
      * @return an {@link Optional} containing a date or datetime object as a {@link Temporal}
-     *  or an empty {@link Optional} if user input is not of a supported format.
+     *      or an empty {@link Optional} if user input is not of a supported format.
      */
     public Optional<Temporal> parseTemporal(String userInput) {
         Optional<Temporal> optionalDate = parseDate(userInput);
@@ -45,7 +45,7 @@ public class DateParser {
      *
      * @param userInput user input containing a date.
      * @return an {@link Optional} containing the date object represented by user input
-     *  or an empty {@link Optional} if the user input is of an unsupported format.
+     *      or an empty {@link Optional} if the user input is of an unsupported format.
      */
     private Optional<Temporal> parseDate(String userInput) {
         for (String format : dateFormats) {
@@ -65,7 +65,7 @@ public class DateParser {
      *
      * @param userInput user input containing a datetime.
      * @return an {@link Optional} containing the dateTime object represented by user input
-     *  or an empty {@link Optional} if the user input is of an unsupported format.
+     *      or an empty {@link Optional} if the user input is of an unsupported format.
      */
     private Optional<Temporal> parseDateTime(String userInput) {
         for (String format : dateTimeFormats) {
