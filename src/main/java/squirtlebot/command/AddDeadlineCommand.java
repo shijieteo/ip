@@ -66,8 +66,7 @@ public class AddDeadlineCommand extends Command {
      * Creates deadline task to be added later
      *
      * @param userInputArray array containing user inputs required to create a Deadline object
-     * @throws CommandException if dueDate or taskDescription is empty,
-     *              or if dueDate is not in a valid format
+     * @throws CommandException if dueDate or taskDescription is empty, or if dueDate is not in a valid format
      */
     private void setAttributes(String[] userInputArray) {
         Parser parser = new Parser();

@@ -14,7 +14,7 @@ public abstract class Command {
 
     /**
      * Performs the actions of the command, applying its actions to the given task list,
-     * user interfaces, and storage.
+     * user interface, and storage.
      *
      * @param tasks list containing tasks created previously by the user.
      * @param ui interface used to display output to the user.

@@ -60,7 +60,7 @@ public class MarkCommand extends Command {
      * Extracts the index within task list to mark.
      *
      * @param userInputArray array containing index in task list to mark.
-     * @throws CommandException if index value provided is not a number.
+     * @throws CommandException if no index is provided, or provided index value is not an integer.
      */
     private void setAttributes(String[] userInputArray) {
         try {

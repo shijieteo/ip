@@ -59,7 +59,7 @@ public class UnmarkCommand extends Command {
      * Extracts the index in the task list to unmark.
      *
      * @param userInputArray array containing user-supplied list index to unmark.
-     * @throws CommandException if index value provided is not a number.
+     * @throws CommandException if no index is provided, or provided index is not an integer
      */
     private void setAttributes(String[] userInputArray) {
         try {
