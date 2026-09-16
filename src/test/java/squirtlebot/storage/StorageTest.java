@@ -101,7 +101,7 @@ public class StorageTest {
     }
 
     @Test
-    public void loadData_corruptedFile_throwsIoException() throws IOException {
+    public void loadData_corruptedFile_throwsStorageException() throws IOException {
         Path storagePath = tempDirectory.resolve("Tasks.ser");
         Files.writeString(storagePath, "not serialized task data");
         Storage storage = new Storage(storagePath.toString());
