@@ -7,7 +7,7 @@ import squirtlebot.exception.CommandException;
 
 /**
  * Represents the event task that users can add to their list of tasks.
- * Contains a task description, and one or more sets of possible start and end dates.
+ * Contains a task description, and possible start and end dates.
  */
 public class Event extends Task {
     private ArrayList<TemporalPair> possibleSchedules;

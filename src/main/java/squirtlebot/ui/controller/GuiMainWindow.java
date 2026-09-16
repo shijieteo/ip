@@ -53,7 +53,9 @@ public class GuiMainWindow extends AnchorPane {
     }
 
     /**
-     * Extracts user input from input field, sends it to {@link SquirtleBot} to retrieve response.
+     * Extracts user input from input field.
+     * If the application is expecting a storage decision, user input is used to process the user's decision.
+     * Otherwise, user input is sent to {@link SquirtleBot} to retrieve a response
      */
     @FXML
     private void handleUserInput() {

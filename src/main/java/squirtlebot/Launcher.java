@@ -4,7 +4,7 @@ import javafx.application.Application;
 import squirtlebot.ui.GuiMain;
 
 /**
- * A launcher class to work around classpath issues.
+ *  Launches SquirtleBot while working around classpath issues.
  */
 public class Launcher {
 
