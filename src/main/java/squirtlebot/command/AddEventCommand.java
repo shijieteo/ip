@@ -29,10 +29,10 @@ public class AddEventCommand extends Command {
     /**
      * Constructs a new AddEventCommand using inputs provided by a user.
      *
-     * @param userInput array containing user inputs required to create an Event object.
+     * @param inputTokens array containing user inputs required to create an Event object.
      */
-    public AddEventCommand(String[] userInput) {
-        setAttributes(userInput);
+    public AddEventCommand(String[] inputTokens) {
+        setAttributes(inputTokens);
     }
 
     /**
@@ -76,26 +76,26 @@ public class AddEventCommand extends Command {
      * Queries dateParser repeatedly to parse possible start and end dates.
      * Creates the event object to be added when executed.
      *
-     * @param userInputArray array containing user inputs required to create an Event object.
+     * @param inputTokens array containing user inputs required to create an Event object.
      * @throws CommandException if any of taskDescription, startDate or endDate is empty
      *                  or if any of startDate or endDate is not in a valid format.
      */
-    private void setAttributes(String[] userInputArray) {
+    private void setAttributes(String[] inputTokens) {
         Parser parser = new Parser();
         DateParser dateParser = new DateParser();
 
-        String taskDescription = parser.parseDescription(userInputArray);
+        String taskDescription = parser.parseDescription(inputTokens);
         ArrayList<TemporalPair> possibleSchedules = new ArrayList<TemporalPair>();
 
-        Stream.iterate(1, x -> x < userInputArray.length, x -> x + 1)
+        Stream.iterate(1, x -> x < inputTokens.length, x -> x + 1)
                 .filter(index -> {
-                    String currentToken = userInputArray[index];
+                    String currentToken = inputTokens[index];
                     return currentToken.equals(START_DATE_TOKEN);
                 }).map(index -> {
                     String startDate = parser.parseTokens(Arrays
-                            .copyOfRange(userInputArray, index, userInputArray.length), START_DATE_TOKEN);
+                            .copyOfRange(inputTokens, index, inputTokens.length), START_DATE_TOKEN);
                     String endDate = parser.parseTokens(Arrays
-                            .copyOfRange(userInputArray, index, userInputArray.length), END_DATE_TOKEN);
+                            .copyOfRange(inputTokens, index, inputTokens.length), END_DATE_TOKEN);
 
                     Temporal startTemporal = dateParser.parseTemporal(startDate)
                             .orElseThrow(() -> new CommandException(INVALID_DATETIME_FORMAT_MESSAGE));

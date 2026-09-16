@@ -16,10 +16,10 @@ public class AddToDoCommand extends Command {
     /**
      * Constructs a new AddToDoCommand using inputs provided by a user.
      *
-     * @param userInput array containing user inputs required to create a ToDo object.
+     * @param inputTokens array containing user inputs required to create a ToDo object.
      */
-    public AddToDoCommand(String[] userInput) {
-        setAttributes(userInput);
+    public AddToDoCommand(String[] inputTokens) {
+        setAttributes(inputTokens);
     }
 
     /**
@@ -62,13 +62,13 @@ public class AddToDoCommand extends Command {
      * Reassembles user input to form task description for ToDo object.
      * Creates ToDo task according to user input.
      *
-     * @param userInputArray array containing user inputs required to create a ToDo object.
+     * @param inputTokens array containing user inputs required to create a ToDo object.
      * @throws CommandException if taskDescription is empty.
      */
-    private void setAttributes(String[] userInputArray) {
+    private void setAttributes(String[] inputTokens) {
         Parser parser = new Parser();
 
-        String taskDescription = parser.parseDescription(userInputArray);
+        String taskDescription = parser.parseDescription(inputTokens);
 
         if (taskDescription.isEmpty()) {
             throw new CommandException("Please provide the correct arguments for ToDo!");

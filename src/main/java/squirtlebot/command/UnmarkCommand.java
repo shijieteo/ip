@@ -15,10 +15,10 @@ public class UnmarkCommand extends Command {
     /**
      * Constructs an UnmarkCommand object using user inputs.
      *
-     * @param userInput array containing index value required to create an UnmarkCommand object.
+     * @param inputTokens array containing index value required to create an UnmarkCommand object.
      */
-    public UnmarkCommand(String[] userInput) {
-        setAttributes(userInput);
+    public UnmarkCommand(String[] inputTokens) {
+        setAttributes(inputTokens);
     }
 
     /**
@@ -58,12 +58,12 @@ public class UnmarkCommand extends Command {
     /**
      * Extracts the index in the task list to unmark.
      *
-     * @param userInputArray array containing user-supplied list index to unmark.
+     * @param inputTokens array containing user-supplied list index to unmark.
      * @throws CommandException if no index is provided, or provided index is not an integer
      */
-    private void setAttributes(String[] userInputArray) {
+    private void setAttributes(String[] inputTokens) {
         try {
-            index = Integer.parseInt(userInputArray[1]) - 1;
+            index = Integer.parseInt(inputTokens[1]) - 1;
         } catch (NumberFormatException e) {
             throw new CommandException("Please enter a valid index :(");
         } catch (ArrayIndexOutOfBoundsException e) {

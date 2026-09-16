@@ -15,10 +15,10 @@ public class MarkCommand extends Command {
     /**
      * Constructs a new MarkCommand object using user inputs.
      *
-     * @param userInput array containing index value required to create a MarkCommand object.
+     * @param inputTokens array containing index value required to create a MarkCommand object.
      */
-    public MarkCommand(String[] userInput) {
-        setAttributes(userInput);
+    public MarkCommand(String[] inputTokens) {
+        setAttributes(inputTokens);
     }
 
     /**
@@ -59,12 +59,12 @@ public class MarkCommand extends Command {
     /**
      * Extracts the index within task list to mark.
      *
-     * @param userInputArray array containing index in task list to mark.
+     * @param inputTokens array containing index in task list to mark.
      * @throws CommandException if no index is provided, or provided index value is not an integer.
      */
-    private void setAttributes(String[] userInputArray) {
+    private void setAttributes(String[] inputTokens) {
         try {
-            index = Integer.parseInt(userInputArray[1]) - 1;
+            index = Integer.parseInt(inputTokens[1]) - 1;
         } catch (NumberFormatException e) {
             throw new CommandException("Please insert a valid index :(", e);
         } catch (ArrayIndexOutOfBoundsException e) {

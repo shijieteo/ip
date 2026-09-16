@@ -15,10 +15,10 @@ public class DeleteCommand extends Command {
     /**
      * Constructs a DeleteCommand object using user inputs.
      *
-     * @param userInput array containing index value required for creating a DeleteCommand object.
+     * @param inputTokens array containing index value required for creating a DeleteCommand object.
      */
-    public DeleteCommand(String[] userInput) {
-        setAttributes(userInput);
+    public DeleteCommand(String[] inputTokens) {
+        setAttributes(inputTokens);
     }
 
     /**
@@ -58,12 +58,12 @@ public class DeleteCommand extends Command {
     /**
      * Extracts the index to delete from an array of user inputs.
      *
-     * @param userInputArray array containing the task list index to delete from.
+     * @param inputTokens array containing the task list index to delete from.
      * @throws CommandException if no index is provided, or provided index is not an integer
      */
-    private void setAttributes(String[] userInputArray) {
+    private void setAttributes(String[] inputTokens) {
         try {
-            index = Integer.parseInt(userInputArray[1]) - 1;
+            index = Integer.parseInt(inputTokens[1]) - 1;
         } catch (NumberFormatException e) {
             throw new CommandException("Please enter a valid index :(", e);
         } catch (ArrayIndexOutOfBoundsException e) {

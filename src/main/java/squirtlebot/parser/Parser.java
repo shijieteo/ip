@@ -55,29 +55,29 @@ public class Parser {
     public Command parseCommand(String userInput) {
         validateUserInput(userInput);
 
-        String[] userInputArray = userInput.trim().split("\\s+");
+        String[] inputTokens = userInput.trim().split("\\s+");
 
-        String commandString = userInputArray[0];
+        String commandString = inputTokens[0];
         Function<String[], Command> commandFunction = Optional.ofNullable(commandsByName.get(commandString))
                 .orElseThrow(() -> new CommandException("Invalid command"));
 
         assert commandFunction != null;
-        return commandFunction.apply(userInputArray);
+        return commandFunction.apply(inputTokens);
     }
 
     /**
      * Scans user input for values belonging to a specified token.
      * Stops when it detects the start of other tokens, identified by a preceding "/" character.
      *
-     * @param userInputArray array containing user input to scan for tokens.
+     * @param inputTokens array containing user input to scan for tokens.
      * @param expectedToken token to identify values for.
      * @return values belonging to {@code expectedToken}.
      */
-    public String parseTokens(String[] userInputArray, String expectedToken) {
+    public String parseTokens(String[] inputTokens, String expectedToken) {
         boolean isExpectedTokenIdentified = false;
         String assembledToken = "";
 
-        for (String currentToken : userInputArray) {
+        for (String currentToken : inputTokens) {
             boolean isDoneReadingExpectedToken = currentToken.startsWith("/") && isExpectedTokenIdentified;
 
             if (currentToken.equals(expectedToken)) {
@@ -102,14 +102,14 @@ public class Parser {
      * Scans user input for text belonging to a task's description.
      * Stops upon reading tokens/parameters of a command, identified by a preceding "/" character.
      *
-     * @param userInputArray array of user inputs containing a task description.
+     * @param inputTokens array of user inputs containing a task description.
      * @return text describing a task.
      */
-    public String parseDescription(String[] userInputArray) {
+    public String parseDescription(String[] inputTokens) {
         String assembledDescription = "";
 
-        for (int i = 1; i < userInputArray.length; i++) {
-            String currentText = userInputArray[i];
+        for (int i = 1; i < inputTokens.length; i++) {
+            String currentText = inputTokens[i];
             if (currentText.startsWith("/")) {
                 break;
             }

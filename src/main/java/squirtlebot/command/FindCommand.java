@@ -15,10 +15,10 @@ public class FindCommand extends Command {
     /**
      * Constructs a new FindCommand object using inputs provided by a user.
      *
-     * @param userInput array containing user inputs required to create a FindCommand object.
+     * @param inputTokens array containing user inputs required to create a FindCommand object.
      */
-    public FindCommand(String[] userInput) {
-        parseParams(userInput);
+    public FindCommand(String[] inputTokens) {
+        parseParams(inputTokens);
     }
 
     /**
@@ -56,10 +56,10 @@ public class FindCommand extends Command {
     /**
      * Extracts string to be searched for within the task list.
      *
-     * @param userInputArray array containing user-supplied search string.
+     * @param inputTokens array containing user-supplied search string.
      */
-    private void parseParams(String[] userInputArray) {
-        this.searchPattern = IntStream.range(1, userInputArray.length).boxed()
-                .map(x -> userInputArray[x]).reduce("", (x, y) -> x + y + " ").trim();
+    private void parseParams(String[] inputTokens) {
+        this.searchPattern = IntStream.range(1, inputTokens.length).boxed()
+                .map(x -> inputTokens[x]).reduce("", (x, y) -> x + y + " ").trim();
     }
 }

@@ -19,10 +19,10 @@ public class AddDeadlineCommand extends Command {
     /**
      * Constructs a new AddDeadlineCommand using inputs provided by a user.
      *
-     * @param userInput array containing user inputs required to create a Deadline object.
+     * @param inputTokens array containing user inputs required to create a Deadline object.
      */
-    public AddDeadlineCommand(String[] userInput) {
-        setAttributes(userInput);
+    public AddDeadlineCommand(String[] inputTokens) {
+        setAttributes(inputTokens);
     }
 
     /**
@@ -65,14 +65,14 @@ public class AddDeadlineCommand extends Command {
      * Extracts {@code taskDescription} and {@code dueDate} from the array of user inputs.
      * Creates deadline task to be added later.
      *
-     * @param userInputArray array containing user inputs required to create a Deadline object.
+     * @param inputTokens array containing user inputs required to create a Deadline object.
      * @throws CommandException if dueDate or taskDescription is empty, or if dueDate is not in a valid format.
      */
-    private void setAttributes(String[] userInputArray) {
+    private void setAttributes(String[] inputTokens) {
         Parser parser = new Parser();
 
-        String taskDescription = parser.parseDescription(userInputArray);
-        String dueDateString = parser.parseTokens(userInputArray, "/by");
+        String taskDescription = parser.parseDescription(inputTokens);
+        String dueDateString = parser.parseTokens(inputTokens, "/by");
 
         if (dueDateString.isEmpty() || taskDescription.isEmpty()) {
             throw new CommandException("Please provide the correct arguments for Deadline!");
