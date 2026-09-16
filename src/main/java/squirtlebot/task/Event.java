@@ -31,11 +31,12 @@ public class Event extends Task {
     }
 
     /**
-     * Confirms the date of an event, setting the possible start/end dates to only one.
+     * Confirms the date of an unconfirmed event.
+     * If an event already has a confirmed date, no operations are performed.
      *
      * @param index zero-based integer indicating the start/end date
      *              in the list of possible start/end dates to set as the confirmed date.
-     * @throws CommandException if {@code index} is not a valid index for the list of schedules.
+     * @throws CommandException if {@code index} is out of bounds for list of possible schedules
      */
     public void confirmEventDate(int index) {
         if (isDateConfirmed) {

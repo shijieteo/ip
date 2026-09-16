@@ -29,7 +29,8 @@ public class ConfirmEventDateCommand extends Command {
     /**
      * Retrieves the event to confirm from the task list.
      * Verifies if the selected task is an Event.
-     * Sets the date of the event according to user's input.
+     * Sets the date of an unconfirmed event according to user's input.
+     * If event's date is already confirmed, no changes are made.
      *
      * @param tasks list containing tasks created previously by the user.
      * @param ui interface used to display output to the user.
