@@ -1,7 +1,5 @@
 # SquirtleBot User Guide
 
-![Screenshot of using SquirtleBot in GUI mode](Ui.png)
-
 SquirtleBot is a <b>friendly</b> assistant that helps you manage your day-to-day tasks.
 It uses a chat interface to provide inputs to the bot.
 
