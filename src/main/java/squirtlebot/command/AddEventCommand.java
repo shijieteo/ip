@@ -13,6 +13,7 @@ import squirtlebot.parser.DateParser;
 import squirtlebot.parser.Parser;
 import squirtlebot.storage.Storage;
 import squirtlebot.task.Event;
+import squirtlebot.task.Task;
 import squirtlebot.task.TaskList;
 import squirtlebot.ui.Ui;
 
@@ -82,31 +83,39 @@ public class AddEventCommand extends Command {
      */
     private void setAttributes(String[] inputTokens) {
         Parser parser = new Parser();
-        DateParser dateParser = new DateParser();
 
         String taskDescription = parser.parseDescription(inputTokens);
         ArrayList<TemporalPair> possibleSchedules = new ArrayList<TemporalPair>();
 
-        Stream.iterate(1, x -> x < inputTokens.length, x -> x + 1)
-                .filter(index -> {
-                    String currentToken = inputTokens[index];
-                    return currentToken.equals(START_DATE_TOKEN);
-                }).map(index -> {
-                    String startDate = parser.parseTokens(Arrays
-                            .copyOfRange(inputTokens, index, inputTokens.length), START_DATE_TOKEN);
-                    String endDate = parser.parseTokens(Arrays
-                            .copyOfRange(inputTokens, index, inputTokens.length), END_DATE_TOKEN);
+        boolean isStartDateIdentified = false;
+        boolean isEndDateIdentified = false;
 
-                    Temporal startTemporal = dateParser.parseTemporal(startDate)
-                            .orElseThrow(() -> new CommandException(INVALID_DATETIME_FORMAT_MESSAGE));
+        String startDateString = "";
+        String endDateString = "";
 
-                    Temporal endTemporal = dateParser.parseTemporal(endDate)
-                            .orElseThrow(() -> new CommandException(INVALID_DATETIME_FORMAT_MESSAGE));
+        for (int index = 1; index < inputTokens.length; index++) {
+            String currentToken = inputTokens[index];
+            if (!currentToken.equals(START_DATE_TOKEN) && !currentToken.equals(END_DATE_TOKEN)) {
+                continue;
+            } else if (currentToken.equals(START_DATE_TOKEN) && !isStartDateIdentified) {
+                startDateString = inputTokens[index + 1];
+                isStartDateIdentified = true;
+            } else if (currentToken.equals(END_DATE_TOKEN) && !isEndDateIdentified) {
+                endDateString = inputTokens[index + 1];
+                isEndDateIdentified = true;
+            } else {
+                throw new CommandException("Please provide the correct arguments for Event!");
+            }
 
-                    validateTemporal(startTemporal, endTemporal);
-
-                    return new TemporalPair(startTemporal, endTemporal);
-                }).forEach(x -> possibleSchedules.add(x));
+            if (isStartDateIdentified && isEndDateIdentified) {
+                addToPossibleSchedules(startDateString, endDateString, possibleSchedules);
+                isEndDateIdentified = false;
+                isStartDateIdentified = false;
+            }
+        }
+        if (isEndDateIdentified != isStartDateIdentified) {
+            throw new CommandException("Please provide the correct arguments for Event!");
+        }
 
         if (taskDescription.isEmpty() || possibleSchedules.isEmpty()) {
             throw new CommandException("Please provide the correct arguments for Event!");
@@ -127,5 +136,20 @@ public class AddEventCommand extends Command {
         if (startDateTime.isAfter(endDateTime)) {
             throw new CommandException("Event start date has to be earlier than end date!");
         }
+    }
+
+    private void addToPossibleSchedules(String startTemporalString, String endTemporalString,
+                                        ArrayList<TemporalPair> possibleSchedules) {
+        DateParser dateParser = new DateParser();
+
+        Temporal startTemporal = dateParser.parseTemporal(startTemporalString)
+                .orElseThrow(() -> new CommandException(INVALID_DATETIME_FORMAT_MESSAGE));
+        Temporal endTemporal = dateParser.parseTemporal(endTemporalString)
+                .orElseThrow(() -> new CommandException(INVALID_DATETIME_FORMAT_MESSAGE));
+
+        validateTemporal(startTemporal, endTemporal);
+
+        possibleSchedules.add(new TemporalPair(startTemporal, endTemporal));
+
     }
 }
