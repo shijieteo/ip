@@ -57,23 +57,23 @@ public class ParserTest {
 
     @Test
     public void parseDescription_inputWithParameters_returnsTextBeforeFirstParameter() {
-        String[] input = "deadline submit project report /by 13-09-2026".split(" ");
+        String[] inputTokens = "deadline submit project report /by 13-09-2026".split(" ");
 
-        assertEquals("submit project report", parser.parseDescription(input));
+        assertEquals("submit project report", parser.parseDescription(inputTokens));
     }
 
     @Test
     public void parseTokens_multipleParameters_returnsOnlyExpectedTokenValue() {
-        String[] input = "event workshop /from 13-09-2026 10:00:00 /to 13-09-2026 12:00:00".split(" ");
+        String[] inputTokens = "event workshop /from 13-09-2026 10:00:00 /to 13-09-2026 12:00:00".split(" ");
 
-        assertEquals("13-09-2026 10:00:00", parser.parseTokens(input, "/from"));
-        assertEquals("13-09-2026 12:00:00", parser.parseTokens(input, "/to"));
+        assertEquals("13-09-2026 10:00:00", parser.parseTokens(inputTokens, "/from"));
+        assertEquals("13-09-2026 12:00:00", parser.parseTokens(inputTokens, "/to"));
     }
 
     @Test
     public void parseTokens_missingExpectedToken_returnsEmptyString() {
-        String[] input = "deadline submit report /by 13-09-2026".split(" ");
+        String[] inputTokens = "deadline submit report /by 13-09-2026".split(" ");
 
-        assertEquals("", parser.parseTokens(input, "/from"));
+        assertEquals("", parser.parseTokens(inputTokens, "/from"));
     }
 }

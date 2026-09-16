@@ -43,7 +43,7 @@ public class Storage {
     }
 
     /**
-     * Loads previously saved tasks from data file, specified by {@code fileLocation}
+     * Loads previously saved tasks from data file, specified by {@code fileLocation}.
      *
      * @return list of task objects from data file on the system.
      * @throws StorageException if there was an IO/Class-related issue while loading from storage.
@@ -72,7 +72,7 @@ public class Storage {
      * Deletes the data file and creates a new data file if storage is not disabled.
      * If storage is disabled, no operations are performed.
      *
-     * @throws StorageException if an issue was encountered while trying to create the new data file
+     * @throws StorageException if an issue was encountered while trying to create the new data file.
      */
     public void resetData() {
         if (isDisabled) {
@@ -95,7 +95,7 @@ public class Storage {
      * If storage is disabled, no operations are performed.
      *
      * @param tasks TaskList object to be written to the data file.
-     * @throws StorageException if an error was encountered while writing to the data file
+     * @throws StorageException if an error was encountered while writing to the data file.
      */
     public void writeData(TaskList tasks) {
         if (isDisabled) {

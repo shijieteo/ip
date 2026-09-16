@@ -36,7 +36,7 @@ public class Event extends Task {
      *
      * @param index zero-based integer indicating the start/end date
      *              in the list of possible start/end dates to set as the confirmed date.
-     * @throws CommandException if {@code index} is out of bounds for list of possible schedules
+     * @throws CommandException if {@code index} is out of bounds for list of possible schedules.
      */
     public void confirmEventDate(int index) {
         if (isDateConfirmed) {

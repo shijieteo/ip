@@ -19,7 +19,7 @@ public class TaskList extends ArrayList<Task> {
     /**
      * Constructs a task list containing objects specified by {@code tasks}.
      *
-     * @param tasks collection whose elements are to be placed into this list
+     * @param tasks collection whose elements are to be placed into this list.
      */
     public TaskList(Collection<Task> tasks) {
         super(tasks);

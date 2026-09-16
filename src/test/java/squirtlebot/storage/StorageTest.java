@@ -54,11 +54,11 @@ public class StorageTest {
     public void writeAndLoad_tasksPresent_returnsEquivalentTasks() throws Exception {
         Path storagePath = tempDirectory.resolve("Tasks.ser");
         Storage storage = new Storage(storagePath.toString());
-        TaskList expected = createTaskList();
+        TaskList expectedTasks = createTaskList();
 
-        storage.writeData(expected);
+        storage.writeData(expectedTasks);
 
-        assertEquals(expected, storage.loadData());
+        assertEquals(expectedTasks, storage.loadData());
     }
 
     @Test

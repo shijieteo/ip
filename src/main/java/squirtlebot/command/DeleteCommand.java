@@ -59,7 +59,7 @@ public class DeleteCommand extends Command {
      * Extracts the index to delete from an array of user inputs.
      *
      * @param inputTokens array containing the task list index to delete from.
-     * @throws CommandException if no index is provided, or provided index is not an integer
+     * @throws CommandException if no index is provided, or provided index is not an integer.
      */
     private void setAttributes(String[] inputTokens) {
         try {
