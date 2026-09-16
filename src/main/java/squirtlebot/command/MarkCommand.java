@@ -18,7 +18,7 @@ public class MarkCommand extends Command {
      * @param userInput array containing index value required to create a MarkCommand object.
      */
     public MarkCommand(String[] userInput) {
-        parseParams(userInput);
+        setAttributes(userInput);
     }
 
     /**
@@ -62,7 +62,7 @@ public class MarkCommand extends Command {
      * @param userInputArray array containing index in task list to mark.
      * @throws CommandException if index value provided is not a number.
      */
-    private void parseParams(String[] userInputArray) {
+    private void setAttributes(String[] userInputArray) {
         try {
             index = Integer.parseInt(userInputArray[1]) - 1;
         } catch (NumberFormatException e) {

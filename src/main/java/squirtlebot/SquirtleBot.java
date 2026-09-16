@@ -56,7 +56,8 @@ public class SquirtleBot {
      * Starts an instance of SquirtleBot.
      * Intended for use with SquirtleBot running in CLI-mode.
      * SquirtleBot will attempt to load previously stored tasks, then start reading user commands.
-     * Will continue running till user issues a {@code bye} command.
+     * Will continue running till user issues a {@code bye} command or if storage encounters an issue
+     * and user opts to not continue.
      */
     public void run() {
         ui.printBanner();

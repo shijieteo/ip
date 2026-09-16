@@ -18,7 +18,7 @@ public class UnmarkCommand extends Command {
      * @param userInput array containing index value required to create an UnmarkCommand object.
      */
     public UnmarkCommand(String[] userInput) {
-        parseParams(userInput);
+        setAttributes(userInput);
     }
 
     /**
@@ -61,7 +61,7 @@ public class UnmarkCommand extends Command {
      * @param userInputArray array containing user-supplied list index to unmark.
      * @throws CommandException if index value provided is not a number.
      */
-    private void parseParams(String[] userInputArray) {
+    private void setAttributes(String[] userInputArray) {
         try {
             index = Integer.parseInt(userInputArray[1]) - 1;
         } catch (NumberFormatException e) {

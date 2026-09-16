@@ -21,6 +21,7 @@ public class ConfirmEventDateCommand extends Command {
      * Constructs a new ConfirmEventDateCommand using inputs provided by a user.
      *
      * @param userInputArray array containing user inputs required to confirm the date of an event.
+     * @throws CommandException if indices are not provided, or provided indices are not integers
      */
     public ConfirmEventDateCommand(String[] userInputArray) {
         setAttributes(userInputArray);
@@ -75,7 +76,7 @@ public class ConfirmEventDateCommand extends Command {
      * Extracts two indices required to confirm the date for an event.
      *
      * @param userInputArray array containing two indices required to confirm an event's date.
-     * @throws CommandException if provided indices are not numbers.
+     * @throws CommandException if no indices are provided, or provided indices are not numbers.
      */
     private void setAttributes(String[] userInputArray) {
         try {

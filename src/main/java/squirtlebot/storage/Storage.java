@@ -43,9 +43,9 @@ public class Storage {
     }
 
     /**
-     * Creates FileInputStream and ObjectInputStream objects required to read from data file.
+     * Loads previously saved tasks from data file, specified by {@code fileLocation}
      *
-     * @return List of task objects from data file on the system.
+     * @return list of task objects from data file on the system.
      * @throws StorageException if there was an IO/Class-related issue while loading from storage.
      */
     public TaskList loadData() {
@@ -70,6 +70,8 @@ public class Storage {
 
     /**
      * Deletes the data file and creates a new data file.
+     *
+     * @throws StorageException if an issue was encountered while trying to create the new data file
      */
     public void resetData() {
         if (isDisabled) {
@@ -88,9 +90,10 @@ public class Storage {
     }
 
     /**
-     * Creates FileOutputStream and ObjectOutputStream objects required to write to data file.
+     * Writes the list of tasks to the data file, specified by {@code fileLocation}
      *
      * @param tasks TaskList object to be written to the data file.
+     * @throws StorageException if an error was encountered while writing to the data file
      */
     public void writeData(TaskList tasks) {
         if (isDisabled) {

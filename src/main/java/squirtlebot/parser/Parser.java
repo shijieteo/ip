@@ -50,7 +50,7 @@ public class Parser {
      *
      * @param userInput string representing command to execute and its parameters.
      * @return a {@link Command} object representing the user-entered command.
-     * @throws CommandException if user specifies an unsupported command.
+     * @throws CommandException if user specifies an unsupported command, or input is null/blank.
      */
     public Command parseCommand(String userInput) {
         validateUserInput(userInput);
