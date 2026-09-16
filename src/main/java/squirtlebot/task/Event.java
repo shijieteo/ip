@@ -35,7 +35,7 @@ public class Event extends Task {
      *
      * @param index zero-based integer indicating the start/end date
      *              in the list of possible start/end dates to set as the confirmed date.
-     * @throws CommandException if {@code index} is not a valid index for the list of schedules
+     * @throws CommandException if {@code index} is not a valid index for the list of schedules.
      */
     public void confirmEventDate(int index) {
         if (isDateConfirmed) {
@@ -82,10 +82,10 @@ public class Event extends Task {
             return String.format("[E] %s (from: %s to: %s)", super.toString(),
                     confirmedDate.startDate(), confirmedDate.endDate());
         }
-        String schedulesDisplays = possibleSchedules.stream()
+        String formattedSchedules = possibleSchedules.stream()
                 .map(x -> String.format("from: %s to: %s", x.startDate(), x.endDate()))
                 .reduce("", (x, y) -> x + "\n" + y)
                 .trim();
-        return String.format("[E] %s \nPossible Schedules: \n%s", super.toString(), schedulesDisplays);
+        return String.format("[E] %s \nPossible Schedules: \n%s", super.toString(), formattedSchedules);
     }
 }

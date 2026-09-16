@@ -21,7 +21,7 @@ public class Storage {
 
     private boolean isDisabled;
     private final String fileLocation;
-    private final String directoryName;
+    private final String directoryPath;
 
     /**
      * Constructs a storage object using default file locations.
@@ -39,7 +39,7 @@ public class Storage {
         isDisabled = false;
         this.fileLocation = fileLocation;
         File parentDirectory = new File(fileLocation).getParentFile();
-        this.directoryName = parentDirectory == null ? "." : parentDirectory.getPath();
+        this.directoryPath = parentDirectory == null ? "." : parentDirectory.getPath();
     }
 
     /**
@@ -119,7 +119,7 @@ public class Storage {
             return;
         }
         File dataFile = new File(fileLocation);
-        File directory = new File(directoryName);
+        File directory = new File(directoryPath);
         if (!directory.exists()) {
             directory.mkdirs();
         }
