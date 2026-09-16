@@ -18,7 +18,7 @@ public class DateParser {
 
     /**
      * Constructs a DateParser object.
-     * Initializes the formats list to include all the date and datetime formats it can parse.
+     * Initializes the date and datetime format lists to include all the date and datetime formats it can parse.
      */
     public DateParser() {
         dateFormats = List.<String>of("dd-MM-uuuu", "dd/MM/uuuu", "uuuu-MM-dd", "uuuu/MM/dd");

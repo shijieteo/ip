@@ -27,7 +27,7 @@ public class TaskList extends ArrayList<Task> {
 
     /**
      * Returns the string representation of {@link Task} objects contained within this collection.
-     * String representation of contained {@link Task} objects are split by a newline character.
+     * String representation of contained {@link Task} objects are separated by a newline character.
      */
     @Override
     public String toString() {
