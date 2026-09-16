@@ -57,8 +57,8 @@ public class Parser {
 
         String[] inputTokens = userInput.trim().split("\\s+");
 
-        String commandString = inputTokens[0];
-        Function<String[], Command> commandFunction = Optional.ofNullable(commandsByName.get(commandString))
+        String commandKeyword = inputTokens[0];
+        Function<String[], Command> commandFunction = Optional.ofNullable(commandsByName.get(commandKeyword))
                 .orElseThrow(() -> new CommandException("Invalid command"));
 
         assert commandFunction != null;

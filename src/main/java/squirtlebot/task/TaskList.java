@@ -31,10 +31,10 @@ public class TaskList extends ArrayList<Task> {
      */
     @Override
     public String toString() {
-        String accumulatedString = IntStream.range(0, size()).boxed()
+        String formattedTasks = IntStream.range(0, size()).boxed()
                 .map(x -> String.format("%d. %s", x + 1, get(x)))
                 .reduce("", (x, y) -> x + y + "\n");
 
-        return "\t" + accumulatedString.trim();
+        return "\t" + formattedTasks.trim();
     }
 }
