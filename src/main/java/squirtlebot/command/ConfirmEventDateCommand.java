@@ -13,7 +13,7 @@ import squirtlebot.ui.Ui;
  * confirm a single start/end date for an event.
  */
 public class ConfirmEventDateCommand extends Command {
-    private int tasksIndex;
+    private int taskIndex;
     private int confirmedDateIndex;
 
 
@@ -39,9 +39,9 @@ public class ConfirmEventDateCommand extends Command {
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
 
-        validateIndex(tasksIndex, tasks);
+        validateIndex(taskIndex, tasks);
 
-        Task task = tasks.get(tasksIndex);
+        Task task = tasks.get(taskIndex);
         if (!(task instanceof Event eventToConfirm)) {
             throw new CommandException("Selected event was not an Event!");
         }
@@ -61,7 +61,7 @@ public class ConfirmEventDateCommand extends Command {
         if (this == object) {
             return true;
         } else if (object instanceof ConfirmEventDateCommand otherConfirmEventDateCommand) {
-            boolean areTasksIndicesEqual = tasksIndex == otherConfirmEventDateCommand.tasksIndex;
+            boolean areTasksIndicesEqual = taskIndex == otherConfirmEventDateCommand.taskIndex;
             boolean areConfirmedDateIndicesEqual = confirmedDateIndex
                     == otherConfirmEventDateCommand.confirmedDateIndex;
 
@@ -79,7 +79,7 @@ public class ConfirmEventDateCommand extends Command {
      */
     private void setAttributes(String[] userInputArray) {
         try {
-            tasksIndex = Integer.parseInt(userInputArray[1]) - 1;
+            taskIndex = Integer.parseInt(userInputArray[1]) - 1;
             confirmedDateIndex = Integer.parseInt(userInputArray[2]) - 1;
         } catch (NumberFormatException e) {
             throw new CommandException("Please enter a valid index :(", e);
