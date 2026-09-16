@@ -42,7 +42,7 @@ public class GuiMain extends Application {
 
             controller.displayWelcomeMessage();
 
-            boolean isLoaded = squirtleBot.initializeTasks();
+            boolean isLoaded = squirtleBot.tryInitializeTasks();
             if (!isLoaded) {
                 controller.promptOnStorageIssue();
             }

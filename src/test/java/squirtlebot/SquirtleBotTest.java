@@ -158,33 +158,33 @@ public class SquirtleBotTest {
     }
 
     @Test
-    public void initializeTasks_loadSucceeds_usesStoredTasks() {
+    public void tryInitializeTasks_loadSucceeds_usesStoredTasks() {
         TaskList storedTasks = new TaskList();
         storedTasks.add(new ToDo("stored task"));
         FakeStorage storage = new FakeStorage(storedTasks, ExceptionType.NONE);
         SquirtleBot testBot = createBot(storage, new FakeUi(new ArrayList<>()));
 
-        assertTrue(testBot.initializeTasks());
+        assertTrue(testBot.tryInitializeTasks());
         assertEquals("1. [T] [ ] stored task", testBot.getResponse("list").message());
         assertEquals(1, storage.loadCount);
     }
 
     @Test
-    public void initializeTasks_storageException_returnsFalse() {
+    public void tryInitializeTasks_storageException_returnsFalse() {
         FakeStorage storage = new FakeStorage(new TaskList(), ExceptionType.STORAGE_EXCEPTION);
         SquirtleBot testBot = createBot(storage, new FakeUi(new ArrayList<>()));
 
-        assertFalse(testBot.initializeTasks());
+        assertFalse(testBot.tryInitializeTasks());
         assertEquals(3, storage.loadCount);
         assertEquals(2, storage.resetCount);
     }
 
     @Test
-    public void initializeTasks_invalidClassThenSuccess_resetsAndRetries() {
+    public void tryInitializeTasks_invalidClassThenSuccess_resetsAndRetries() {
         FakeStorage storage = new FakeStorage(new TaskList(), ExceptionType.STORAGE_EXCEPTION, 2);
         SquirtleBot testBot = createBot(storage, new FakeUi(new ArrayList<>()));
 
-        assertTrue(testBot.initializeTasks());
+        assertTrue(testBot.tryInitializeTasks());
         assertEquals(3, storage.loadCount);
         assertEquals(2, storage.resetCount);
     }

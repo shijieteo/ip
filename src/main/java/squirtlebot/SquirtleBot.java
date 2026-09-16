@@ -62,8 +62,8 @@ public class SquirtleBot {
     public void run() {
         ui.printBanner();
 
-        boolean isLoaded = initializeTasks();
-        if (!isLoaded && !handleStorageIssue()) {
+        boolean isLoaded = tryInitializeTasks();
+        if (!isLoaded && !shouldContinueWithoutStorage()) {
             return;
         }
 
@@ -75,7 +75,7 @@ public class SquirtleBot {
 
         while (!shouldExit) {
             String userInput = ui.readInput();
-            shouldExit = executeCommand(userInput);
+            shouldExit = shouldExitAfterExecutingCommand(userInput);
             ui.printSavedMessage();
         }
     }
@@ -90,7 +90,7 @@ public class SquirtleBot {
         squirtleBot.run();
     }
 
-    private boolean handleStorageIssue() {
+    private boolean shouldContinueWithoutStorage() {
         while (true) {
             ui.setSavedMessage("\t" + STORAGE_ISSUE_PROMPT);
             ui.printSavedMessage();
@@ -118,7 +118,7 @@ public class SquirtleBot {
      *
      * @return {@code true} if storage was loaded correctly; {@code false} if storage not loaded.
      */
-    public boolean initializeTasks() {
+    public boolean tryInitializeTasks() {
         int resetCount = 0;
         while (true) {
             try {
@@ -142,7 +142,7 @@ public class SquirtleBot {
      * @return output corresponding to user's command.
      */
     public CommandResult getResponse(String userInput) {
-        boolean shouldExit = executeCommand(userInput);
+        boolean shouldExit = shouldExitAfterExecutingCommand(userInput);
         return new CommandResult(shouldExit, ui.getSavedMessage());
     }
 
@@ -152,7 +152,7 @@ public class SquirtleBot {
      * @param userInput string containing command to execute and parameters.
      * @return boolean value indicating whether user would like to exit.
      */
-    private boolean executeCommand(String userInput) {
+    private boolean shouldExitAfterExecutingCommand(String userInput) {
         boolean shouldExit = false;
         try {
             Command userCommand = parser.parseCommand(userInput);
