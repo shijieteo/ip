@@ -27,7 +27,7 @@ public class Parser {
 
     /**
      * Constructs a Parser object.
-     * Initializes {@code commandMap} to contain the various mappings of user input to command.
+     * Initializes {@code commandsByName} to contain the various mappings of user input to command.
      */
     public Parser() {
         commandsByName.put("todo", x -> new AddToDoCommand(x));

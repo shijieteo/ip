@@ -165,7 +165,7 @@ public class SquirtleBot {
     }
 
     /**
-     * Disables storage instance, disallowing use of storage functionality.
+     * Disables storage instance, disallowing use of storage functionality except for loading of data.
      */
     public void disableStorage() {
         storage.disable();

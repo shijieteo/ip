@@ -69,7 +69,8 @@ public class Storage {
     }
 
     /**
-     * Deletes the data file and creates a new data file.
+     * Deletes the data file and creates a new data file if storage is not disabled.
+     * If storage is disabled, no operations are performed.
      *
      * @throws StorageException if an issue was encountered while trying to create the new data file
      */
@@ -83,14 +84,15 @@ public class Storage {
     }
 
     /**
-     * Sets the value of isDisabled to disable all storage-related operations.
+     * Sets the value of isDisabled to disable all storage-related operations except for loading of data.
      */
     public void disable() {
         this.isDisabled = true;
     }
 
     /**
-     * Writes the list of tasks to the data file, specified by {@code fileLocation}
+     * Writes the list of tasks to the data file, specified by {@code fileLocation} if storage is not disabled.
+     * If storage is disabled, no operations are performed.
      *
      * @param tasks TaskList object to be written to the data file.
      * @throws StorageException if an error was encountered while writing to the data file
@@ -110,8 +112,8 @@ public class Storage {
     }
 
     /**
-     * Creates the configured data file.
-     * Creates data directory if it does not already exist.
+     * If storage is not disabled, creates the specified data file and data directory if it does not already exist.
+     * If storage is disabled, no operations are performed.
      */
     private void createDataFile() {
         if (isDisabled) {
