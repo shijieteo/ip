@@ -27,7 +27,7 @@ public class FindCommand extends Command {
      *
      * @param tasks list containing tasks created previously by the user.
      * @param ui interface used to display output to the user.
-     * @param storage storage handler used to persist changes made by the command.
+     * @param storage unused storage handler, included to override implementation in {@link Command}.
      */
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         TaskList identifiedTasks = new TaskList(tasks.stream().filter(x -> x.getTaskDescription()
