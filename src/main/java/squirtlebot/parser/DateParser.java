@@ -13,16 +13,16 @@ import java.util.Optional;
  * Contains a set of accepted date and datetime formats.
  */
 public class DateParser {
-    private List<String> dateFormatList;
-    private List<String> dateTimeFormatList;
+    private List<String> dateFormats;
+    private List<String> dateTimeFormats;
 
     /**
      * Constructs a DateParser object.
      * Initializes the formats list to include all the date and datetime formats it can parse.
      */
     public DateParser() {
-        dateFormatList = List.<String>of("dd-MM-uuuu", "dd/MM/uuuu", "uuuu-MM-dd", "uuuu/MM/dd");
-        dateTimeFormatList = List.<String>of("dd-MM-uuuu HH:mm:ss", "dd/MM/uuuu HH:mm:ss",
+        dateFormats = List.<String>of("dd-MM-uuuu", "dd/MM/uuuu", "uuuu-MM-dd", "uuuu/MM/dd");
+        dateTimeFormats = List.<String>of("dd-MM-uuuu HH:mm:ss", "dd/MM/uuuu HH:mm:ss",
                 "uuuu-MM-dd HH:mm:ss", "uuuu/MM/dd HH:mm:ss");
     }
 
@@ -48,7 +48,7 @@ public class DateParser {
      *  or an empty {@link Optional} if the user input is of an unsupported format.
      */
     private Optional<Temporal> parseDate(String userInput) {
-        for (String format : dateFormatList) {
+        for (String format : dateFormats) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
             try {
                 LocalDate date = LocalDate.parse(userInput, formatter);
@@ -68,7 +68,7 @@ public class DateParser {
      *  or an empty {@link Optional} if the user input is of an unsupported format.
      */
     private Optional<Temporal> parseDateTime(String userInput) {
-        for (String format : dateTimeFormatList) {
+        for (String format : dateTimeFormats) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
             try {
                 LocalDateTime date = LocalDateTime.parse(userInput, formatter);

@@ -23,26 +23,26 @@ import squirtlebot.exception.CommandException;
 public class Parser {
     private static final int NUMBER_OF_COMMANDS = 10;
 
-    private final HashMap<String, Function<String[], Command>> commandMap = new HashMap<>();
+    private final HashMap<String, Function<String[], Command>> commandsByName = new HashMap<>();
 
     /**
      * Constructs a Parser object.
      * Initializes {@code commandMap} to contain the various mappings of user input to command.
      */
     public Parser() {
-        commandMap.put("todo", x -> new AddToDoCommand(x));
-        commandMap.put("deadline", x -> new AddDeadlineCommand(x));
-        commandMap.put("event", x -> new AddEventCommand(x));
-        commandMap.put("mark", x -> new MarkCommand(x));
-        commandMap.put("unmark", x -> new UnmarkCommand(x));
-        commandMap.put("bye", x -> new ExitCommand());
-        commandMap.put("list", x -> new ListCommand());
-        commandMap.put("find", x -> new FindCommand(x));
-        commandMap.put("delete", x -> new DeleteCommand(x));
-        commandMap.put("confirm", x -> new ConfirmEventDateCommand(x));
+        commandsByName.put("todo", x -> new AddToDoCommand(x));
+        commandsByName.put("deadline", x -> new AddDeadlineCommand(x));
+        commandsByName.put("event", x -> new AddEventCommand(x));
+        commandsByName.put("mark", x -> new MarkCommand(x));
+        commandsByName.put("unmark", x -> new UnmarkCommand(x));
+        commandsByName.put("bye", x -> new ExitCommand());
+        commandsByName.put("list", x -> new ListCommand());
+        commandsByName.put("find", x -> new FindCommand(x));
+        commandsByName.put("delete", x -> new DeleteCommand(x));
+        commandsByName.put("confirm", x -> new ConfirmEventDateCommand(x));
 
-        assert commandMap.size() == NUMBER_OF_COMMANDS;
-        assert commandMap.values().stream().allMatch(function -> function != null);
+        assert commandsByName.size() == NUMBER_OF_COMMANDS;
+        assert commandsByName.values().stream().allMatch(function -> function != null);
     }
 
     /**
@@ -58,7 +58,7 @@ public class Parser {
         String[] userInputArray = userInput.trim().split("\\s+");
 
         String commandString = userInputArray[0];
-        Function<String[], Command> commandFunction = Optional.ofNullable(commandMap.get(commandString))
+        Function<String[], Command> commandFunction = Optional.ofNullable(commandsByName.get(commandString))
                 .orElseThrow(() -> new CommandException("Invalid command"));
 
         assert commandFunction != null;

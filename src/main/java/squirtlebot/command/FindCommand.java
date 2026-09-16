@@ -30,13 +30,13 @@ public class FindCommand extends Command {
      * @param storage storage handler used to persist changes made by the command.
      */
     public void execute(TaskList tasks, Ui ui, Storage storage) {
-        TaskList filteredList = new TaskList(tasks.stream().filter(x -> x.getTaskDescription()
+        TaskList identifiedTasks = new TaskList(tasks.stream().filter(x -> x.getTaskDescription()
                 .contains(searchPattern)).toList());
-        if (filteredList.isEmpty()) {
+        if (identifiedTasks.isEmpty()) {
             ui.setSavedMessage("No tasks match your search :(");
             return;
         }
-        ui.setSavedMessage(filteredList.toString());
+        ui.setSavedMessage(identifiedTasks.toString());
     }
 
     /**
