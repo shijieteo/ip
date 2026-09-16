@@ -71,8 +71,8 @@ public class DateParser {
         for (String format : dateTimeFormats) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
             try {
-                LocalDateTime date = LocalDateTime.parse(userInput, formatter);
-                return Optional.<Temporal>of(date);
+                LocalDateTime dateTime = LocalDateTime.parse(userInput, formatter);
+                return Optional.<Temporal>of(dateTime);
             } catch (DateTimeParseException e) {
                 continue;
             }

@@ -62,11 +62,11 @@ public class ConfirmEventDateCommand extends Command {
         if (this == object) {
             return true;
         } else if (object instanceof ConfirmEventDateCommand otherConfirmEventDateCommand) {
-            boolean areTasksIndicesEqual = taskIndex == otherConfirmEventDateCommand.taskIndex;
+            boolean areTaskIndicesEqual = taskIndex == otherConfirmEventDateCommand.taskIndex;
             boolean areConfirmedDateIndicesEqual = confirmedDateIndex
                     == otherConfirmEventDateCommand.confirmedDateIndex;
 
-            return areTasksIndicesEqual && areConfirmedDateIndicesEqual;
+            return areTaskIndicesEqual && areConfirmedDateIndicesEqual;
         } else {
             return false;
         }

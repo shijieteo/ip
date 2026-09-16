@@ -64,10 +64,10 @@ public class Event extends Task {
             return true;
         } else if (object instanceof Event otherEvent) {
             boolean arePossibleSchedulesEqual = possibleSchedules.equals(otherEvent.possibleSchedules);
-            boolean areDateConfirmedEqual = isDateConfirmed == otherEvent.isDateConfirmed;
+            boolean areConfirmedDatesEqual = isDateConfirmed == otherEvent.isDateConfirmed;
             boolean areTaskAttributesEqual = super.equals(otherEvent);
 
-            return arePossibleSchedulesEqual && areDateConfirmedEqual && areTaskAttributesEqual;
+            return arePossibleSchedulesEqual && areConfirmedDatesEqual && areTaskAttributesEqual;
         } else {
             return false;
         }
