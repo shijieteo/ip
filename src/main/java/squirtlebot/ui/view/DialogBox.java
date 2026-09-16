@@ -1,4 +1,5 @@
 package squirtlebot.ui.view;
+
 import java.io.IOException;
 import java.util.Collections;
 
@@ -42,32 +43,32 @@ public class DialogBox extends HBox {
      * Flips the dialog box such that the ImageView is on the left and text on the right.
      */
     private void flip() {
-        ObservableList<Node> tmp = FXCollections.observableArrayList(this.getChildren());
-        Collections.reverse(tmp);
-        getChildren().setAll(tmp);
+        ObservableList<Node> elements = FXCollections.observableArrayList(this.getChildren());
+        Collections.reverse(elements);
+        getChildren().setAll(elements);
         setAlignment(Pos.TOP_LEFT);
         dialog.getStyleClass().add("reply-label");
     }
 
     /**
-     * Creates a dialog box to represent a user's message to the bot
+     * Creates a dialog box to represent a user's message to the bot.
      *
-     * @param text message entered by user
-     * @param img image to represent the user
-     * @return {@link DialogBox} with user image and message formatted
+     * @param text message entered by user.
+     * @param img image to represent the user.
+     * @return {@link DialogBox} with user image and message formatted.
      */
-    public static DialogBox getUserDialog(String text, Image img) {
+    public static DialogBox createUserDialog(String text, Image img) {
         return new DialogBox(text, img);
     }
 
     /**
-     * Creates a dialog box to represent a bot's message
+     * Creates a dialog box to represent a bot's message.
      *
-     * @param text message from the bot
-     * @param img image to represent the bot
-     * @return {@link DialogBox} with bot image and message formatted
+     * @param text message from the bot.
+     * @param img image to represent the bot.
+     * @return {@link DialogBox} with bot image and message formatted.
      */
-    public static DialogBox getSquirtleBotDialog(String text, Image img) {
+    public static DialogBox createSquirtleBotDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();
         return db;

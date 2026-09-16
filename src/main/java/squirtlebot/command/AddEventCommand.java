@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Stream;
 
 import squirtlebot.TemporalPair;
 import squirtlebot.exception.CommandException;
@@ -17,7 +15,7 @@ import squirtlebot.task.TaskList;
 import squirtlebot.ui.Ui;
 
 /**
- * Represents the event command within <code>SquirtleBot</code>
+ * Represents the event command within {@code SquirtleBot}.
  */
 public class AddEventCommand extends Command {
     private static final String INVALID_DATETIME_FORMAT_MESSAGE = "Invalid date/datetime detected!";
@@ -27,34 +25,35 @@ public class AddEventCommand extends Command {
     private Event eventToAdd;
 
     /**
-     * Constructs a new AddEventCommand using inputs provided by a user
+     * Constructs a new AddEventCommand using inputs provided by a user.
      *
-     * @param userInput array containing user inputs required to create an Event object
+     * @param inputTokens array containing user inputs required to create an Event object.
      */
-    public AddEventCommand(String[] userInput) {
-        setAttributes(userInput);
+    public AddEventCommand(String[] inputTokens) {
+        setAttributes(inputTokens);
     }
 
     /**
-     * Adds the previously created Event object to the list of tasks
-     * Updates storage to reflect the newly added Event
-     * Uses Ui to store a message reflecting the newly added task
+     * Adds the previously created Event object to the list of tasks.
+     * Updates storage to reflect the newly added Event.
+     * Uses Ui to store a message reflecting the newly added task.
      *
-     * @param taskList list containing tasks created previously by the user
-     * @param ui interface used to display output to the user
-     * @param storage storage handler used to persist changes made by the command
+     * @param tasks list containing tasks created previously by the user.
+     * @param ui interface used to display output to the user.
+     * @param storage storage handler used to persist changes made by the command.
      */
-    public void execute(TaskList taskList, Ui ui, Storage storage) {
-        int sizeBeforeAdding = taskList.size();
+    @Override
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
+        int sizeBeforeAdding = tasks.size();
 
-        taskList.add(eventToAdd);
+        tasks.add(eventToAdd);
 
-        super.updateStorage(taskList, storage);
+        super.updateStorage(tasks, storage);
 
-        assert sizeBeforeAdding == taskList.size() - 1;
+        assert sizeBeforeAdding == tasks.size() - 1;
 
         ui.setSavedMessage(String.format("\tadded: %s to your list of tasks\n"
-                + "You now have %d tasks", eventToAdd, taskList.size()));
+                + "You now have %d tasks", eventToAdd, tasks.size()));
     }
 
     /**
@@ -72,41 +71,49 @@ public class AddEventCommand extends Command {
     }
 
     /**
-     * Extracts <code>taskDescription</code> and start and end date pairs from the user input.
-     * Queries dateParser repeatedly to parse possible start and end dates
-     * Creates the event object to be added when executed
+     * Extracts {@code taskDescription} and start and end date pairs from the user input.
+     * Queries dateParser repeatedly to parse possible start and end dates.
+     * Creates the event object to be added when executed.
      *
-     * @param userInputArray array containing user inputs required to create an Event object
+     * @param inputTokens array containing user inputs required to create an Event object.
      * @throws CommandException if any of taskDescription, startDate or endDate is empty
-     *                  or if any of startDate or endDate is not in a valid format
+     *                  or if any of startDate or endDate is not in a valid format.
      */
-    private void setAttributes(String[] userInputArray) {
+    private void setAttributes(String[] inputTokens) {
         Parser parser = new Parser();
-        DateParser dateParser = new DateParser();
 
-        String taskDescription = parser.parseDescription(userInputArray);
+        String taskDescription = parser.parseDescription(inputTokens);
         ArrayList<TemporalPair> possibleSchedules = new ArrayList<TemporalPair>();
 
-        Stream.iterate(1, x -> x < userInputArray.length, x -> x + 1)
-                .filter(index -> {
-                    String currentToken = userInputArray[index];
-                    return currentToken.equals(START_DATE_TOKEN);
-                }).map(index -> {
-                    String startDate = parser.parseTokens(Arrays
-                            .copyOfRange(userInputArray, index, userInputArray.length), START_DATE_TOKEN);
-                    String endDate = parser.parseTokens(Arrays
-                            .copyOfRange(userInputArray, index, userInputArray.length), END_DATE_TOKEN);
+        boolean isStartDateIdentified = false;
+        boolean isEndDateIdentified = false;
 
-                    Temporal startTemporal = dateParser.parseTemporal(startDate)
-                            .orElseThrow(() -> new CommandException(INVALID_DATETIME_FORMAT_MESSAGE));
+        String startDateString = "";
+        String endDateString = "";
 
-                    Temporal endTemporal = dateParser.parseTemporal(endDate)
-                            .orElseThrow(() -> new CommandException(INVALID_DATETIME_FORMAT_MESSAGE));
+        for (int index = 1; index < inputTokens.length; index++) {
+            String currentToken = inputTokens[index];
+            if (!currentToken.equals(START_DATE_TOKEN) && !currentToken.equals(END_DATE_TOKEN)) {
+                continue;
+            } else if (currentToken.equals(START_DATE_TOKEN) && !isStartDateIdentified) {
+                startDateString = inputTokens[index + 1];
+                isStartDateIdentified = true;
+            } else if (currentToken.equals(END_DATE_TOKEN) && !isEndDateIdentified) {
+                endDateString = inputTokens[index + 1];
+                isEndDateIdentified = true;
+            } else {
+                throw new CommandException("Please provide the correct arguments for Event!");
+            }
 
-                    validateTemporal(startTemporal, endTemporal);
-
-                    return new TemporalPair(startTemporal, endTemporal);
-                }).forEach(x -> possibleSchedules.add(x));
+            if (isStartDateIdentified && isEndDateIdentified) {
+                addToPossibleSchedules(startDateString, endDateString, possibleSchedules);
+                isEndDateIdentified = false;
+                isStartDateIdentified = false;
+            }
+        }
+        if (isEndDateIdentified != isStartDateIdentified) {
+            throw new CommandException("Please provide the correct arguments for Event!");
+        }
 
         if (taskDescription.isEmpty() || possibleSchedules.isEmpty()) {
             throw new CommandException("Please provide the correct arguments for Event!");
@@ -127,5 +134,20 @@ public class AddEventCommand extends Command {
         if (startDateTime.isAfter(endDateTime)) {
             throw new CommandException("Event start date has to be earlier than end date!");
         }
+    }
+
+    private void addToPossibleSchedules(String startTemporalString, String endTemporalString,
+                                        ArrayList<TemporalPair> possibleSchedules) {
+        DateParser dateParser = new DateParser();
+
+        Temporal startTemporal = dateParser.parseTemporal(startTemporalString)
+                .orElseThrow(() -> new CommandException(INVALID_DATETIME_FORMAT_MESSAGE));
+        Temporal endTemporal = dateParser.parseTemporal(endTemporalString)
+                .orElseThrow(() -> new CommandException(INVALID_DATETIME_FORMAT_MESSAGE));
+
+        validateTemporal(startTemporal, endTemporal);
+
+        possibleSchedules.add(new TemporalPair(startTemporal, endTemporal));
+
     }
 }

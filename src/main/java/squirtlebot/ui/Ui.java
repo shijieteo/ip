@@ -3,7 +3,7 @@ package squirtlebot.ui;
 import java.util.Scanner;
 
 /**
- * Handles user interaction such as reading input and printing messages
+ * Handles user interaction such as reading input and printing messages.
  */
 public class Ui {
     private static final String HORIZONTAL_LINE = "\t_____________________________________________________________";
@@ -11,15 +11,15 @@ public class Ui {
 
 
     /**
-     * Constructs a new Ui
+     * Constructs a new Ui.
      */
     public Ui() {
         savedMessage = "";
     }
 
     /**
-     * Prints welcome banner for SquirtleBot. <br>
-     * Intended for use when operating in CLI-mode
+     * Prints welcome banner for SquirtleBot.
+     * Intended for use when operating in CLI-mode.
      */
     public void printBanner() {
         String banner = """
@@ -60,16 +60,16 @@ public class Ui {
     }
 
     /**
-     * Updates saved message
+     * Updates saved message.
      *
-     * @param savedMessage new message to be saved
+     * @param savedMessage new message to be saved.
      */
     public void setSavedMessage(String savedMessage) {
         this.savedMessage = savedMessage;
     }
 
     /**
-     * Displays the saved messaged between 2 horizontal lines for formatting
+     * Displays the saved message between 2 horizontal lines.
      */
     public void printSavedMessage() {
         System.out.println(Ui.HORIZONTAL_LINE);
@@ -78,18 +78,18 @@ public class Ui {
     }
 
     /**
-     * Returns saved message with trailing whitespace removed
+     * Returns saved message with leading and trailing whitespace removed.
      *
-     * @return previously saved message
+     * @return previously saved message.
      */
     public String getSavedMessage() {
         return savedMessage.trim();
     }
 
     /**
-     * Reads the next line of user input
+     * Reads the next line of user input.
      *
-     * @return string containing user's input
+     * @return string containing user's input.
      */
     public String readInput() {
         Scanner scanner = new Scanner(System.in);
@@ -98,7 +98,7 @@ public class Ui {
 
 
     /**
-     * Returns the welcome message used for GUI mode of operation
+     * Returns the welcome message used for GUI mode of operation.
      */
     public String getGuiWelcomeMessage() {
         return ("Hello! I'm SquirtleBot :) \nWhat can I do for you?");

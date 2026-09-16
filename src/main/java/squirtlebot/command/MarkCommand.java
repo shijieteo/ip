@@ -7,37 +7,37 @@ import squirtlebot.task.TaskList;
 import squirtlebot.ui.Ui;
 
 /**
- * Represents the mark command within <code>SquirtleBot</code>
+ * Represents the mark command within {@code SquirtleBot}.
  */
 public class MarkCommand extends Command {
     private int index;
 
     /**
-     * Constructs a new MarkCommand object using user inputs
+     * Constructs a new MarkCommand object using user inputs.
      *
-     * @param userInput array containing index value required to create a MarkCommand object
+     * @param inputTokens array containing index value required to create a MarkCommand object.
      */
-    public MarkCommand(String[] userInput) {
-        parseParams(userInput);
+    public MarkCommand(String[] inputTokens) {
+        setAttributes(inputTokens);
     }
 
     /**
-     * Marks the task in the task list at the user-provided index<br>
-     * Displays a confirmation text to the user on command executed
+     * Marks the task in the task list at the user-provided index.
+     * Displays a confirmation text to the user on command executed.
      *
-     * @param taskList list containing tasks created previously by the user
-     * @param ui interface used to display output to the user
-     * @param storage storage handler used to persist changes made by the command
+     * @param tasks list containing tasks created previously by the user.
+     * @param ui interface used to display output to the user.
+     * @param storage storage handler used to persist changes made by the command.
      */
-    public void execute(TaskList taskList, Ui ui, Storage storage) {
-        validateIndex(index, taskList);
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
+        validateIndex(index, tasks);
 
-        Task markedTask = taskList.get(index);
-        markedTask.setIsDone(true);
+        Task markedTask = tasks.get(index);
+        markedTask.setDone(true);
 
         assert markedTask.isDone();
 
-        super.updateStorage(taskList, storage);
+        super.updateStorage(tasks, storage);
 
         ui.setSavedMessage(String.format("\tCongrats on completing the following task:\n%s", markedTask));
     }
@@ -57,14 +57,14 @@ public class MarkCommand extends Command {
     }
 
     /**
-     * Extracts the index within task list to mark
+     * Extracts the index within task list to mark.
      *
-     * @param userInputArray array containing index in task list to mark
-     * @throws CommandException if index value provided is not a number
+     * @param inputTokens array containing index in task list to mark.
+     * @throws CommandException if no index is provided, or provided index value is not an integer.
      */
-    private void parseParams(String[] userInputArray) {
+    private void setAttributes(String[] inputTokens) {
         try {
-            index = Integer.parseInt(userInputArray[1]) - 1;
+            index = Integer.parseInt(inputTokens[1]) - 1;
         } catch (NumberFormatException e) {
             throw new CommandException("Please insert a valid index :(", e);
         } catch (ArrayIndexOutOfBoundsException e) {

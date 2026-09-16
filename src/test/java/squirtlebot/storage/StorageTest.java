@@ -24,7 +24,7 @@ import squirtlebot.task.TaskList;
 import squirtlebot.task.ToDo;
 
 /**
- * Tests storage functionalities using {@link Storage}
+ * Tests storage functionalities using {@link Storage}.
  */
 public class StorageTest {
     @TempDir
@@ -54,11 +54,11 @@ public class StorageTest {
     public void writeAndLoad_tasksPresent_returnsEquivalentTasks() throws Exception {
         Path storagePath = tempDirectory.resolve("Tasks.ser");
         Storage storage = new Storage(storagePath.toString());
-        TaskList expected = createTaskList();
+        TaskList expectedTasks = createTaskList();
 
-        storage.writeData(expected);
+        storage.writeData(expectedTasks);
 
-        assertEquals(expected, storage.loadData());
+        assertEquals(expectedTasks, storage.loadData());
     }
 
     @Test
@@ -101,7 +101,7 @@ public class StorageTest {
     }
 
     @Test
-    public void loadData_corruptedFile_throwsIoException() throws IOException {
+    public void loadData_corruptedFile_throwsStorageException() throws IOException {
         Path storagePath = tempDirectory.resolve("Tasks.ser");
         Files.writeString(storagePath, "not serialized task data");
         Storage storage = new Storage(storagePath.toString());

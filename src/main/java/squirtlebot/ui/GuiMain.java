@@ -11,8 +11,8 @@ import squirtlebot.SquirtleBot;
 import squirtlebot.ui.controller.GuiMainWindow;
 
 /**
- * Starts the GUI for SquirtleBot
- * <p>Loads the GuiMainWindow layout, initializes SquirtleBot then sends instance of SquirtleBot to controller</p>
+ * Starts the GUI for SquirtleBot.
+ * Loads the GuiMainWindow layout, initializes SquirtleBot then sends instance of SquirtleBot to controller.
  */
 public class GuiMain extends Application {
     private SquirtleBot squirtleBot = new SquirtleBot();
@@ -40,9 +40,9 @@ public class GuiMain extends Application {
 
             stage.show();
 
-            controller.printWelcomeMessage();
+            controller.displayWelcomeMessage();
 
-            boolean isLoaded = squirtleBot.initializeTasks();
+            boolean isLoaded = squirtleBot.tryInitializeTasks();
             if (!isLoaded) {
                 controller.promptOnStorageIssue();
             }

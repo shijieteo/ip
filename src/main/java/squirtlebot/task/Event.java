@@ -6,8 +6,8 @@ import squirtlebot.TemporalPair;
 import squirtlebot.exception.CommandException;
 
 /**
- * Represents the event task that users can add to their list of tasks
- * Contains a task description, start date and an end date for the event
+ * Represents the event task that users can add to their list of tasks.
+ * Contains a task description, and possible start and end dates.
  */
 public class Event extends Task {
     private ArrayList<TemporalPair> possibleSchedules;
@@ -15,10 +15,10 @@ public class Event extends Task {
 
 
     /**
-     * Constructs a new Event object based on user-provided inputs
+     * Constructs a new Event object based on user-provided inputs.
      *
-     * @param taskDescription a description of the event
-     * @param possibleSchedules a list containing pairs of possible start/end dates for the event
+     * @param taskDescription a description of the event.
+     * @param possibleSchedules a list containing pairs of possible start/end dates for the event.
      */
     public Event(String taskDescription, ArrayList<TemporalPair> possibleSchedules) {
         super(taskDescription);
@@ -31,11 +31,12 @@ public class Event extends Task {
     }
 
     /**
-     * Confirms the date of an event, setting the possible start/end dates to only 1
+     * Confirms the date of an unconfirmed event.
+     * If an event already has a confirmed date, no operations are performed.
      *
-     * @param index 0-based integer indicating the start/end date
-     *              in the list of possible start/end dates to set as the confirmed date
-     * @throws CommandException if invalid index was supplied for date to confirm
+     * @param index zero-based integer indicating the start/end date
+     *              in the list of possible start/end dates to set as the confirmed date.
+     * @throws CommandException if {@code index} is out of bounds for list of possible schedules.
      */
     public void confirmEventDate(int index) {
         if (isDateConfirmed) {
@@ -63,10 +64,10 @@ public class Event extends Task {
             return true;
         } else if (object instanceof Event otherEvent) {
             boolean arePossibleSchedulesEqual = possibleSchedules.equals(otherEvent.possibleSchedules);
-            boolean areDateConfirmedEqual = isDateConfirmed == otherEvent.isDateConfirmed;
+            boolean areConfirmedDatesEqual = isDateConfirmed == otherEvent.isDateConfirmed;
             boolean areTaskAttributesEqual = super.equals(otherEvent);
 
-            return arePossibleSchedulesEqual && areDateConfirmedEqual && areTaskAttributesEqual;
+            return arePossibleSchedulesEqual && areConfirmedDatesEqual && areTaskAttributesEqual;
         } else {
             return false;
         }
@@ -82,10 +83,10 @@ public class Event extends Task {
             return String.format("[E] %s (from: %s to: %s)", super.toString(),
                     confirmedDate.startDate(), confirmedDate.endDate());
         }
-        String schedulesDisplays = possibleSchedules.stream()
+        String formattedSchedules = possibleSchedules.stream()
                 .map(x -> String.format("from: %s to: %s", x.startDate(), x.endDate()))
                 .reduce("", (x, y) -> x + "\n" + y)
                 .trim();
-        return String.format("[E] %s \nPossible Schedules: \n%s", super.toString(), schedulesDisplays);
+        return String.format("[E] %s \nPossible Schedules: \n%s", super.toString(), formattedSchedules);
     }
 }

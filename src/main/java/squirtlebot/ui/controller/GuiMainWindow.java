@@ -12,9 +12,9 @@ import squirtlebot.SquirtleBot;
 import squirtlebot.ui.view.DialogBox;
 
 /**
- * Controls user interactions within SquirtleBot's GUI<br>
- * Accepts user input, sending them to SquirtleBot for processing.<br>
- * Displays both user input and SquirtleBot's response
+ * Controls user interactions within SquirtleBot's GUI.
+ * Accepts user input and sends it to SquirtleBot for processing.
+ * Displays both user input and SquirtleBot's response.
  */
 public class GuiMainWindow extends AnchorPane {
     @FXML
@@ -34,8 +34,8 @@ public class GuiMainWindow extends AnchorPane {
 
 
     /**
-     * Initializes GUI by binding scroll position to dialog container's height <br>
-     * Ensures scroll pane automatically shows the latest message
+     * Initializes GUI by binding scroll position to dialog container's height.
+     * Ensures scroll pane automatically shows the latest message.
      */
     @FXML
     public void initialize() {
@@ -44,16 +44,18 @@ public class GuiMainWindow extends AnchorPane {
 
 
     /**
-     * Sets instance of {@link SquirtleBot} to be used for handling logic of the bot
+     * Sets instance of {@link SquirtleBot} to be used for handling logic of the bot.
      *
-     * @param squirtleBot SquirtleBot instance to be used
+     * @param squirtleBot SquirtleBot instance to be used.
      */
     public void setSquirtleBot(SquirtleBot squirtleBot) {
         this.squirtleBot = squirtleBot;
     }
 
     /**
-     * Extracts user input from dialog box, sends to {@link SquirtleBot} to retrieve response
+     * Extracts user input from input field.
+     * If the application is expecting a storage decision, user input is used to process the user's decision.
+     * Otherwise, user input is sent to {@link SquirtleBot} to retrieve a response
      */
     @FXML
     private void handleUserInput() {
@@ -73,7 +75,7 @@ public class GuiMainWindow extends AnchorPane {
     }
 
     /**
-     * Checks if user wants to continue without storage features
+     * Checks if user wants to continue without storage features.
      */
     private void handleStorageDecision() {
         String storageDecision = userInput.getText();
@@ -92,14 +94,14 @@ public class GuiMainWindow extends AnchorPane {
     }
 
     /**
-     * Retrieves SquirtleBot's welcome message and displays message in a {@link DialogBox}
+     * Retrieves SquirtleBot's welcome message and displays message in a {@link DialogBox}.
      */
-    public void printWelcomeMessage() {
+    public void displayWelcomeMessage() {
         addBotMessageToDisplay(squirtleBot.getWelcomeMessage());
     }
 
     /**
-     * Adds message to prompt user for decision after encountering storage issues
+     * Adds message to prompt user for decision after encountering storage issues.
      */
     public void promptOnStorageIssue() {
         isAwaitingStorageDecision = true;
@@ -107,17 +109,17 @@ public class GuiMainWindow extends AnchorPane {
     }
 
     /**
-     * Adds bot's message as dialog box to dialog container
+     * Adds bot's message as dialog box to dialog container.
      */
     private void addBotMessageToDisplay(String botMessage) {
-        dialogContainer.getChildren().add(DialogBox.getSquirtleBotDialog(botMessage, botImage));
+        dialogContainer.getChildren().add(DialogBox.createSquirtleBotDialog(botMessage, botImage));
     }
 
     /**
-     * Adds user's message as dialog box to dialog container
+     * Adds user's message as dialog box to dialog container.
      */
     private void addUserMessageToDisplay(String userInput) {
-        dialogContainer.getChildren().add(DialogBox.getUserDialog(userInput, userImage));
+        dialogContainer.getChildren().add(DialogBox.createUserDialog(userInput, userImage));
     }
 
 }

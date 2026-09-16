@@ -7,34 +7,34 @@ import squirtlebot.task.TaskList;
 import squirtlebot.ui.Ui;
 
 /**
- * Represents the unmark command within <code>SquirtleBot</code>
+ * Represents the unmark command within {@code SquirtleBot}.
  */
 public class UnmarkCommand extends Command {
     private int index;
 
     /**
-     * Constructs an UnmarkCommand object using user inputs
+     * Constructs an UnmarkCommand object using user inputs.
      *
-     * @param userInput array containing index value required to create an UnmarkCommand object
+     * @param inputTokens array containing index value required to create an UnmarkCommand object.
      */
-    public UnmarkCommand(String[] userInput) {
-        parseParams(userInput);
+    public UnmarkCommand(String[] inputTokens) {
+        setAttributes(inputTokens);
     }
 
     /**
-     * Unmarks the task in the task list at the user-supplied index<br>
-     * Displays a confirmation text to the user on command executed
+     * Unmarks the task in the task list at the user-supplied index.
+     * Displays a confirmation text to the user on command executed.
      *
-     * @param taskList list containing tasks created previously by the user
-     * @param ui interface used to display output to the user
-     * @param storage storage handler used to persist changes made by the command
+     * @param tasks list containing tasks created previously by the user.
+     * @param ui interface used to display output to the user.
+     * @param storage storage handler used to persist changes made by the command.
      */
-    public void execute(TaskList taskList, Ui ui, Storage storage) {
-        validateIndex(index, taskList);
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
+        validateIndex(index, tasks);
 
-        Task unmarkedTask = taskList.get(index);
-        unmarkedTask.setIsDone(false);
-        super.updateStorage(taskList, storage);
+        Task unmarkedTask = tasks.get(index);
+        unmarkedTask.setDone(false);
+        super.updateStorage(tasks, storage);
 
         assert !unmarkedTask.isDone();
 
@@ -56,14 +56,14 @@ public class UnmarkCommand extends Command {
     }
 
     /**
-     * Extracts the index in the task list to unmark
+     * Extracts the index in the task list to unmark.
      *
-     * @param userInputArray array containing user-supplied list index to unmark
-     * @throws CommandException if index value provided is not a number
+     * @param inputTokens array containing user-supplied list index to unmark.
+     * @throws CommandException if no index is provided, or provided index is not an integer.
      */
-    private void parseParams(String[] userInputArray) {
+    private void setAttributes(String[] inputTokens) {
         try {
-            index = Integer.parseInt(userInputArray[1]) - 1;
+            index = Integer.parseInt(inputTokens[1]) - 1;
         } catch (NumberFormatException e) {
             throw new CommandException("Please enter a valid index :(");
         } catch (ArrayIndexOutOfBoundsException e) {

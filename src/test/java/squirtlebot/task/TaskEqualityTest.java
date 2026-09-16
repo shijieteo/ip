@@ -28,7 +28,7 @@ public class TaskEqualityTest {
     public void toDo_differentCompletionStatus_tasksNotEqual() {
         Task incomplete = new ToDo("read textbook");
         Task completed = new ToDo("read textbook");
-        completed.setIsDone(true);
+        completed.setDone(true);
 
         assertNotEquals(incomplete, completed);
         assertNotEquals(completed, incomplete);
@@ -56,7 +56,7 @@ public class TaskEqualityTest {
     public void deadline_differentCompletionStatus_tasksNotEqual() {
         Task incomplete = new Deadline("submit report", LocalDate.of(2026, 9, 30));
         Task completed = new Deadline("submit report", LocalDate.of(2026, 9, 30));
-        completed.setIsDone(true);
+        completed.setDone(true);
 
         assertNotEquals(incomplete, completed);
         assertNotEquals(completed, incomplete);
@@ -84,7 +84,7 @@ public class TaskEqualityTest {
     public void event_differentCompletionStatus_tasksNotEqual() {
         Task incomplete = new Event("project meeting", createSchedules(13));
         Task completed = new Event("project meeting", createSchedules(13));
-        completed.setIsDone(true);
+        completed.setDone(true);
 
         assertNotEquals(incomplete, completed);
         assertNotEquals(completed, incomplete);

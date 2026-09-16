@@ -7,38 +7,38 @@ import squirtlebot.task.TaskList;
 import squirtlebot.ui.Ui;
 
 /**
- * Represents the delete command within <code>SquirtleBot</code>
+ * Represents the delete command within {@code SquirtleBot}.
  */
 public class DeleteCommand extends Command {
     private int index;
 
     /**
-     * Constructs a DeleteCommand object using user inputs
+     * Constructs a DeleteCommand object using user inputs.
      *
-     * @param userInput array containing index value required for creating a DeleteCommand object
+     * @param inputTokens array containing index value required for creating a DeleteCommand object.
      */
-    public DeleteCommand(String[] userInput) {
-        parseParams(userInput);
+    public DeleteCommand(String[] inputTokens) {
+        setAttributes(inputTokens);
     }
 
     /**
-     * Deletes a user-specified task from task list
+     * Deletes a user-specified task from task list.
      *
-     * @param taskList list containing tasks created previously by the user
-     * @param ui interface used to display output to the user
-     * @param storage storage handler used to persist changes made by the command
+     * @param tasks list containing tasks created previously by the user.
+     * @param ui interface used to display output to the user.
+     * @param storage storage handler used to persist changes made by the command.
      */
-    public void execute(TaskList taskList, Ui ui, Storage storage) {
-        int sizeBeforeRemoval = taskList.size();
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
+        int sizeBeforeRemoval = tasks.size();
 
-        validateIndex(index, taskList);
+        validateIndex(index, tasks);
 
-        Task removedTask = taskList.remove(index);
+        Task removedTask = tasks.remove(index);
         ui.setSavedMessage(String.format("\tThe following task was removed:\n%s", removedTask));
 
-        assert sizeBeforeRemoval == taskList.size() + 1;
+        assert sizeBeforeRemoval == tasks.size() + 1;
 
-        super.updateStorage(taskList, storage);
+        super.updateStorage(tasks, storage);
     }
 
     /**
@@ -56,14 +56,14 @@ public class DeleteCommand extends Command {
     }
 
     /**
-     * Extracts the index to delete from an array of user inputs
+     * Extracts the index to delete from an array of user inputs.
      *
-     * @param userInputArray array containing the task list index to delete from
-     * @throws CommandException if index value provided is not a number
+     * @param inputTokens array containing the task list index to delete from.
+     * @throws CommandException if no index is provided, or provided index is not an integer.
      */
-    private void parseParams(String[] userInputArray) {
+    private void setAttributes(String[] inputTokens) {
         try {
-            index = Integer.parseInt(userInputArray[1]) - 1;
+            index = Integer.parseInt(inputTokens[1]) - 1;
         } catch (NumberFormatException e) {
             throw new CommandException("Please enter a valid index :(", e);
         } catch (ArrayIndexOutOfBoundsException e) {

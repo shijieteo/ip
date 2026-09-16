@@ -34,7 +34,7 @@ public class AddEventCommandTest {
 
     @Test
     public void setAttributes_noTaskDescription_throwsCommandException() {
-        String input = "/from 01-01-2026 /to 01-01-2027";
+        String input = "event /from 01-01-2026 /to 01-01-2027";
 
         CommandException exception = assertThrows(
                 CommandException.class, () -> new AddEventCommand(input.split(" ")));
@@ -67,7 +67,7 @@ public class AddEventCommandTest {
 
     @Test
     public void setAttributes_startDateAfterEndDate_throwsCommandException() {
-        String input = "do cs2103 /from 01-01-2027 /to 01-01-2026";
+        String input = "event do cs2103 /from 01-01-2027 /to 01-01-2026";
 
         CommandException exception = assertThrows(
                 CommandException.class, () -> new AddEventCommand(input.split(" ")));

@@ -7,36 +7,36 @@ import squirtlebot.task.TaskList;
 import squirtlebot.ui.Ui;
 
 /**
- * Represents the find command within <code>SquirtleBot</code>
+ * Represents the find command within {@code SquirtleBot}.
  */
 public class FindCommand extends Command {
     private String searchPattern;
 
     /**
-     * Constructs a new FindCommand object using inputs provided by a user
+     * Constructs a new FindCommand object using inputs provided by a user.
      *
-     * @param userInput array containing user inputs required to create a FindCommand object
+     * @param inputTokens array containing user inputs required to create a FindCommand object.
      */
-    public FindCommand(String[] userInput) {
-        parseParams(userInput);
+    public FindCommand(String[] inputTokens) {
+        setAttributes(inputTokens);
     }
 
     /**
-     * Filters the task list for tasks containing the user-supplied string<br>
-     * Displays the filtered tasks to the user
+     * Filters the task list for tasks containing the user-supplied string.
+     * Displays the filtered tasks to the user.
      *
-     * @param taskList list containing tasks created previously by the user
-     * @param ui interface used to display output to the user
-     * @param storage storage handler used to persist changes made by the command
+     * @param tasks list containing tasks created previously by the user.
+     * @param ui interface used to display output to the user.
+     * @param storage unused storage handler, included to override implementation in {@link Command}.
      */
-    public void execute(TaskList taskList, Ui ui, Storage storage) {
-        TaskList filteredList = new TaskList(taskList.stream().filter(x -> x.toString()
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
+        TaskList identifiedTasks = new TaskList(tasks.stream().filter(x -> x.getTaskDescription()
                 .contains(searchPattern)).toList());
-        if (filteredList.isEmpty()) {
+        if (identifiedTasks.isEmpty()) {
             ui.setSavedMessage("No tasks match your search :(");
             return;
         }
-        ui.setSavedMessage(filteredList.toString());
+        ui.setSavedMessage(identifiedTasks.toString());
     }
 
     /**
@@ -54,12 +54,12 @@ public class FindCommand extends Command {
     }
 
     /**
-     * Extracts string to be searched for within the task list
+     * Extracts string to be searched for within the task list.
      *
-     * @param userInputArray array containing user-supplied search string
+     * @param inputTokens array containing user-supplied search string.
      */
-    private void parseParams(String[] userInputArray) {
-        this.searchPattern = IntStream.range(1, userInputArray.length).boxed()
-                .map(x -> userInputArray[x]).reduce("", (x, y) -> x + y + " ").trim();
+    private void setAttributes(String[] inputTokens) {
+        this.searchPattern = IntStream.range(1, inputTokens.length).boxed()
+                .map(x -> inputTokens[x]).reduce("", (x, y) -> x + y + " ").trim();
     }
 }

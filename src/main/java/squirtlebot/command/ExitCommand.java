@@ -5,24 +5,24 @@ import squirtlebot.task.TaskList;
 import squirtlebot.ui.Ui;
 
 /**
- * Represents the exit command within <code>SquirtleBot</code>.
+ * Represents the exit command within {@code SquirtleBot}.
  */
 public class ExitCommand extends Command {
 
     /**
-     * Displays an exit message to the user
+     * Displays an exit message to the user.
      *
-     * @param taskList list containing tasks created previously by the user
-     * @param ui interface used to display exit message to the user
-     * @param storage storage handler used to persist changes made by the command
+     * @param tasks list containing tasks created previously by the user.
+     * @param ui interface used to display exit message to the user.
+     * @param storage unused storage handler, included to override implementation in {@link Command}.
      */
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) {
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
         ui.setSavedMessage("\tBye. Hope to see you soon :(");
     }
 
     /**
-     * {inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public boolean shouldExit() {

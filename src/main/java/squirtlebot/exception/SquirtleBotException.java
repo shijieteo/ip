@@ -9,7 +9,7 @@ public class SquirtleBotException extends RuntimeException {
     /**
      * Constructs a SquirtleBotException with a message describing the failure.
      *
-     * @param message description of the failure
+     * @param message description of the failure.
      */
     public SquirtleBotException(String message) {
         super(message);
@@ -18,8 +18,8 @@ public class SquirtleBotException extends RuntimeException {
     /**
      * Constructs a SquirtleBotException with a message and its underlying cause.
      *
-     * @param message description of the failure
-     * @param cause exception that caused this failure
+     * @param message description of the failure.
+     * @param cause exception that caused this failure.
      */
     public SquirtleBotException(String message, Throwable cause) {
         super(message, cause);

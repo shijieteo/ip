@@ -44,7 +44,7 @@ public class TaskMutationCommandTest {
 
     @Test
     public void unmark_execute_unmarksSelectedTask() {
-        tasks.get(0).setIsDone(true);
+        tasks.get(0).setDone(true);
 
         new UnmarkCommand(new String[]{"unmark", "1"}).execute(tasks, ui, storage);
 
@@ -109,7 +109,7 @@ public class TaskMutationCommandTest {
 
     @Test
     public void unmark_zeroIndex_throwsCommandException() {
-        tasks.get(0).setIsDone(true);
+        tasks.get(0).setDone(true);
         UnmarkCommand command = new UnmarkCommand(new String[]{"unmark", "0"});
 
         CommandException exception = assertThrows(

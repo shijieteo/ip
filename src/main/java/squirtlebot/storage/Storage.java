@@ -13,18 +13,18 @@ import squirtlebot.exception.StorageException;
 import squirtlebot.task.TaskList;
 
 /**
- * Handles all read-write operations for persistency in changes made
- * Uses <code>data/Tasks.ser</code> as system file for read-write operations
+ * Handles all read-write operations to persist task list changes.
+ * Uses {@code data/Tasks.ser} as system file for read-write operations.
  */
 public class Storage {
     private static final String DEFAULT_FILE_LOCATION = "data/Tasks.ser";
 
     private boolean isDisabled;
     private final String fileLocation;
-    private final String directoryName;
+    private final String directoryPath;
 
     /**
-     * Constructs a storage object using default file locations
+     * Constructs a storage object using default file locations.
      */
     public Storage() {
         this(DEFAULT_FILE_LOCATION);
@@ -33,20 +33,20 @@ public class Storage {
     /**
      * Constructs a storage object that persists data at the specified location.
      *
-     * @param fileLocation path of the file used to store tasks
+     * @param fileLocation path of the file used to store tasks.
      */
     public Storage(String fileLocation) {
         isDisabled = false;
         this.fileLocation = fileLocation;
         File parentDirectory = new File(fileLocation).getParentFile();
-        this.directoryName = parentDirectory == null ? "." : parentDirectory.getPath();
+        this.directoryPath = parentDirectory == null ? "." : parentDirectory.getPath();
     }
 
     /**
-     * Creates FileInputStream and ObjectInputStream objects required to read from data file
+     * Loads previously saved tasks from data file, specified by {@code fileLocation}.
      *
-     * @return List of task objects from data file on the system
-     * @throws StorageException if there was an IO/Class-related issue while loading from storage
+     * @return list of task objects from data file on the system.
+     * @throws StorageException if there was an IO/Class-related issue while loading from storage.
      */
     public TaskList loadData() {
         assert !isDisabled;
@@ -54,10 +54,10 @@ public class Storage {
         try (FileInputStream fileInputStream = new FileInputStream(fileLocation);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
             Object data = objectInputStream.readObject();
-            if (!(data instanceof TaskList taskList)) {
+            if (!(data instanceof TaskList tasks)) {
                 throw new StorageException("Stored data is invalid :(");
             }
-            loadedTasks = taskList;
+            loadedTasks = tasks;
         } catch (FileNotFoundException fileNotFoundException) {
             createDataFile();
         } catch (EOFException eofException) {
@@ -69,7 +69,10 @@ public class Storage {
     }
 
     /**
-     * Deletes the data file and creates a new data file
+     * Deletes the data file and creates a new data file if storage is not disabled.
+     * If storage is disabled, no operations are performed.
+     *
+     * @throws StorageException if an issue was encountered while trying to create the new data file.
      */
     public void resetData() {
         if (isDisabled) {
@@ -81,18 +84,20 @@ public class Storage {
     }
 
     /**
-     * Sets the value of isDisabled to disable all storage-related operations
+     * Sets the value of isDisabled to disable all storage-related operations except for loading of data.
      */
     public void disable() {
         this.isDisabled = true;
     }
 
     /**
-     * Creates FileOutputStream and ObjectOutputStream objects required to write to data file
+     * Writes the list of tasks to the data file, specified by {@code fileLocation} if storage is not disabled.
+     * If storage is disabled, no operations are performed.
      *
-     * @param taskList TaskList object to be written to the data file
+     * @param tasks TaskList object to be written to the data file.
+     * @throws StorageException if an error was encountered while writing to the data file.
      */
-    public void writeData(TaskList taskList) {
+    public void writeData(TaskList tasks) {
         if (isDisabled) {
             return;
         }
@@ -100,23 +105,22 @@ public class Storage {
 
         try (FileOutputStream fileOutputStream = new FileOutputStream(fileLocation);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
-            objectOutputStream.writeObject(taskList);
-        }
-        catch (IOException e) {
+            objectOutputStream.writeObject(tasks);
+        } catch (IOException e) {
             throw new StorageException("There was an error writing to storage :(", e);
         }
     }
 
     /**
-     * Creates the configured data file
-     * Creates data directory if it does not already exist
+     * If storage is not disabled, creates the specified data file and data directory if it does not already exist.
+     * If storage is disabled, no operations are performed.
      */
     private void createDataFile() {
         if (isDisabled) {
             return;
         }
         File dataFile = new File(fileLocation);
-        File directory = new File(directoryName);
+        File directory = new File(directoryPath);
         if (!directory.exists()) {
             directory.mkdirs();
         }
