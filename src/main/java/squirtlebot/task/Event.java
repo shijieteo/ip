@@ -85,8 +85,7 @@ public class Event extends Task {
         }
         String formattedSchedules = possibleSchedules.stream()
                 .map(x -> String.format("from: %s to: %s", x.startDate(), x.endDate()))
-                .reduce("", (x, y) -> x + "\n" + y)
-                .trim();
-        return String.format("[E] %s \nPossible Schedules: \n%s", super.toString(), formattedSchedules);
+                .reduce("", (x, y) -> x.isEmpty() ? x + "\t\t" + y : x + "\n\t\t" + y);
+        return String.format("[E] %s \n\tPossible Schedules: \n%s", super.toString(), formattedSchedules);
     }
 }
