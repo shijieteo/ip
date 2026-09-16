@@ -94,7 +94,7 @@ public class GuiMainWindow extends AnchorPane {
     /**
      * Retrieves SquirtleBot's welcome message and displays message in a {@link DialogBox}.
      */
-    public void printWelcomeMessage() {
+    public void displayWelcomeMessage() {
         addBotMessageToDisplay(squirtleBot.getWelcomeMessage());
     }
 
@@ -110,14 +110,14 @@ public class GuiMainWindow extends AnchorPane {
      * Adds bot's message as dialog box to dialog container.
      */
     private void addBotMessageToDisplay(String botMessage) {
-        dialogContainer.getChildren().add(DialogBox.getSquirtleBotDialog(botMessage, botImage));
+        dialogContainer.getChildren().add(DialogBox.createSquirtleBotDialog(botMessage, botImage));
     }
 
     /**
      * Adds user's message as dialog box to dialog container.
      */
     private void addUserMessageToDisplay(String userInput) {
-        dialogContainer.getChildren().add(DialogBox.getUserDialog(userInput, userImage));
+        dialogContainer.getChildren().add(DialogBox.createUserDialog(userInput, userImage));
     }
 
 }

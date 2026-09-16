@@ -40,7 +40,7 @@ public class GuiMain extends Application {
 
             stage.show();
 
-            controller.printWelcomeMessage();
+            controller.displayWelcomeMessage();
 
             boolean isLoaded = squirtleBot.initializeTasks();
             if (!isLoaded) {

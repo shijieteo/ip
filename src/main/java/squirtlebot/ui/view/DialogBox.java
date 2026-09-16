@@ -56,7 +56,7 @@ public class DialogBox extends HBox {
      * @param img image to represent the user.
      * @return {@link DialogBox} with user image and message formatted.
      */
-    public static DialogBox getUserDialog(String text, Image img) {
+    public static DialogBox createUserDialog(String text, Image img) {
         return new DialogBox(text, img);
     }
 
@@ -67,7 +67,7 @@ public class DialogBox extends HBox {
      * @param img image to represent the bot.
      * @return {@link DialogBox} with bot image and message formatted.
      */
-    public static DialogBox getSquirtleBotDialog(String text, Image img) {
+    public static DialogBox createSquirtleBotDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();
         return db;
