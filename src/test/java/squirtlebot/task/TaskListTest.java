@@ -19,7 +19,7 @@ public class TaskListTest {
         assertFalse(task.isDone());
         assertEquals("[T] [ ] read chapter 1", task.toString());
 
-        task.setIsDone(true);
+        task.setDone(true);
 
         assertTrue(task.isDone());
         assertEquals("[T] [X] read chapter 1", task.toString());
