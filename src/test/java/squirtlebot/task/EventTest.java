@@ -24,10 +24,10 @@ public class EventTest {
 
         String expected = String.join("\n",
                 "[E] [ ] project meeting ",
-                "Possible Schedules: ",
-                "from: 2026-09-13 to: 2026-09-14",
-                "from: 2026-09-20 to: 2026-09-21",
-                "from: 2026-10-01 to: 2026-10-02");
+                "\tPossible Schedules: ",
+                "\t\tfrom: 2026-09-13 to: 2026-09-14",
+                "\t\tfrom: 2026-09-20 to: 2026-09-21",
+                "\t\tfrom: 2026-10-01 to: 2026-10-02");
 
         assertEquals(expected, event.toString());
     }
@@ -45,9 +45,9 @@ public class EventTest {
 
         String expected = String.join("\n",
                 "[E] [ ] project meeting ",
-                "Possible Schedules: ",
-                "from: 2026-09-13T09:30 to: 2026-09-13T11:00",
-                "from: 2026-09-14T14:15 to: 2026-09-14T16:45");
+                "\tPossible Schedules: ",
+                "\t\tfrom: 2026-09-13T09:30 to: 2026-09-13T11:00",
+                "\t\tfrom: 2026-09-14T14:15 to: 2026-09-14T16:45");
 
         assertEquals(expected, event.toString());
     }
