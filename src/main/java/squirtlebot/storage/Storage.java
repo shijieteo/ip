@@ -13,7 +13,7 @@ import squirtlebot.exception.StorageException;
 import squirtlebot.task.TaskList;
 
 /**
- * Handles all read-write operations for persistency in changes made
+ * Handles all read-write operations to persist task list changes
  * Uses <code>data/Tasks.ser</code> as system file for read-write operations
  */
 public class Storage {

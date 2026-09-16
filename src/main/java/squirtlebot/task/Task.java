@@ -33,6 +33,9 @@ public abstract class Task implements Serializable {
         return isDone;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object object) {
         if (this == object) {

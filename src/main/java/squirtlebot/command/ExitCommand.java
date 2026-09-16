@@ -22,7 +22,7 @@ public class ExitCommand extends Command {
     }
 
     /**
-     * {inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public boolean shouldExit() {

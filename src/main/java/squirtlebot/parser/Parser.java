@@ -49,6 +49,7 @@ public class Parser {
      * Returns {@link Command} representing the user input
      *
      * @param userInput string representing command to execute and parameters if any
+     * @return a {@link Command} object representing the user-entered command
      * @throws CommandException if user specifies an unsupported command
      */
     public Command parseCommand(String userInput) {
@@ -65,7 +66,7 @@ public class Parser {
     }
 
     /**
-     * Scans user input for values belonging to a specified-token<br>
+     * Scans user input for values belonging to a specified token<br>
      * Stops when it detects the start of other tokens, identified by a preceding "/" character
      *
      * @param userInputArray array containing user input to scan for tokens

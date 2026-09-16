@@ -69,7 +69,7 @@ public class Ui {
     }
 
     /**
-     * Displays the saved messaged between 2 horizontal lines for formatting
+     * Displays the saved message between 2 horizontal lines
      */
     public void printSavedMessage() {
         System.out.println(Ui.HORIZONTAL_LINE);
@@ -78,7 +78,7 @@ public class Ui {
     }
 
     /**
-     * Returns saved message with trailing whitespace removed
+     * Returns saved message with leading and trailing whitespace removed
      *
      * @return previously saved message
      */

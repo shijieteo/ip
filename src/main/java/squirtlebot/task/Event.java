@@ -7,7 +7,7 @@ import squirtlebot.exception.CommandException;
 
 /**
  * Represents the event task that users can add to their list of tasks
- * Contains a task description, start date and an end date for the event
+ * Contains a task description, and one or more sets of possible start and end dates
  */
 public class Event extends Task {
     private ArrayList<TemporalPair> possibleSchedules;
@@ -31,11 +31,11 @@ public class Event extends Task {
     }
 
     /**
-     * Confirms the date of an event, setting the possible start/end dates to only 1
+     * Confirms the date of an event, setting the possible start/end dates to only one
      *
      * @param index 0-based integer indicating the start/end date
      *              in the list of possible start/end dates to set as the confirmed date
-     * @throws CommandException if invalid index was supplied for date to confirm
+     * @throws CommandException if an invalid index was supplied for date to confirm
      */
     public void confirmEventDate(int index) {
         if (isDateConfirmed) {

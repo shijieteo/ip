@@ -12,9 +12,9 @@ import squirtlebot.SquirtleBot;
 import squirtlebot.ui.view.DialogBox;
 
 /**
- * Controls user interactions within SquirtleBot's GUI<br>
- * Accepts user input, sending them to SquirtleBot for processing.<br>
- * Displays both user input and SquirtleBot's response
+ * Controls user interactions within SquirtleBot's GUI.
+ * Accepts user input and sends it to SquirtleBot for processing.
+ * Displays both user input and SquirtleBot's response.
  */
 public class GuiMainWindow extends AnchorPane {
     @FXML
@@ -53,7 +53,7 @@ public class GuiMainWindow extends AnchorPane {
     }
 
     /**
-     * Extracts user input from dialog box, sends to {@link SquirtleBot} to retrieve response
+     * Extracts user input from input field, sends to {@link SquirtleBot} to retrieve response
      */
     @FXML
     private void handleUserInput() {

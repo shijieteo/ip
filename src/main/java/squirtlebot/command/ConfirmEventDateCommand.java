@@ -71,10 +71,10 @@ public class ConfirmEventDateCommand extends Command {
     }
 
     /**
-     * Extracts 2 indices required to confirm the date for an event.
+     * Extracts two indices required to confirm the date for an event.
      *
-     * @param userInputArray array containing 2 indices required to confirm an event's date
-     * @throws CommandException if provided index is not a number
+     * @param userInputArray array containing two indices required to confirm an event's date
+     * @throws CommandException if provided indices are not numbers
      */
     private void setAttributes(String[] userInputArray) {
         try {

@@ -63,7 +63,7 @@ public class DateParser {
     /**
      * Converts a user input string into a {@link LocalDateTime} object
      *
-     * @param userInput user input containing a date
+     * @param userInput user input containing a datetime
      * @return an {@link Optional} containing the dateTime object represented by user input
      *                  or an empty {@link Optional} if the user input is of an unsupported format
      */
