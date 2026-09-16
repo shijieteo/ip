@@ -62,11 +62,11 @@ public class AddDeadlineCommand extends Command {
     }
 
     /**
-     * Extracts {@code taskDescription} and {@code dueDate} from the array of user inputs
-     * Creates deadline task to be added later
+     * Extracts {@code taskDescription} and {@code dueDate} from the array of user inputs.
+     * Creates deadline task to be added later.
      *
-     * @param userInputArray array containing user inputs required to create a Deadline object
-     * @throws CommandException if dueDate or taskDescription is empty, or if dueDate is not in a valid format
+     * @param userInputArray array containing user inputs required to create a Deadline object.
+     * @throws CommandException if dueDate or taskDescription is empty, or if dueDate is not in a valid format.
      */
     private void setAttributes(String[] userInputArray) {
         Parser parser = new Parser();

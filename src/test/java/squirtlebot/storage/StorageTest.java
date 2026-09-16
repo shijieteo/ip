@@ -24,7 +24,7 @@ import squirtlebot.task.TaskList;
 import squirtlebot.task.ToDo;
 
 /**
- * Tests storage functionalities using {@link Storage}
+ * Tests storage functionalities using {@link Storage}.
  */
 public class StorageTest {
     @TempDir

@@ -116,8 +116,7 @@ public class SquirtleBot {
     /**
      * Loads previously stored tasks.
      *
-     * @return {@code true} if storage was loaded correctly;
-     *  {@code false} if storage not loaded.
+     * @return {@code true} if storage was loaded correctly; {@code false} if storage not loaded.
      */
     public boolean initializeTasks() {
         int resetCount = 0;
