@@ -1,9 +1,11 @@
 package squirtlebot.command;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import squirtlebot.TemporalPair;
 import squirtlebot.exception.CommandException;
@@ -96,10 +98,12 @@ public class AddEventCommand extends Command {
             if (!currentToken.equals(START_DATE_TOKEN) && !currentToken.equals(END_DATE_TOKEN)) {
                 continue;
             } else if (currentToken.equals(START_DATE_TOKEN) && !isStartDateIdentified) {
-                startDateString = inputTokens[index + 1];
+                startDateString = parser.parseTokens(Arrays.copyOfRange(inputTokens, index, inputTokens.length),
+                        START_DATE_TOKEN);
                 isStartDateIdentified = true;
             } else if (currentToken.equals(END_DATE_TOKEN) && !isEndDateIdentified) {
-                endDateString = inputTokens[index + 1];
+                endDateString = parser.parseTokens(Arrays.copyOfRange(inputTokens, index, inputTokens.length),
+                        END_DATE_TOKEN);
                 isEndDateIdentified = true;
             } else {
                 throw new CommandException("Please provide the correct arguments for Event!");
